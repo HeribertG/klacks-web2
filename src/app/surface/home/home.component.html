@@ -1,0 +1,61 @@
+<div class="loading-indicator" *ngIf="dataManagementSwitchboardService.showProgressSpinner">
+  <app-spinner></app-spinner>
+</div>
+
+
+<ng-template #content let-modal role="dialog">
+
+  <div class="modal-header">
+    <div class="container-header-modal modal-title" id="modal-title">Änderungen verwerfen?</div>
+  </div>
+
+  <div class="modal-body row-line-modal">
+    <div class="gap-modal">
+
+      <icon-round-question-mark></icon-round-question-mark>
+
+    </div>
+    <label>Möchten Sie Ihre Änderungen verwerfen wenn sie diese Seite verlassen?</label>
+  </div>
+
+
+
+
+  <div class="modal-footer ">
+    <span type="button" class="link-button red-font" (click)="modal.dismiss('Cancel click')">Abbrechen</span>
+    <button type="button" class="btn ownStyle-save" (click)="modal.close()">Änderungen verwerfen</button>
+  </div>
+
+</ng-template>
+
+
+<div class="container">
+
+
+  <app-header></app-header>
+  <app-nav></app-nav>
+
+  <app-main [isDashboard]="isDashboard" [isAllAddsresses]="isAllAddsresses" [isAllWorkshops]="isAllWorkshops"
+    [isAllDocuments]="isAllDocuments" [isInvoices]="isInvoices" [isAllInvoices]="isAllInvoices" [isProfile]="isProfile"
+    [isReminder]="isReminder" [isSetting]="isSetting" [isEditAddress]="isEditAddress" [isEditWorkshop]="isEditWorkshop"
+    [isAllExports]="isAllExports" [isEditExport]="isEditExport" (isChangingEvent)="onIsChanging($event)"
+    (isEnterEvent)="onIsEnter()">
+  </app-main>
+  
+  <div class="footer custom-control-inline" *ngIf="isSavebarVisible">
+    <span type="button" class="link-button blue-font" (click)="onClickGoBack()">Zurück</span>
+
+    <div class="filler"></div>
+
+    <span type="button" class="link-button red-font" (click)="onClickReset()"
+      *ngIf="dataManagementSwitchboardService.isDirty && dataManagementSwitchboardService.isDisabled===false">Zurücksetzen</span>
+
+    <button type="button" class="btn save-btn " (click)="onClickSave()" *ngIf="dataManagementSwitchboardService.isDirty"
+      [disabled]="dataManagementSwitchboardService.isDisabled">Eingaben
+      speichern</button>
+  </div>
+
+  <app-aside></app-aside>
+  <app-footer></app-footer>
+
+</div>

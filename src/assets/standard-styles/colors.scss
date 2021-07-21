@@ -1,0 +1,159 @@
+$standartGreenColor: #1bc5bd;
+;
+$splitButtonGreenColor:#0bb7af;
+
+$standartRedColor: red;
+$standartRedLiteColor: #FF3333;
+$standartRedBorderDarkColor: #CC0000;
+$standartRedBorderLiteColor: #FF6666;
+
+$standartWhiteColor: white;
+$standartBlueColor: #6993ff;
+$splitButtoBuleColor:#5e84e6;
+
+:root {
+  --VersionNumberColor: #BDC3C7;
+  --backgroundColorWorkplace: #e6ebef;
+  --backgroundColorWindow: #F2F4F4;
+  --colorWorkplaceHeadline: #212121;
+  --colorWorkplaceHeadlineDecoration: rgb(33, 33, 33);
+
+
+  --backgroundColorHeaderNav: white;
+  --backgroundColorHeaderWorkplace: #e5eaee;
+  --backgroundColorCard: white;
+  --colorHeadline: #212121;
+  --colorSubHeadline: #b6b6c3;
+  --colorLabel: #464e5f;
+  --backgroundColorImgIconContainer: white;
+
+  --colorLine: #e5eaee;
+  --gridcolorLine: #b6b6c3;
+  --gridcolorText: #464e5f;
+  --gridcolorTextUpdate: #2980B9;
+  --gridcolorTextDelete: red;
+  --gridcolorCellComment: grey;
+  --gridBackgroundColorCellComment: #FEF9E7;
+  --gridBackgroundColorCellShadow: dimgrey;
+  --gridBackgroundColorRowHover: #f1f5f8;
+  --gridBackgroundColorInfo: #FEF5E7;
+
+  --cardBorderColor: #CFD8DC;
+  --backgroundColorFocus: #e5eaee;
+  --backgroundColorHover: #FAFAFA;
+
+  --standartTextColor: #464e5f;
+  --standartTextBackground: white;
+  --standartTextCaretColor: dimgray;
+  --standartTextBackgroundReadOnly: #e5eaee;
+
+  --backgroundColoPagination: white;
+  --backgroundColoPaginationSelected: #e5eaee;
+  --coloPaginationSelected: #464e5f;
+  --paginationBorderColor: #e5eaee;
+  --paginationBorderColorSelected: grey;
+
+  --iconBlackColor: black;
+
+  --backgroundOption: white;
+  --colorOption: #464e5f;
+
+  --SpinnerColor: rgb(44, 44, 138);
+
+  --backgroundOwnHeadLine: #e5eaee;
+  --backgroundOwnHeadLineHover: #D5DBDB;
+
+  --backgroundColorDropZone: white;
+  --backgroundColorDropZoneHover: #e2eefd;
+
+  --backgroundColorContributionTypeName: #EAFAF1;
+  --backgroundColorContributionTypeVat: #FEF9E7;
+
+  --colorPlaceholder: #E5E7E9;
+
+  --backgroundColorMenuDisabled: #e5eaee;
+  --bcolorMenuDisabled: #464e5f;
+
+  --standartRedColor: red;
+
+  --backgroundfindCustomerList: #1bc5bd;
+  --backgroundHoverfindCustomerList: #0bb7af;
+  --lightBordeColorfindCustomerList: #c9f7f5;
+  --darkBordeColorfindCustomerList: #0bb7af;
+  --colorfindCustomerList:  white;
+
+  --colorHoveronCalenderDay:  black;
+
+}
+
+:root[data-theme="dark"] {
+
+  --VersionNumberColor: #b6b6c3;
+  --backgroundColorWorkplace: #34495E;
+  --backgroundColorWindow: #17202A;
+  --colorWorkplaceHeadline: #EBF5FB;
+  --colorWorkplaceHeadlineDecoration: #e5eaee;
+
+
+  --backgroundColorHeaderNav: #283747;
+  --backgroundColorHeaderWorkplace: #e5eaee;
+  --backgroundColorCard: #283747;
+  --colorHeadline: #EBF5FB;
+  --colorSubHeadline: #b6b6c3;
+  --colorLabel: #b6b6c3;
+  --backgroundColorImgIconContainer: white;
+
+  --colorLine: #e5eaee;
+  --gridcolorLine: #b6b6c3;
+  --gridcolorText: white;
+  --gridcolorTextUpdate: #2980B9;
+  --gridcolorTextDelete: #C0392B;
+  --gridcolorCellComment: grey;
+  --gridBackgroundColorCellComment: #FEF9E7;
+  --gridBackgroundColorCellShadow: dimgrey;
+  --gridBackgroundColorRowHover: #465E78;
+  --gridBackgroundColorInfo: orange;
+
+  --cardBorderColor: #566573;
+  --backgroundColorFocus: #546E7A;
+  --backgroundColorHover: #546E7A;
+
+  --standartTextColor: white;
+  --standartTextBackground: #212121;
+  --standartTextCaretColor: dimgray;
+  --standartTextBackgroundReadOnly: dimgray;
+
+
+  --backgroundColoPagination: #283747;
+  --backgroundColoPaginationSelected: #546E7A;
+  --coloPaginationSelected: white;
+  --paginationBorderColor: #e5eaee;
+  --paginationBorderColorSelected: #e5eaee;
+
+  --iconBlackColor: white;
+
+
+  --backgroundOption: #283747;
+  --colorOption: white;
+
+  --SpinnerColor: #AED6F1;
+
+  --backgroundOwnHeadLine: #546E7A;
+  --backgroundOwnHeadLineHover: #3A4B54;
+
+  --backgroundColorDropZone: #283747;
+  --backgroundColorDropZoneHover: #546E7A;
+
+  --backgroundColorContributionTypeName: #0bb7af;
+  --backgroundColorContributionTypeVat: orange;
+
+  --colorPlaceholder: #283747;
+
+  --backgroundColorMenuDisabled: dimgray;
+  --bcolorMenuDisabled: #464e5f;
+
+  --standartRedColor: #E74C3C;
+
+
+}
+

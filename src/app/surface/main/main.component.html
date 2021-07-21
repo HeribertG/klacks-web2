@@ -1,0 +1,16 @@
+<div id="container-main" class="container-main">
+
+  <app-dashboard-home *ngIf="isDashboard"></app-dashboard-home>
+  <app-address-home *ngIf="isAllAddsresses"></app-address-home>
+  <app-all-exports-home *ngIf="isAllExports"></app-all-exports-home>
+
+
+  <ng-container #LazyLoadingPlaceholder ></ng-container>
+
+
+  <app-address-edit-home (isChangingEvent)="onIsChanging($event)" (isEnterEvent)="onIsEnter()" *ngIf="isEditAddress">
+  </app-address-edit-home>
+  <app-edit-export-home (isChangingEvent)="onIsChanging($event)" (isEnterEvent)="onIsEnter()" *ngIf="isEditExport">
+  </app-edit-export-home>
+
+</div>
