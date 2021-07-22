@@ -1,8 +1,9 @@
-using SVA.API.Core;
-using SVA.API.Data;
+
+using klacks_web_api.Data;
+using klacks_web_api.Interface;
 using System.Threading.Tasks;
 
-namespace SVA.API.Repository
+namespace klacks_web_api.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {

@@ -4,7 +4,6 @@ namespace klacks_web_api.Enums
   {
     customer = 0,
     workplace = 1,
-    invoicingAddress = 2,
   }
 
   
