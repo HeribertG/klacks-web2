@@ -19,6 +19,8 @@ using klacks_web_api.Data;
 using klacks_web_api.Models.Authentfication;
 using System.Linq;
 using FluentValidation.AspNetCore;
+using klacks_web_api.Repository;
+using klacks_web_api.Interface;
 
 namespace klacks_web_api
 {
@@ -41,6 +43,8 @@ namespace klacks_web_api
     {
       services.AddSignalR();
       services.AddControllers().AddNewtonsoftJson();
+
+      services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
       string connectionString = Configuration["CONNECTIONSTRING"];
       if (string.IsNullOrEmpty(connectionString)) { connectionString = Configuration.GetConnectionString("Default"); }

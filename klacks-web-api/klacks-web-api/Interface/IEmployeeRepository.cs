@@ -1,7 +1,6 @@
 using klacks_web_api.Models.Employee;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace klacks_web_api.Interface
@@ -9,12 +8,11 @@ namespace klacks_web_api.Interface
   public interface IEmployeeRepository
   {
     Task<List<Employee>> GetEmployeeList();
-    Task<List<Employee>> GetClientEmployeeList(Guid id);
-    Task<List<Employee>> GetSimpleEmployeeList(Guid id);
+    Task<List<Employee>> GetSimpleEmployeeList();
     Task<Employee> GetEmployee(Guid id);
-    void AddEmployee(Employee Employee);
-    Employee PutEmployee(Employee Employee);
-    void RemoveEmployee(Employee Employee);
+    void AddEmployee(Employee employee);
+    Employee PutEmployee(Employee employee);
+    void RemoveEmployee(Employee employee);
     Task<Employee> DeleteEmployee(Guid id);
     bool EmployeeExists(Guid id);
 
