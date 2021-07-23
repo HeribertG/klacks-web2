@@ -61,8 +61,9 @@ namespace klacks_web_api.Controllers
     public async Task<ActionResult<AddressResource>> PutAddress(AddressResource addressResource)
     {
 
-      var address = mapper.Map<AddressResource, Address>(addressResource);
-
+      var dbAddress = await repository.GetAddress(addressResource.Id);
+      var address = mapper.Map(addressResource, dbAddress);
+      
       if (address == null)
         return NotFound();
 

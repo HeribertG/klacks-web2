@@ -22,6 +22,8 @@ using FluentValidation.AspNetCore;
 using klacks_web_api.Repository;
 using klacks_web_api.Interface;
 
+
+
 namespace klacks_web_api
 {
   public class Startup
@@ -29,25 +31,32 @@ namespace klacks_web_api
 
     public static DbContextOptionsBuilder<DatabaseContext> DatabaseContextOptionsBuilder;
     public static ILoggerFactory LoggerFactory;
+
+    public IConfiguration Configuration { get; }
+
     private static readonly string[] Headers = new[] { "X-Operation", "X-Resource", "X-Total-Count" };
+
     public Startup(IConfiguration configuration)
     {
       Configuration = configuration;
     }
 
-    public IConfiguration Configuration { get; }
 
-    // This method gets called by the runtime. Use this method to add services to the container.
-    // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+    
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddSignalR();
       services.AddControllers().AddNewtonsoftJson();
 
       services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+      services.AddScoped<IAddressRepository, AddressRepository>();
+      services.AddScoped<IAnnotationRepository, AnnotationRepository>();
+      services.AddScoped<ICommunicationRepository, CommunicationRepository>();
+      services.AddScoped<IStaffRepository, StaffRepository>();
 
-      string connectionString = Configuration["CONNECTIONSTRING"];
-      if (string.IsNullOrEmpty(connectionString)) { connectionString = Configuration.GetConnectionString("Default"); }
+
+
+      var connectionString = Configuration.GetConnectionString("Default"); 
 
       services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString ?? throw new InvalidOperationException()));
 

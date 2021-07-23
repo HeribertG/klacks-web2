@@ -12,7 +12,7 @@ namespace klacks_web_api.Resources
 
     public Guid EmployeeId { get; set; }
 
-    public Employee Employee { get; set; }
+    public EmployeeResource Employee { get; set; }
 
     [DataType(DataType.Date)]
     public DateTime ValidFrom { get; set; }
