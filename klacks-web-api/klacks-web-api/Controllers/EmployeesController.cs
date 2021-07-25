@@ -6,9 +6,11 @@ using klacks_web_api.Models.Employee;
 using klacks_web_api.Interface;
 using AutoMapper;
 using klacks_web_api.Resources;
+using Microsoft.AspNetCore.Authorization;
 
 namespace klacks_web_api.Controllers
 {
+  [AllowAnonymous]
   [Route("api/[controller]")]
   [ApiController]
   public class EmployeesController : ControllerBase

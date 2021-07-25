@@ -21,7 +21,8 @@ using System.Linq;
 using FluentValidation.AspNetCore;
 using klacks_web_api.Repository;
 using klacks_web_api.Interface;
-
+using AutoMapper;
+using AutoMapper.EquivalencyExpression;
 
 
 namespace klacks_web_api
@@ -48,6 +49,22 @@ namespace klacks_web_api
       services.AddSignalR();
       services.AddControllers().AddNewtonsoftJson();
 
+      services.AddIdentity<AppUser, IdentityRole>()
+          .AddEntityFrameworkStores<DatabaseContext>();
+
+      services.AddMvc(option => option.EnableEndpointRouting = false)
+          .AddNewtonsoftJson(options =>
+          {
+            options.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+          })
+         .AddFluentValidation();
+
+      services.AddAutoMapper((serviceProvider, automapper) => { automapper.AddCollectionMappers(); automapper.UseEntityFrameworkCoreModel<DatabaseContext>(serviceProvider); }, typeof(Startup));
+
+
+      services.AddScoped<IUnitOfWork, UnitOfWork>();
       services.AddScoped<IEmployeeRepository, EmployeeRepository>();
       services.AddScoped<IAddressRepository, AddressRepository>();
       services.AddScoped<IAnnotationRepository, AnnotationRepository>();
@@ -62,17 +79,6 @@ namespace klacks_web_api
 
 
 
-      services.AddIdentity<AppUser, IdentityRole>()
-          .AddEntityFrameworkStores<DatabaseContext>();
-
-      services.AddMvc(option => option.EnableEndpointRouting = false)
-          .AddNewtonsoftJson(options =>
-          {
-            options.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
-            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-          })
-         .AddFluentValidation();
 
 
 

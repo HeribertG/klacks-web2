@@ -56,8 +56,7 @@ namespace klacks_web_api.Repository
 
     public async Task<List<Employee>> GetSimpleEmployeeList()
     {
-      return await context.Employee
-       .ToListAsync();
+      return await context.Employee.Skip(1).Take(100).ToListAsync();
     }
 
     public Employee PutEmployee(Employee employee)
