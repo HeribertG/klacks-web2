@@ -311,3 +311,12 @@ klacks-web-api/klacks-web-api/obj/project.nuget.cache
 klacks-web-api/klacks-web-api/obj/Debug/netcoreapp3.1/klacks-web-api.assets.cache
 klacks-web-api/klacks-web-api/obj/Debug/netcoreapp3.1/klacks-web-api.csproj.CoreCompileInputs.cache
 klacks-web-api/klacks-web-api/obj/Debug/netcoreapp3.1/klacks-web-api.csproj.FileListAbsolute.txt
+klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/AutoMapper.Collection.dll
+klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/AutoMapper.Collection.EntityFramework.dll
+klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/AutoMapper.Collection.EntityFrameworkCore.dll
+klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/AutoMapper.Extensions.ExpressionMapping.dll
+klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/EntityFramework.dll
+klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/EntityFramework.SqlServer.dll
+klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/System.CodeDom.dll
+klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/runtimes/unix/lib/netcoreapp2.1/System.Data.SqlClient.dll
+klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/runtimes/win/lib/netcoreapp2.1/System.Data.SqlClient.dll

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace klacks_web_api.Controllers
 {
-  [AllowAnonymous]
+  
   [Route("api/[controller]")]
   [ApiController]
   public class EmployeesController : ControllerBase

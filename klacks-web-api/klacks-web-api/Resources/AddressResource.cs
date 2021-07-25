@@ -1,5 +1,4 @@
 using klacks_web_api.Enums;
-using klacks_web_api.Models.Employee;
 using System;
 using System.ComponentModel.DataAnnotations;
 
