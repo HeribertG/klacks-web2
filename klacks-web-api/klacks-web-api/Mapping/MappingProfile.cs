@@ -3,6 +3,7 @@
 using AutoMapper;
 using klacks_web_api.Models.Corporation;
 using klacks_web_api.Models.Employee;
+using klacks_web_api.Models.Options;
 using klacks_web_api.Resources;
 
 namespace klacks_web_api.Mapping
@@ -28,6 +29,9 @@ namespace klacks_web_api.Mapping
 
       CreateMap<Employee, EmployeeResource>();
       CreateMap<EmployeeResource, Employee>();
+
+      CreateMap<Countries, CountriesResource>();
+      CreateMap<CountriesResource, Countries>();
     }
   }
 }

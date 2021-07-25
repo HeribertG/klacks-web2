@@ -8,7 +8,7 @@ namespace klacks_web_api.Resources.Filter
   {
     public FilterResource()
     {
-      Countries = new Collection<CountryResource>();
+      Countries = new Collection<CountriesResource>();
     
     }
 
@@ -62,7 +62,7 @@ namespace klacks_web_api.Resources.Filter
 
  
  
-    public ICollection<CountryResource> Countries { get; set; }
+    public ICollection<CountriesResource> Countries { get; set; }
     
 
 

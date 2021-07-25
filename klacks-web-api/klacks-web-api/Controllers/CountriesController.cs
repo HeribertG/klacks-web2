@@ -27,17 +27,17 @@ namespace klacks_web_api.Controllers
 
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CountryResource>>> GetCountries()
+    public async Task<ActionResult<IEnumerable<CountriesResource>>> GetCountries()
     {
       var countries = await context.Countries.ToListAsync();
 
-      return mapper.Map<List<Countries>, List<CountryResource>>(countries);
+      return mapper.Map<List<Countries>, List<CountriesResource>>(countries);
 
 
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<CountryResource>> GetCountries(Guid id)
+    public async Task<ActionResult<CountriesResource>> GetCountries(Guid id)
     {
       var countries = await context.Countries.FindAsync(id);
 
@@ -46,7 +46,7 @@ namespace klacks_web_api.Controllers
         return NotFound();
       }
 
-      return mapper.Map<Countries, CountryResource>(countries);
+      return mapper.Map<Countries, CountriesResource>(countries);
     }
 
 
