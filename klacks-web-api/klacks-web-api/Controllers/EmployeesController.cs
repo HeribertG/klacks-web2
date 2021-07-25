@@ -7,6 +7,7 @@ using klacks_web_api.Interface;
 using AutoMapper;
 using klacks_web_api.Resources;
 using Microsoft.AspNetCore.Authorization;
+using klacks_web_api.Resources.Filter;
 
 namespace klacks_web_api.Controllers
 {
@@ -29,21 +30,19 @@ namespace klacks_web_api.Controllers
     }
 
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<EmployeeResource>>> GetEmployeeList()
+    
+
+    [HttpPost("GetSimpleList")]
+    public async Task<ActionResult<TruncatedEmployeeResource>> GetSimpleList(FilterEmployeeResource filter)
     {
-      var employee= await repository.GetEmployeeList();
-      return mapper.Map<List<Employee>, List<EmployeeResource>>(employee);
+
+     var truncatedEmployee= await repository.GetTruncatedEmployeList(filter);
+
+      return mapper.Map<TruncatedEmployee, TruncatedEmployeeResource>(truncatedEmployee);
+
     }
 
-    [HttpGet("GetSimpleEmployeeList")]
-    public async Task<ActionResult<IEnumerable<EmployeeResource>>> GetSimpleEmployeeList()
-    {
-      var employee = await repository.GetSimpleEmployeeList();
-      return mapper.Map<List<Employee>, List<EmployeeResource>>(employee);
-    }
-
-   
+      
     [HttpGet("{id}")]
     public async Task<ActionResult<EmployeeResource>> GetEmployee(Guid id)
     {

@@ -4,9 +4,9 @@ using System.Collections.ObjectModel;
 
 namespace klacks_web_api.Resources.Filter
 {
-  public class FilterResource : BaseFilter
+  public class FilterEmployeeResource : BaseFilter
   {
-    public FilterResource()
+    public FilterEmployeeResource()
     {
       Countries = new Collection<CountriesResource>();
     
