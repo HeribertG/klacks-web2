@@ -8,7 +8,7 @@ export enum AtributeTypeEnum {
 
 
 export enum InitFinished {
-  Finished = 6,
+  Finished = 2,
 
 }
 

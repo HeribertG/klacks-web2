@@ -1,0 +1,92 @@
+
+export interface IBaseEntity {
+
+    createTime: Date | null;
+    currentUserCreated: string | null;
+    updateTime: Date | null;
+    currentUserUpdated: string | null;
+    isDeleted: boolean;
+    deletedTime: Date | null;
+    currentUserDeleted: string | null;
+
+}
+
+export class BaseEntity implements IBaseEntity {
+    isDeleted = false;
+    createTime = null;
+    currentUserCreated = null;
+    updateTime = null;
+    currentUserUpdated = null;
+    deletedTime = null;
+    currentUserDeleted = null;
+}
+
+export interface IBaseFilter {
+  searchString: | string | null;
+  orderBy: string;
+  sortOrder: string;
+  numberOfItemsPerPage: number;
+  requiredPage: number;
+  firstItemOnLastPage: number | null;
+  numberOfItemOnPreviousPage: number | null;
+  isPreviousPage: boolean | null;
+  isNextPage: boolean | null;
+}
+
+export class BaseFilter implements IBaseFilter {
+  searchString = '';
+  orderBy = 'name';
+  sortOrder = 'asc';
+  numberOfItemsPerPage = 0;
+  requiredPage = 0;
+  numberOfItemOnPreviousPage: number | null = null;
+  firstItemOnLastPage: number | null = null;
+  isPreviousPage: boolean | null = null;
+  isNextPage: boolean | null = null;
+}
+
+
+export interface IBaseTruncated {
+  maxItems: number;
+  maxPages: number;
+  currentPage: number;
+  firstItemOnPage: number;
+}
+
+export class BaseTruncated implements IBaseTruncated {
+  maxItems = 0;
+  maxPages = 0;
+  currentPage = 1;
+  firstItemOnPage = 0;
+}
+
+export interface IStandartType extends IBaseEntity {
+  id: string | null;
+  name: string;
+  position: number;
+
+}
+
+export class StandartType extends BaseEntity implements IStandartType {
+  id = null;
+  name = '';
+  position = 0;
+
+}
+
+export interface IBaseOptionFilter {
+
+  id: string | null;
+  name: string | null;
+  content: string | null;
+  select: boolean | null;
+  isEmptyStatus: boolean | null;
+}
+
+export class BaseOptionFilter implements IBaseOptionFilter {
+  id = null;
+  name = null;
+  content = null;
+  select = null;
+  isEmptyStatus = null;
+}

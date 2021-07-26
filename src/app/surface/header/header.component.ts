@@ -1,13 +1,9 @@
 import { Component, OnInit, Inject, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
-import { DataManagementClientService } from 'src/app/data/management/data-management-client.service';
-import { DataManagementInvoiceService } from 'src/app/data/management/data-management-invoice.service';
+import { DataManagementEmployeeService } from 'src/app/data/management/data-management-employee.service';
 import { MessageLibrary } from 'src/app/helpers/string-constants';
 import { DataManagementSwitchboardService } from 'src/app/data/management/data-management-switchboard.service';
-import { DataManagementWorkshopService } from 'src/app/data/management/data-management-workshop.service';
-import { DataManagementExportService } from 'src/app/data/management/data-management-export.service';
-import { DataLoadFileService } from 'src/app/data/data-load-file.service';
 
 
 @Component({
@@ -17,7 +13,6 @@ import { DataLoadFileService } from 'src/app/data/data-load-file.service';
 })
 export class HeaderComponent implements OnInit {
 
-  registerDropdown: HTMLDivElement;
   selectedName = 'Adresse erfassen';
   authorised = false;
   version = '';
@@ -25,26 +20,21 @@ export class HeaderComponent implements OnInit {
   constructor(
 
     @Inject(Router) private router: Router,
-    @Inject(DataLoadFileService) public dataLoadFileService: DataLoadFileService,
     private auth: AuthService,
-    public dataManagementClientService: DataManagementClientService,
-    public dataManagementInvoiceService: DataManagementInvoiceService,
+    public dataManagementEmployeeService: DataManagementEmployeeService,
     private dataManagementSwitchboardService: DataManagementSwitchboardService,
-    private dataManagementWorkshopService: DataManagementWorkshopService,
-    private dataManagementExportService: DataManagementExportService,
-
-    private zone: NgZone
+      private zone: NgZone
   ) { }
 
   ngOnInit(): void {
 
 
     if (localStorage.getItem(MessageLibrary.TOKEN_AUTHORISED)) {
-      this.authorised = JSON.parse(localStorage.getItem(MessageLibrary.TOKEN_AUTHORISED));
+      this.authorised = JSON.parse(localStorage.getItem(MessageLibrary.TOKEN_AUTHORISED )as string);
     }
 
     if (localStorage.getItem(MessageLibrary.TOKEN_APPVERSION)) {
-      this.version = localStorage.getItem(MessageLibrary.TOKEN_APPVERSION);
+      this.version = localStorage.getItem(MessageLibrary.TOKEN_APPVERSION) as string;
     }
   }
 
@@ -79,32 +69,14 @@ export class HeaderComponent implements OnInit {
 
     switch (this.selectedName) {
 
-      case 'Export erstellen':
-        this.dataManagementExportService.createExport();
-        break;
-
-      case 'Kurs erfassen':
-        this.dataManagementWorkshopService.createWorkshop();
-        break;
-
-      case 'Rechnung erstellen':
-
-        this.router.navigate(['/workplace/invoices']);
-        // diese Reset dient dazu da, um eine schon angefangene Einzelrechnung zurückzusetzen
-        this.dataManagementInvoiceService.reset();
-        break;
+   
       case 'Adresse erfassen':
 
-        this.dataManagementClientService.createClient();
+        this.dataManagementEmployeeService.createEmployee();
 
         break;
 
     }
   }
-
-  refreshPage() {
-    this.dataManagementSwitchboardService.refresh();
-  }
-
 
 }

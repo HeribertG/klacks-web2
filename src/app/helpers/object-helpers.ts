@@ -1,6 +1,7 @@
-import { IFilter } from '../core/client-class';
+import { IFilterEmployee } from "../core/employee-class";
 
-export function cloneObject(o): any {
+
+export function cloneObject(o: any): any {
   return JSON.parse(JSON.stringify(o));
 }
 
@@ -106,7 +107,7 @@ export function compareComplexObjects(
     return true;
   }
 
-  function isArray(value): boolean {
+  function isArray(value: any): boolean {
     if (value === null) {
       return false;
     }
@@ -173,7 +174,9 @@ export function compareComplexObjects(
 
       return false;
     }
+    return false;
   }
+
   function isObjectExluded1(
     objectName: string,
     // tslint:disable-next-line: no-shadowed-variable
@@ -188,6 +191,7 @@ export function compareComplexObjects(
 
       return false;
     }
+    return false;
   }
 }
 
@@ -211,15 +215,15 @@ export function lettersOnly(event: KeyboardEvent): boolean {
   } else { return false; }
 }
 
-export function saveFilter(value: IFilter, token: string) {
+export function saveFilter(value: IFilterEmployee, token: string) {
   localStorage.removeItem(token);
   const tmp = JSON.stringify(value);
   localStorage.setItem(token, tmp);
 }
 
-export function restoreFilter(token: string): IFilter | null {
+export function restoreFilter(token: string): IFilterEmployee | null {
   if (localStorage.getItem(token) === undefined || localStorage.getItem(token) === null) { return null; }
-  return JSON.parse(localStorage.getItem(token));
+  return JSON.parse(localStorage.getItem(token)!);
 }
 
 export function copyObjectValues(o1: any, o2: any) {
@@ -239,8 +243,8 @@ export function createStringId(): string {
 }
 
 
-export function sortMultiFields(prop) {
-  return function(a, b) {
+export function sortMultiFields(prop: any): any {
+  return function (a: any, b: any) {
     for (let i = 0; i < prop.length; i++) {
       const reg = /^\d+$/;
       let x = 1;
@@ -258,7 +262,9 @@ export function sortMultiFields(prop) {
         return x;
       } else if (a[field1] < b[field1]) {
         return -x;
- }
+      }
+      return x;
     }
+    return null;
   };
 }
