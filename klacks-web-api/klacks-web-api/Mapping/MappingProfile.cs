@@ -1,11 +1,13 @@
 
 
 using AutoMapper;
+using klacks_web_api.Models.Authentfication;
 using klacks_web_api.Models.Corporation;
 using klacks_web_api.Models.Employee;
 using klacks_web_api.Models.Options;
 using klacks_web_api.Resources;
 using klacks_web_api.Resources.Filter;
+
 
 namespace klacks_web_api.Mapping
 {
@@ -35,6 +37,8 @@ namespace klacks_web_api.Mapping
       CreateMap<CountriesResource, Countries>();
 
       CreateMap<TruncatedEmployee, TruncatedEmployeeResource>();
+
+      CreateMap<RegistrationResource, AppUser>();
 
     }
   }

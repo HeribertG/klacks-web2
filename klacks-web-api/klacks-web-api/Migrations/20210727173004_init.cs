@@ -121,6 +121,20 @@ namespace klacks_web_api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "refresh_token",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    asp_net_users_id = table.Column<string>(type: "text", nullable: true),
+                    token = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    expiry_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_refresh_token", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -344,57 +358,6 @@ namespace klacks_web_api.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "id", "concurrency_stamp", "name", "normalized_name" },
-                values: new object[,]
-                {
-                    { "2ef4a82d-f22f-4da7-9d8f-240ad0082c75", "a5d1b38d-717d-48ea-a58b-74338149dfda", "Admin", "ADMIN" },
-                    { "b7f104de-fdeb-4ce1-ac7d-55009efe521e", "0e288b23-3750-4519-bfbb-8e2f60af84ea", "Authorised", "AUTHORISED" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "AspNetUsers",
-                columns: new[] { "id", "access_failed_count", "concurrency_stamp", "discriminator", "email", "email_confirmed", "first_name", "last_name", "lockout_enabled", "lockout_end", "normalized_email", "normalized_user_name", "password_hash", "phone_number", "phone_number_confirmed", "security_stamp", "two_factor_enabled", "user_name" },
-                values: new object[] { "cb004a8b-766b-4055-b6d9-6bf97627504e", 0, "73c2962e-30f5-4f6b-be40-9975302af983", "AppUser", "admin@test.com", true, "admin", "admin", false, null, "ADMIN@TEST.COM", "ADMIN", "AQAAAAEAACcQAAAAENxd/0HZdbXjDMrC9wvnGv4pkJaOxOkp9MrVWXW8GrAUzYTD+LYl3iaxkSRKbZYNLA==", "123456789", false, "d6fda444-42a5-4077-a515-54d075beb9c2", false, "admin" });
-
-            migrationBuilder.InsertData(
-                table: "communication_type",
-                columns: new[] { "id", "category", "default_index", "name", "type" },
-                values: new object[,]
-                {
-                    { 8, 0, 0, "Anderes", 6 },
-                    { 7, 1, 0, "Email G", 5 },
-                    { 5, 0, 0, "NotfallNo", 7 },
-                    { 6, 1, 2, "Email P", 4 },
-                    { 3, 0, 0, "Festnetz G", 2 },
-                    { 2, 0, 1, "Mobil P", 1 },
-                    { 1, 0, 0, "Festnetz P", 0 },
-                    { 4, 0, 0, "Mobil G", 3 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "countries",
-                columns: new[] { "id", "abbreviation", "name", "prefix" },
-                values: new object[,]
-                {
-                    { new Guid("28dc4260-5556-4c4a-ad0b-d818f2a9d39c"), "A", "Österreich", "+43" },
-                    { new Guid("478fc46a-85c4-41f3-8985-6d8f528dd17d"), "CH", "Schweiz", "+41" },
-                    { new Guid("e963789a-31ce-4c21-bfb4-698a2845046c"), "D", "Deutschland", "+49" },
-                    { new Guid("dc26799a-b160-4f60-abc8-5ec04c6f0971"), "D", "Frankreich", "+33" },
-                    { new Guid("1fbde674-b24e-485b-abca-7ab09fae0d3f"), "I", "Italien", "+39" },
-                    { new Guid("b5b60df5-b8f8-4132-8b4c-6c1290942b83"), "LI", "Fürstentum Liechtenstein", "+423" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "AspNetUserRoles",
-                columns: new[] { "role_id", "user_id" },
-                values: new object[,]
-                {
-                    { "2ef4a82d-f22f-4da7-9d8f-240ad0082c75", "cb004a8b-766b-4055-b6d9-6bf97627504e" },
-                    { "b7f104de-fdeb-4ce1-ac7d-55009efe521e", "cb004a8b-766b-4055-b6d9-6bf97627504e" }
-                });
-
             migrationBuilder.CreateIndex(
                 name: "ix_address_employee_id",
                 table: "address",
@@ -508,6 +471,9 @@ namespace klacks_web_api.Migrations
 
             migrationBuilder.DropTable(
                 name: "postcode_ch");
+
+            migrationBuilder.DropTable(
+                name: "refresh_token");
 
             migrationBuilder.DropTable(
                 name: "staff");

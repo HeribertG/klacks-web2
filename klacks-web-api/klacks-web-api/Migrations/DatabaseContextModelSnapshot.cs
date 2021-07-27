@@ -48,22 +48,6 @@ namespace klacks_web_api.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "2ef4a82d-f22f-4da7-9d8f-240ad0082c75",
-                            ConcurrencyStamp = "a5d1b38d-717d-48ea-a58b-74338149dfda",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "b7f104de-fdeb-4ce1-ac7d-55009efe521e",
-                            ConcurrencyStamp = "0e288b23-3750-4519-bfbb-8e2f60af84ea",
-                            Name = "Authorised",
-                            NormalizedName = "AUTHORISED"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -258,18 +242,6 @@ namespace klacks_web_api.Migrations
                         .HasDatabaseName("ix_asp_net_user_roles_role_id");
 
                     b.ToTable("AspNetUserRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "cb004a8b-766b-4055-b6d9-6bf97627504e",
-                            RoleId = "2ef4a82d-f22f-4da7-9d8f-240ad0082c75"
-                        },
-                        new
-                        {
-                            UserId = "cb004a8b-766b-4055-b6d9-6bf97627504e",
-                            RoleId = "b7f104de-fdeb-4ce1-ac7d-55009efe521e"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -294,6 +266,32 @@ namespace klacks_web_api.Migrations
                         .HasName("pk_asp_net_user_tokens");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("klacks_web_api.Models.Authentfication.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("Id");
+
+                    b.Property<string>("AspNetUsersId")
+                        .HasColumnType("text")
+                        .HasColumnName("asp_net_users_id");
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("expiry_date");
+
+                    b.Property<string>("Token")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("token");
+
+                    b.HasKey("Id")
+                        .HasName("pk_refresh_token");
+
+                    b.ToTable("refresh_token");
                 });
 
             modelBuilder.Entity("klacks_web_api.Models.Corporation.Staff", b =>
@@ -681,72 +679,6 @@ namespace klacks_web_api.Migrations
                         .HasName("pk_communication_type");
 
                     b.ToTable("communication_type");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Category = 0,
-                            DefaultIndex = 0,
-                            Name = "Festnetz P",
-                            Type = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Category = 0,
-                            DefaultIndex = 1,
-                            Name = "Mobil P",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Category = 0,
-                            DefaultIndex = 0,
-                            Name = "Festnetz G",
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Category = 0,
-                            DefaultIndex = 0,
-                            Name = "Mobil G",
-                            Type = 3
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Category = 0,
-                            DefaultIndex = 0,
-                            Name = "NotfallNo",
-                            Type = 7
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Category = 1,
-                            DefaultIndex = 2,
-                            Name = "Email P",
-                            Type = 4
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Category = 1,
-                            DefaultIndex = 0,
-                            Name = "Email G",
-                            Type = 5
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Category = 0,
-                            DefaultIndex = 0,
-                            Name = "Anderes",
-                            Type = 6
-                        });
                 });
 
             modelBuilder.Entity("klacks_web_api.Models.Options.Countries", b =>
@@ -775,50 +707,6 @@ namespace klacks_web_api.Migrations
                         .HasName("pk_countries");
 
                     b.ToTable("countries");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("478fc46a-85c4-41f3-8985-6d8f528dd17d"),
-                            Abbreviation = "CH",
-                            Name = "Schweiz",
-                            Prefix = "+41"
-                        },
-                        new
-                        {
-                            Id = new Guid("e963789a-31ce-4c21-bfb4-698a2845046c"),
-                            Abbreviation = "D",
-                            Name = "Deutschland",
-                            Prefix = "+49"
-                        },
-                        new
-                        {
-                            Id = new Guid("dc26799a-b160-4f60-abc8-5ec04c6f0971"),
-                            Abbreviation = "D",
-                            Name = "Frankreich",
-                            Prefix = "+33"
-                        },
-                        new
-                        {
-                            Id = new Guid("1fbde674-b24e-485b-abca-7ab09fae0d3f"),
-                            Abbreviation = "I",
-                            Name = "Italien",
-                            Prefix = "+39"
-                        },
-                        new
-                        {
-                            Id = new Guid("28dc4260-5556-4c4a-ad0b-d818f2a9d39c"),
-                            Abbreviation = "A",
-                            Name = "Österreich",
-                            Prefix = "+43"
-                        },
-                        new
-                        {
-                            Id = new Guid("b5b60df5-b8f8-4132-8b4c-6c1290942b83"),
-                            Abbreviation = "LI",
-                            Name = "Fürstentum Liechtenstein",
-                            Prefix = "+423"
-                        });
                 });
 
             modelBuilder.Entity("klacks_web_api.Models.Options.PostcodeCH", b =>
@@ -862,27 +750,6 @@ namespace klacks_web_api.Migrations
                         .HasColumnName("last_name");
 
                     b.HasDiscriminator().HasValue("AppUser");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "cb004a8b-766b-4055-b6d9-6bf97627504e",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "73c2962e-30f5-4f6b-be40-9975302af983",
-                            Email = "admin@test.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@TEST.COM",
-                            NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAENxd/0HZdbXjDMrC9wvnGv4pkJaOxOkp9MrVWXW8GrAUzYTD+LYl3iaxkSRKbZYNLA==",
-                            PhoneNumber = "123456789",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "d6fda444-42a5-4077-a515-54d075beb9c2",
-                            TwoFactorEnabled = false,
-                            UserName = "admin",
-                            FirstName = "admin",
-                            LastName = "admin"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

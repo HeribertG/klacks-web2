@@ -23,7 +23,7 @@ using klacks_web_api.Repository;
 using klacks_web_api.Interface;
 using AutoMapper;
 using AutoMapper.EquivalencyExpression;
-
+using klacks_web_api.BasicScriptInterpreter;
 
 namespace klacks_web_api
 {
@@ -70,7 +70,8 @@ namespace klacks_web_api
       services.AddScoped<IAnnotationRepository, AnnotationRepository>();
       services.AddScoped<ICommunicationRepository, CommunicationRepository>();
       services.AddScoped<IStaffRepository, StaffRepository>();
-
+      services.AddScoped<IAccountRepository, AccountRepository>();
+      services.AddSingleton<IMacroEngine, MacroEngine>();
 
 
       var connectionString = Configuration.GetConnectionString("Default"); 

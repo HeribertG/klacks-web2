@@ -31,6 +31,7 @@ namespace klacks_web_api.Data
     public DbSet<PostcodeCH> PostcodeCH { get; set; }
     public DbSet<Countries> Countries { get; set; }
     public DbSet<AppUser> AppUser { get; set; }
+    public DbSet<RefreshToken> RefreshToken { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
      optionsBuilder.UseSnakeCaseNamingConvention();
@@ -64,7 +65,7 @@ namespace klacks_web_api.Data
         .HasOne(p => p.Employee)
         .WithOne(b => b.Staff);
 
-      // new DataSeed(modelBuilder);
+       //new DataSeed(modelBuilder);
     }
 
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())

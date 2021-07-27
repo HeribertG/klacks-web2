@@ -2,12 +2,10 @@ using AutoMapper;
 using klacks_web_api.Interface;
 using klacks_web_api.Models.Employee;
 using klacks_web_api.Resources;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace klacks_web_api.Controllers
