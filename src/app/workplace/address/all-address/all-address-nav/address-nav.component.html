@@ -1,0 +1,484 @@
+<form #navClientForm="ngForm" id="navClientForm">
+
+  <ul class="list-group ">
+    <li class="list-group-item-action">
+
+      <label class="checkbox-label">
+        <input type="checkbox" [(ngModel)]="dataManagementEmployeeService.currentFilter.female" name="female">
+        Frau
+      </label>
+
+
+      <label class="checkbox-label">
+        <input type="checkbox" [(ngModel)]="dataManagementEmployeeService.currentFilter.male" name="male">
+        Herr
+      </label>
+
+    </li>
+
+    <!-- Gültigkeit -->
+    <li class="list-group-item-action ">
+      <div ngbDropdown (openChange)="onOpenChange($event)">
+        <button class="btn btn-outline-primary btn-sm  max-width" id="dropdownForm-1" ngbDropdownToggle
+          [disabled]="!isRequestPossible()">Gültigkeit</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownForm-1">
+
+          <div class="form-group">
+            <div class="checkbox-container-default">
+              <label class="checkbox-label">
+                <input type="checkbox" [(ngModel)]="dataManagementEmployeeService.currentFilter.activeMembership"
+                  name="activeMembership">
+                Aktive
+              </label>
+
+
+              <label class="checkbox-label">
+                <input type="checkbox" [(ngModel)]="dataManagementEmployeeService.currentFilter.formerMembership"
+                  name="formerMembership">
+                Ehemalige
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" [(ngModel)]="dataManagementEmployeeService.currentFilter.futureMembership"
+                  name="futureMembership">
+                Zukünftige
+              </label>
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+
+          <button ngbDropdownItem>Schliessen</button>
+        </div>
+      </div>
+    </li>
+
+    <!-- Klient Typen -->
+    <li class="list-group-item-action"
+      *ngIf="dataManagementEmployeeService.clientAttribute  &&  dataManagementEmployeeService.clientAttribute.length >1 ">
+      <div class="btn-group" ngbDropdown role="group">
+        <button class="btn btn-outline-primary btn-sm  max-width" ngbDropdownToggle
+          [disabled]="!isRequestPossible()">{{clientTypeName}}</button>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <button ngbDropdownItem (click)="onClickClientType(-1)">{{clientTypeAllAdress}}</button>
+
+          <button ngbDropdownItem *ngFor="let c of dataManagementEmployeeService.clientAttribute; index as i"
+            (click)="onClickClientType(i)" [value]="c.type">{{c.name}}</button>
+
+        </div>
+      </div>
+    </li>
+
+    <!-- Kantone -->
+    <li class="list-group-item-action ">
+      <div ngbDropdown (openChange)="onOpenChange($event)">
+        <button class="btn btn-outline-primary btn-sm  max-width" id="dropdownForm1" ngbDropdownToggle
+          [disabled]="!isRequestPossible()">Kantone
+          auswählen</button>
+        <div ngbDropdownMenu>
+          <div class="px-4 py-3">
+            <div class="form-group">
+
+              <button type="button" class="btn btn-secondary btn-sm max-width"
+                (click)="dataManagementEmployeeService.currentFilter.selectState(true)">selektiern</button>
+              <p></p>
+              <button type="button" class="btn btn-secondary btn-sm max-width"
+                (click)="dataManagementEmployeeService.currentFilter.selectState(false)">deselektiern</button>
+            </div>
+
+
+          </div>
+          <div class="form-group">
+            <div class="checkbox-container">
+              <label class="checkbox-label">
+                <input type="checkbox" [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnAG" name="AG">
+                AG
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnAI" name="AI">
+                AI
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnAR" name="AR">
+                AR
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnBE" name="BE">
+                BE
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnBL" name="BL">
+                BL
+              </label>
+
+              <label class="checkbox-label">
+                <input type="checkbox" [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnBS" name="BS">
+                BS
+              </label>
+
+              <label class="checkbox-label"><input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnFR" name="FR">
+                FR
+              </label>
+
+              <label class="checkbox-label"><input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnGE" name="GE">
+                GE
+              </label>
+
+              <label class="checkbox-label"><input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnGL" name="GL">
+                GL
+              </label>
+
+              <label class="checkbox-label"><input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnGR" name="GR">
+                GR
+              </label>
+
+              <label class="checkbox-label"><input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnJU" name="JU">
+                JU
+              </label>
+
+              <label class="checkbox-label"><input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnLU" name="LU">
+                LU
+              </label>
+
+              <label class="checkbox-label"><input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnNE" name="NE">
+                NE
+              </label>
+
+              <label class="checkbox-label"><input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnNW" name="NW">
+                NW
+              </label>
+
+              <label class="checkbox-label"><input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnOW" name="OW">
+                OW
+              </label>
+
+              <label class="checkbox-label"><input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnSG" name="SG">
+                SG
+              </label>
+
+              <label class="checkbox-label"><input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnSH" name="SH">
+                SH
+              </label>
+
+              <label class="checkbox-label"><input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnSO" name="SO">
+                SO
+              </label>
+
+              <label class="checkbox-label"><input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnSZ" name="SZ">
+                SZ
+              </label>
+
+              <label class="checkbox-label"><input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnTG" name="TG">
+                TG
+              </label>
+
+              <label class="checkbox-label"><input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnTI" name="TI">
+                TI</label>
+
+              <label class="checkbox-label"><input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnUR" name="UR">
+                UR
+              </label>
+
+              <label class="checkbox-label"><input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnVD" name="VD">
+                VD
+              </label>
+
+              <label class="checkbox-label"> <input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnVS" name="VS">
+                VS
+              </label>
+
+              <label class="checkbox-label"><input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnZG" name="ZG">
+                ZG
+              </label>
+
+              <label class="checkbox-label"> <input type="checkbox"
+                  [(ngModel)]="dataManagementEmployeeService.currentFilter.ktnZH" name="ZH">
+                ZH
+              </label>
+
+
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+
+          <button ngbDropdownItem>Schliessen</button>
+        </div>
+      </div>
+    </li>
+
+    <!-- Länder -->
+    <li class="list-group-item-action ">
+      <div ngbDropdown (openChange)="onOpenChange($event)">
+        <button class="btn btn-outline-primary btn-sm  max-width" id="dropdownForm-2" ngbDropdownToggle
+          [disabled]="!isRequestPossible()">Länder
+          auswählen</button>
+        <div ngbDropdownMenu>
+
+          <div class="form-group">
+            <div class="checkbox-container-default2">
+              <div *ngFor="let c of dataManagementEmployeeService.currentFilter.countries; index as i">
+                <label class="checkbox-label">
+                  <input type="checkbox" [ngModel]="c.select" [ngModelOptions]="{standalone: true}"
+                    (ngModelChange)="c.select = $event">
+                  {{c.name}}
+                </label>
+
+              </div>
+
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+
+          <button ngbDropdownItem>Schliessen</button>
+        </div>
+      </div>
+    </li>
+
+    <!-- Sektionen -->
+    <li class="list-group-item-action " *ngIf="
+      dataManagementEmployeeService.currentFilter.sectionList !==null &&
+      dataManagementEmployeeService.currentFilter.hasSections  &&
+      dataManagementEmployeeService.currentFilter.sectionList.length >1">
+      <div ngbDropdown (openChange)="onOpenChange($event)">
+        <button class="btn btn-outline-primary btn-sm  max-width" id="dropdownForm-3" ngbDropdownToggle
+          [disabled]="!isRequestPossible()">Sektionen
+          auswählen</button>
+        <div ngbDropdownMenu>
+          <div class="px-4 py-3">
+            <div class="form-group">
+
+              <button type="button" class="btn btn-secondary btn-sm max-width"
+                (click)="dataManagementEmployeeService.currentFilter.selectSections(true)">selektiern</button>
+              <p></p>
+              <button type="button" class="btn btn-secondary btn-sm max-width"
+                (click)="dataManagementEmployeeService.currentFilter.selectSections(false)">deselektiern</button>
+            </div>
+
+
+          </div>
+          <div class="form-group">
+            <div class="checkbox-container">
+              <div *ngFor="let c of dataManagementEmployeeService.currentFilter.sectionList; index as i">
+                <label class="checkbox-label">
+                  <input type="checkbox" [ngModelOptions]="{standalone: true}" [ngModel]="c.select"
+                    (ngModelChange)="c.select = $event">
+                  {{c.section}}
+                </label>
+
+              </div>
+
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+
+          <button ngbDropdownItem>Schliessen</button>
+        </div>
+      </div>
+    </li>
+
+    <!-- Status -->
+    <li class="list-group-item-action " *ngIf="onIsStatusVisible()">
+      <div ngbDropdown (openChange)="onOpenChange($event)">
+        <button class="btn btn-outline-primary btn-sm  max-width" id="dropdownForm3" ngbDropdownToggle
+          [disabled]="!isRequestPossible()">Status
+          auswählen</button>
+        <div ngbDropdownMenu>
+          <div class="px-4 py-3">
+            <div class="form-group">
+
+              <button type="button" class="btn btn-secondary btn-sm max-width"
+                (click)="dataManagementEmployeeService.currentFilter.selectStatus(true)">selektiern</button>
+              <p></p>
+              <button type="button" class="btn btn-secondary btn-sm max-width"
+                (click)="dataManagementEmployeeService.currentFilter.selectStatus(false)">deselektiern</button>
+            </div>
+
+
+          </div>
+          <div class="form-group">
+            <div class="checkbox-container">
+              <div *ngFor="let c of dataManagementEmployeeService.currentFilter.statusList; index as i">
+                <label class="checkbox-label">
+                  <input type="checkbox" [ngModelOptions]="{standalone: true}" [ngModel]="c.select"
+                    (ngModelChange)="c.select = $event">
+                  {{c.status}}
+                </label>
+
+              </div>
+
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+
+          <button ngbDropdownItem>Schliessen</button>
+        </div>
+      </div>
+    </li>
+
+    <!--Zertifikate -->
+    <li class="list-group-item-action " *ngIf="onIsCertificateVisible()">
+      <div ngbDropdown (openChange)="onOpenChange($event)">
+        <button class="btn btn-outline-primary btn-sm  max-width" id="dropdownForm4" ngbDropdownToggle
+          [disabled]="!isRequestPossible()">Zertifikate
+          auswählen</button>
+        <div ngbDropdownMenu>
+          <div class="px-4 py-3">
+
+
+          </div>
+          <div class="form-group">
+            <div class="checkbox-container-default2">
+              <div *ngFor="let c of dataManagementEmployeeService.currentFilter.certificateList; index as i">
+                <label class="checkbox-label">
+                  <input type="checkbox" name="c.name" [(ngModel)]="c.select">
+                  {{showCorrectCertificateName(c)}}
+                </label>
+
+              </div>
+
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+
+          <button ngbDropdownItem>Schliessen</button>
+        </div>
+      </div>
+    </li>
+
+<!--Scope -->
+    <li class="list-group-item-action ">
+      <div ngbDropdown (openChange)="onOpenChange($event)">
+        <button class="btn btn-outline-primary btn-sm  max-width" id="dropdownForm4" ngbDropdownToggle
+          [disabled]="!isRequestPossible()">Sichtbarkeit</button>
+        <div ngbDropdownMenu>
+
+          <div class="form-group ">
+            <div class="checkbox-container-default3">
+              <div class=" row-line-simple">
+
+                <label class="checkbox-label">
+                  <input type="checkbox" [(ngModel)]="dataManagementEmployeeService.currentFilter.scopeFromFlag"
+                    id="scopeFromFlag" name="scopeFrom">
+                  Eintritt
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" [(ngModel)]="dataManagementEmployeeService.currentFilter.scopeUntilFlag"
+                    id="scopeUntilFlag" name="scopeUntil">
+                  Austritt
+                </label>
+
+              </div>
+
+              <div>
+                <label for="billsFrom">Von:</label>
+                <div class="input-group my-datepicker">
+                  <input class="form-control " name="from"
+                    [ngModel]="dataManagementEmployeeService.currentFilter.internalScopeFrom"
+                    (ngModelChange)="dataManagementEmployeeService.currentFilter.internalScopeFrom = $event" ngbDatepicker
+                    #from="ngbDatepicker">
+                  <div class="input-group-append">
+                    <span class="input-group-text" style="width:40px;" (click)="from.toggle()">
+                      <i class="fa fa-calendar" style="color:#464e5f;"></i>
+                    </span>
+                  </div>
+                </div>
+
+                <label for="billsFrom">Bis:</label>
+
+                <div class="input-group  my-datepicker">
+                  <input class="form-control" name="until"
+                    [ngModel]="dataManagementEmployeeService.currentFilter.internalScopeUntil"
+                    (ngModelChange)="dataManagementEmployeeService.currentFilter.internalScopeUntil = $event"
+                    ngbDatepicker #until="ngbDatepicker">
+                  <div class="input-group-append">
+                    <span class="input-group-text" style="width:40px;" (click)="until.toggle()">
+                      <i class="fa fa-calendar" style="color:#464e5f;"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+          <div class="dropdown-divider"></div>
+
+          <button ngbDropdownItem>Schliessen</button>
+        </div>
+      </div>
+    </li>
+
+
+
+    <!-- Abonnent PraxisArena -->
+    <li class="list-group-item-action">
+
+      <div ngbDropdown (openChange)="onOpenChange($event)">
+        <button class="btn btn-outline-primary btn-sm  max-width" id="dropdownForm3" ngbDropdownToggle
+          [disabled]="!isRequestPossible()">Eigene Filter
+        </button>
+        <div ngbDropdownMenu>
+
+          <div class="checkbox-container-default2">
+            <div *ngFor="let data of dataManagementEmployeeService.macroFilter; index as i">
+              <label class="checkbox-label">
+                <input type="checkbox" #macroFilter [ngModel]="getMacro(i)" (ngModelChange)="setMacro(i,$event)"
+                  [disabled]="!isRequestPossible()" [ngModelOptions]="{standalone: true}">
+                {{data.displayName}}
+              </label>
+            </div>
+          </div>
+
+
+          <div class="dropdown-divider"></div>
+
+          <button ngbDropdownItem>Schliessen</button>
+        </div>
+      </div>
+
+
+
+    </li>
+
+    <!--  Gelöschte Adressen -->
+    <li class="list-group-item-action">
+      <label class="checkbox-label">
+        <input type="checkbox" [(ngModel)]="dataManagementEmployeeService.currentFilter.showDeleteEntries"
+          name="showDeleteEntries" [disabled]="!isRequestPossible()">
+        Gelöschte Adressen
+      </label>
+    </li>
+
+
+
+    <li class="list-group-item-action">
+      <button class="btn btn btn-sm  max-width place-around" (click)="onClickSetEmpty()"
+        [disabled]="dataManagementEmployeeService.currentFilter.isEmpty()">Filter zurücksetzten</button>
+    </li>
+  </ul>
+
+
+</form>

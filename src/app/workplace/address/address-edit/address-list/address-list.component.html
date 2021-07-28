@@ -1,0 +1,104 @@
+
+<ng-template #contentRestore id="content" let-modal role="dialog" class="modal-window">
+  <app-restorewindow [title] ="titleReactive" [message]="messageReactive"></app-restorewindow>
+  <div class="modal-footer ">
+    <span type="button" class="link-button darkgrey-font font-underline"
+      (click)="modal.dismiss('Cancel click')">Abbrechen</span>
+    <button type="button" class="btn btn-primary normal-btn" (click)="modal.close()">{{titleReactive}}</button>
+  </div>
+</ng-template>
+
+<table class="table table-borderless  container-table-borderless">
+  <thead>
+    <tr>
+
+      <th class="table-header" style="width: 30px; ">
+        <div class="table-header-cell custom-control-inline">
+          TYP
+        </div>
+
+      </th>
+
+      <th class="table-header" (click)="onClickHeader('validFrom')" style="width: 120px; ">
+        <div class="table-header-cell custom-control-inline">
+          <p class="gap noselect">GÜLTIG AB</p>
+          <p class="table-header-cell-arrow noselect">{{arrowValidFrom}}</p>
+        </div>
+
+      </th>
+      <th class="table-header" (click)="onClickHeader('street')" style="width: 140px; ">
+        <div class="table-header-cell custom-control-inline">
+          <p class="gap noselect">STRASSE</p>
+          <p class="table-header-cell-arrow noselect">{{arrowStreet}}</p>
+        </div>
+
+      </th>
+      <th class="table-header" (click)="onClickHeader('zip')" style="width: 90px; ">
+        <div class="table-header-cell custom-control-inline">
+          <p class="gap noselect">PLZ</p>
+          <p class="table-header-cell-arrow noselect">{{arrowZip}}</p>
+        </div>
+
+      </th>
+      <th class="table-header" (click)="onClickHeader('city')" style="width: 140px; ">
+        <div class="table-header-cell custom-control-inline">
+          <p class="gap noselect">ORT</p>
+          <p class="table-header-cell-arrow noselect">{{arrowCity}}</p>
+        </div>
+
+      </th>
+
+      <th class="table-header" (click)="onClickHeader('country')" style="width: 90px; ">
+        <div class="table-header-cell custom-control-inline">
+          <p class="gap noselect">LAND</p>
+          <p class="table-header-cell-arrow noselect">{{arrowCountry}}</p>
+        </div>
+
+      </th>
+
+      <th class="table-header" style="width: 30px; "></th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr *ngFor="let data of sortedAddressList; index as i">
+      <td class="table-cell cell-center" style="font-size: 18px; color:grey" data-toggle="tooltip" title="{{setType(data.type)}}">
+        <i class="fas fa-home" *ngIf ="data.type===0"></i>
+        <i class="fas fa-briefcase"  *ngIf ="data.type===1"></i>
+        <i class="fas fa-file-invoice-dollar"  *ngIf ="data.type===2"></i>
+      </td>
+      <td [ngClass]="{
+          'table-cell':data.isDeleted===false , 'table-cell-delete':data.isDeleted ===true }">
+        {{data.validFrom | date: 'dd.MM.yyyy'}}</td>
+      <td [ngClass]="{
+          'table-cell':data.isDeleted===false , 'table-cell-delete':data.isDeleted ===true }">{{data.street}}</td>
+      <td [ngClass]="{
+          'table-cell':data.isDeleted===false , 'table-cell-delete':data.isDeleted ===true }">{{data.zip}}</td>
+      <td [ngClass]="{
+          'table-cell':data.isDeleted===false , 'table-cell-delete':data.isDeleted ===true }">{{data.city}}</td>
+      <td [ngClass]="{
+          'table-cell':data.isDeleted===false , 'table-cell-delete':data.isDeleted ===true }">
+        {{setCountry(data.country)}}</td>
+
+      <td class="table-cell cell-right">
+        <div *ngIf="data.isDeleted ===true ">
+          <div class="icon icon-padding" (click)="onClickRestore(contentRestore,data)" style="font-size: 18px;" data-toggle="tooltip" title="Adresse reaktiveren">
+            <i class="fas fa-trash-restore-alt" ></i>
+
+          </div>
+
+
+        </div>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
+<div class="pagination justify-content-end">
+  <label class="entry-info">Anzahl Einträge: {{maxItems}}</label>
+  <ngb-pagination [collectionSize]="maxItems + 1" (pageChange)="onPageChange()" [(page)]="requiredPage"
+    [maxSize]="numberOfItemsPerPage" [pageSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true">
+  </ngb-pagination>
+
+</div>

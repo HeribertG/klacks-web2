@@ -560,12 +560,12 @@ export class TruncatedFilter implements ITruncatedFilter {
 
 
 export interface ICheckBoxValue {
-  id: string | null;
+  id: string;
   Checked: boolean;
 }
 
 export class CheckBoxValue implements ICheckBoxValue {
-  id = null;
+  id = '';
   Checked = false;
 }
 

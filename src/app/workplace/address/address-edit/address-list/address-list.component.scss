@@ -1,0 +1,19 @@
+@import '../../../../../assets/standard-styles/standard-grid.scss';
+@import '../../../../../assets/standard-styles/pagination.scss';
+@import '../../../../../assets/standard-styles/standard-controls.scss';
+@import '../../../../../assets/standard-styles/colors.scss';
+@import '../../../../../assets/standard-styles/standard-modal.scss';
+
+
+
+.entry-info {
+    padding-right: 20px;
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color:var(--colorLabel);
+  }
+
+  ngb-pagination {
+    padding-right: 0px;
+  }

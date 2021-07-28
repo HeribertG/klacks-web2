@@ -1,0 +1,108 @@
+<form>
+  <div class="container-header">
+    Belegte Kurse
+  </div>
+
+  <div class="container-line"></div>
+
+  
+
+  <div class="container-table"  *ngIf="dataManagementClientService.workshopListWrapper !== undefined && dataManagementClientService.workshopListWrapper.workshops !== undefined">
+    <table class="table table-borderless">
+      <thead>
+        <tr>
+          <th class="table-header" (click)="onClickHeader('name')">
+            <div class="table-header-cell custom-control-inline">
+              <p class="gap noselect">NAME</p>
+              <p class="table-header-cell-arrow noselect">{{arrowName}}</p>
+            </div>
+          </th>
+          <th class="table-header" (click)="onClickHeader('description')">
+            <div class="table-header-cell custom-control-inline">
+              <p class="gap noselect">BESCHREIBUNG</p>
+              <p class="table-header-cell-arrow noselect">{{arrowDescription}}</p>
+            </div>
+          </th>
+          <th class="table-header" (click)="onClickHeader('start')" style="width: 120px;max-width:120px; ">
+            <div class="table-header-cell custom-control-inline">
+              <p class="gap noselect">BEGINN</p>
+              <p class="table-header-cell-arrow noselect">{{arrowStart}}</p>
+            </div>
+          </th>
+          <th class="table-header" (click)="onClickHeader('end')" style="width: 120px;max-width:120px; ">
+            <div class="table-header-cell custom-control-inline">
+              <p class="gap noselect">ENDE</p>
+              <p class="table-header-cell-arrow noselect">{{arrowEnd}}</p>
+            </div>
+          </th>
+          <th class="table-header action" style="width: 100px; max-width: 100px; min-width: 100px;"></th>
+        </tr>
+      </thead>
+      <tbody
+        *ngIf="dataManagementClientService.workshopListWrapper !== undefined && dataManagementClientService.workshopListWrapper.workshops !== undefined">
+
+        <tr class="table-row"  *ngFor="let data of dataManagementClientService.workshopListWrapper.workshops; ">
+          
+          <td class="table-cell" [ngClass]="{
+            'table-cell':data.isDeleted===false , 'table-cell-delete':data.isDeleted ===true }">
+            <span class="cell-comment" *ngIf="data.isDeleted===true">Gelöscht am
+              {{data.deletedTime |  date: 'dd.MM.yyyy'}} von
+              {{data.currentUserDeleted}}</span>
+            {{data.name}}
+            
+          </td>
+          <td class="table-cell" [ngClass]="{
+            'table-cell':data.isDeleted===false , 'table-cell-delete':data.isDeleted ===true }">{{data.description}}
+            <span class="cell-comment" *ngIf="data.isDeleted===true">Gelöscht am
+              {{data.deletedTime |  date: 'dd.MM.yyyy'}} von
+              {{data.currentUserDeleted}}</span>
+          </td>
+          <td class="table-cell" [ngClass]="{
+            'table-cell':data.isDeleted===false , 'table-cell-delete':data.isDeleted ===true }">{{data.courseStartDate | date: 'dd.MM.yyyy'}}
+            <span class="cell-comment" *ngIf="data.isDeleted==true">Gelöscht am
+              {{data.deletedTime |  date: 'dd.MM.yyyy'}} von
+              {{data.currentUserDeleted}}</span>
+          </td>
+          <td class="table-cell" [ngClass]="{
+            'table-cell':data.isDeleted===false , 'table-cell-delete':data.isDeleted ===true }">{{data.courseEndDate | date: 'dd.MM.yyyy'}}
+            <span class="cell-comment" *ngIf="data.isDeleted==true">Gelöscht am
+              {{data.deletedTime |  date: 'dd.MM.yyyy'}} von
+              {{data.currentUserDeleted}}</span>
+          </td>
+          <td class="table-cell cell-right">
+            <div>
+              <div class="icon icon-padding" > 
+
+                <i class="far fa-check-circle fullfilled-done" *ngIf="data.courseFulfilled ===true"></i>
+                
+                <i class="far fa-times-circle not-fullfilled-done" *ngIf="data.courseFulfilled ===false"></i>
+
+              </div>
+              <div class="icon" (click)="onClickEdit(data)">
+                <icon-pencil-icon-grey></icon-pencil-icon-grey>
+              </div>
+
+              
+            </div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+
+  </div>
+
+  <div class="pagination justify-content-end"
+    *ngIf="dataManagementClientService.workshopListWrapper !== undefined && dataManagementClientService.workshopListWrapper.workshops !== undefined">
+    <label class="entry-info">Anzahl Einträge: {{dataManagementClientService.workshopListWrapper?.maxItems}}</label>
+    <ngb-pagination [collectionSize]="dataManagementClientService.workshopListWrapper?.maxItems + 1"
+      (pageChange)="onPageChange()" [(page)]="dataManagementClientService.workshopFilter.requiredPage "
+      [maxSize]="dataManagementClientService.workshopFilter.numberOfItemsPerPage" [pageSize]="5" [rotate]="true"
+      [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+
+  </div>
+
+  <div style="height: 30px"></div>
+
+</form>
