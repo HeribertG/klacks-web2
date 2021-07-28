@@ -6,16 +6,16 @@
 
     <div>
 
-      <app-button-new placement="top" (click)="newAnnotation()" ngbTooltip="neue Notiz hinzufügen"  *ngIf ="dataManagementClientService.editClientDeleted === false">
+      <app-button-new placement="top" (click)="newAnnotation()" ngbTooltip="neue Notiz hinzufügen"  >
       </app-button-new>
-      <div class="btn dropdown-toggle  ownStyle-button" role="button" data-toggle="dropdown" *ngIf ="dataManagementClientService.editClientDeleted === false">
+      <div class="btn dropdown-toggle  ownStyle-button" role="button" data-toggle="dropdown"  >
         <icon-gear-grey></icon-gear-grey>
       </div>
 
       <div class="dropdown-menu dropdown-menu-right"  >
 
         <a class="dropdown-item "
-          *ngIf="dataManagementClientService.editClient !== undefined  && dataManagementClientService.currentAnnotationIndex >-1"
+          *ngIf="dataManagementEmployeeService.editEmployee  && dataManagementEmployeeService.currentAnnotationIndex >-1"
           (click)="onDeleteCurrentAnnotation()">
           <div class="custom-control-inline" style="height: 25px;">
             <icon-trash-icon-red></icon-trash-icon-red>
@@ -25,7 +25,7 @@
           </div>
         </a>
         <a class="dropdown-item disabled"
-          *ngIf="dataManagementClientService.editClient !== undefined  && dataManagementClientService.currentAnnotationIndex ===-1">
+          *ngIf="dataManagementEmployeeService.editEmployee  && dataManagementEmployeeService.currentAnnotationIndex ===-1">
           <div class="custom-control-inline" style="height: 25px;">
             <icon-trash-icon-light-red></icon-trash-icon-light-red>
             <p style="margin-left: 10px; font-size: 13px; color: #FAC1C7;">
@@ -41,12 +41,12 @@
 
   <div class="container-line"></div>
 
-  <div class="container-main " *ngIf="dataManagementClientService.editClient !==undefined">
-    <div class="row-line " *ngFor="let c of  dataManagementClientService.editClient.annotations; index as i">
+  <div class="container-main " *ngIf="dataManagementEmployeeService.editEmployee">
+    <div class="row-line " *ngFor="let c of  dataManagementEmployeeService.editEmployee!.annotations; index as i">
       <div *ngIf="c.isDeleted===false">
         <div [ngClass]="{
-          'container-box  ': this.dataManagementClientService.currentAnnotationIndex != i,
-          'container-box-focus ': this.dataManagementClientService.currentAnnotationIndex === i}" (click)="onFocus(i)">
+          'container-box  ': this.dataManagementEmployeeService.currentAnnotationIndex != i,
+          'container-box-focus ': this.dataManagementEmployeeService.currentAnnotationIndex === i}" (click)="onFocus(i)">
 
           <div class="firstColumn">
 
@@ -54,7 +54,7 @@
           </div>
           <div class="firstColumn">
             <textarea [value]="c.note" (change)="onChange(i, $event)" (keyup)="onKeyUp(i,$event)"
-              [disabled]="dataManagementClientService.editClientDeleted" class="form-control freetext"
+             class="form-control freetext"
               name="setName(i)">
 
             </textarea>

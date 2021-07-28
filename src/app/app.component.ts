@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ToastService } from './toast/toast.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'klacks-web';
+
+  constructor(
+    public toastService: ToastService
+  ) {}
 }

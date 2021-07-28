@@ -13,21 +13,21 @@ export class DragDropFileUploadDirective {
   @HostBinding('style.background-color') private background = '#ffffff';
 
   // Dragover Event
-  @HostListener('dragover', ['$event']) dragOver(event) {
+  @HostListener('dragover', ['$event']) dragOver(event:any) {
     event.preventDefault();
     event.stopPropagation();
     this.background = '#e2eefd';
   }
 
   // Dragleave Event
-  @HostListener('dragleave', ['$event']) public dragLeave(event) {
+  @HostListener('dragleave', ['$event']) public dragLeave(event:any) {
     event.preventDefault();
     event.stopPropagation();
     this.background = '#ffffff';
   }
 
   // Drop Event
-  @HostListener('drop', ['$event']) public drop(event) {
+  @HostListener('drop', ['$event']) public drop(event:any) {
     event.preventDefault();
     event.stopPropagation();
     this.background = '#ffffff';

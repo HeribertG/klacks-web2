@@ -52,23 +52,7 @@
       </div>
     </li>
 
-    <!-- Klient Typen -->
-    <li class="list-group-item-action"
-      *ngIf="dataManagementEmployeeService.clientAttribute  &&  dataManagementEmployeeService.clientAttribute.length >1 ">
-      <div class="btn-group" ngbDropdown role="group">
-        <button class="btn btn-outline-primary btn-sm  max-width" ngbDropdownToggle
-          [disabled]="!isRequestPossible()">{{clientTypeName}}</button>
-        <div class="dropdown-menu" ngbDropdownMenu>
-          <button ngbDropdownItem (click)="onClickClientType(-1)">{{clientTypeAllAdress}}</button>
-
-          <button ngbDropdownItem *ngFor="let c of dataManagementEmployeeService.clientAttribute; index as i"
-            (click)="onClickClientType(i)" [value]="c.type">{{c.name}}</button>
-
-        </div>
-      </div>
-    </li>
-
-    <!-- Kantone -->
+   
     <li class="list-group-item-action ">
       <div ngbDropdown (openChange)="onOpenChange($event)">
         <button class="btn btn-outline-primary btn-sm  max-width" id="dropdownForm1" ngbDropdownToggle
@@ -256,117 +240,7 @@
       </div>
     </li>
 
-    <!-- Sektionen -->
-    <li class="list-group-item-action " *ngIf="
-      dataManagementEmployeeService.currentFilter.sectionList !==null &&
-      dataManagementEmployeeService.currentFilter.hasSections  &&
-      dataManagementEmployeeService.currentFilter.sectionList.length >1">
-      <div ngbDropdown (openChange)="onOpenChange($event)">
-        <button class="btn btn-outline-primary btn-sm  max-width" id="dropdownForm-3" ngbDropdownToggle
-          [disabled]="!isRequestPossible()">Sektionen
-          auswählen</button>
-        <div ngbDropdownMenu>
-          <div class="px-4 py-3">
-            <div class="form-group">
-
-              <button type="button" class="btn btn-secondary btn-sm max-width"
-                (click)="dataManagementEmployeeService.currentFilter.selectSections(true)">selektiern</button>
-              <p></p>
-              <button type="button" class="btn btn-secondary btn-sm max-width"
-                (click)="dataManagementEmployeeService.currentFilter.selectSections(false)">deselektiern</button>
-            </div>
-
-
-          </div>
-          <div class="form-group">
-            <div class="checkbox-container">
-              <div *ngFor="let c of dataManagementEmployeeService.currentFilter.sectionList; index as i">
-                <label class="checkbox-label">
-                  <input type="checkbox" [ngModelOptions]="{standalone: true}" [ngModel]="c.select"
-                    (ngModelChange)="c.select = $event">
-                  {{c.section}}
-                </label>
-
-              </div>
-
-            </div>
-          </div>
-          <div class="dropdown-divider"></div>
-
-          <button ngbDropdownItem>Schliessen</button>
-        </div>
-      </div>
-    </li>
-
-    <!-- Status -->
-    <li class="list-group-item-action " *ngIf="onIsStatusVisible()">
-      <div ngbDropdown (openChange)="onOpenChange($event)">
-        <button class="btn btn-outline-primary btn-sm  max-width" id="dropdownForm3" ngbDropdownToggle
-          [disabled]="!isRequestPossible()">Status
-          auswählen</button>
-        <div ngbDropdownMenu>
-          <div class="px-4 py-3">
-            <div class="form-group">
-
-              <button type="button" class="btn btn-secondary btn-sm max-width"
-                (click)="dataManagementEmployeeService.currentFilter.selectStatus(true)">selektiern</button>
-              <p></p>
-              <button type="button" class="btn btn-secondary btn-sm max-width"
-                (click)="dataManagementEmployeeService.currentFilter.selectStatus(false)">deselektiern</button>
-            </div>
-
-
-          </div>
-          <div class="form-group">
-            <div class="checkbox-container">
-              <div *ngFor="let c of dataManagementEmployeeService.currentFilter.statusList; index as i">
-                <label class="checkbox-label">
-                  <input type="checkbox" [ngModelOptions]="{standalone: true}" [ngModel]="c.select"
-                    (ngModelChange)="c.select = $event">
-                  {{c.status}}
-                </label>
-
-              </div>
-
-            </div>
-          </div>
-          <div class="dropdown-divider"></div>
-
-          <button ngbDropdownItem>Schliessen</button>
-        </div>
-      </div>
-    </li>
-
-    <!--Zertifikate -->
-    <li class="list-group-item-action " *ngIf="onIsCertificateVisible()">
-      <div ngbDropdown (openChange)="onOpenChange($event)">
-        <button class="btn btn-outline-primary btn-sm  max-width" id="dropdownForm4" ngbDropdownToggle
-          [disabled]="!isRequestPossible()">Zertifikate
-          auswählen</button>
-        <div ngbDropdownMenu>
-          <div class="px-4 py-3">
-
-
-          </div>
-          <div class="form-group">
-            <div class="checkbox-container-default2">
-              <div *ngFor="let c of dataManagementEmployeeService.currentFilter.certificateList; index as i">
-                <label class="checkbox-label">
-                  <input type="checkbox" name="c.name" [(ngModel)]="c.select">
-                  {{showCorrectCertificateName(c)}}
-                </label>
-
-              </div>
-
-            </div>
-          </div>
-          <div class="dropdown-divider"></div>
-
-          <button ngbDropdownItem>Schliessen</button>
-        </div>
-      </div>
-    </li>
-
+    
 <!--Scope -->
     <li class="list-group-item-action ">
       <div ngbDropdown (openChange)="onOpenChange($event)">
@@ -433,35 +307,6 @@
 
 
 
-    <!-- Abonnent PraxisArena -->
-    <li class="list-group-item-action">
-
-      <div ngbDropdown (openChange)="onOpenChange($event)">
-        <button class="btn btn-outline-primary btn-sm  max-width" id="dropdownForm3" ngbDropdownToggle
-          [disabled]="!isRequestPossible()">Eigene Filter
-        </button>
-        <div ngbDropdownMenu>
-
-          <div class="checkbox-container-default2">
-            <div *ngFor="let data of dataManagementEmployeeService.macroFilter; index as i">
-              <label class="checkbox-label">
-                <input type="checkbox" #macroFilter [ngModel]="getMacro(i)" (ngModelChange)="setMacro(i,$event)"
-                  [disabled]="!isRequestPossible()" [ngModelOptions]="{standalone: true}">
-                {{data.displayName}}
-              </label>
-            </div>
-          </div>
-
-
-          <div class="dropdown-divider"></div>
-
-          <button ngbDropdownItem>Schliessen</button>
-        </div>
-      </div>
-
-
-
-    </li>
 
     <!--  Gelöschte Adressen -->
     <li class="list-group-item-action">

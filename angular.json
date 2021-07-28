@@ -20,6 +20,12 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "file-saver",
+              "codemirror",
+              "ng2-pdf-viewer",
+              "@ctrl/ngx-codemirror"
+            ],
             "outputPath": "dist/klacks-web",
             "index": "src/index.html",
             "main": "src/main.ts",

@@ -62,6 +62,7 @@ export class DataManagementEmployeeService {
   subTitleLastChanges = '';
   subTitleLastChangesAllAddress = '';
 
+  stateList: string[]=[];
   countries = new Array<ICountry>();
   communicationTypePhoneList = new Array<ICommunicationType>();
   communicationTypeEmailList = new Array<ICommunicationType>();
@@ -126,6 +127,7 @@ export class DataManagementEmployeeService {
       this.currentFilter.countries = [];
       this.currentFilter.countriesHaveBeenReadIn = false;
 
+      this.stateList = this.dataCountryStateService.getState();
       // tslint:disable-next-line: deprecation
       this.dataCountryStateService.getCountryList().subscribe(
         (x: ICountry[]) => {
@@ -530,9 +532,9 @@ export class DataManagementEmployeeService {
 
   private setDateStruc() {
 
-    this.editEmployee!.internalBirthdate = transformDateToNgbDateStruct(this.editEmployee!.birthdate!);
-    this.editEmployee!.staff!.internalValidFrom = transformDateToNgbDateStruct(this.editEmployee!.staff!.validFrom!);
-    this.editEmployee!.staff!.internalValidUntil = transformDateToNgbDateStruct(this.editEmployee!.staff!.validUntil!);
+    this.editEmployee!.internalBirthdate = transformDateToNgbDateStruct(this.editEmployee!.birthdate!)!;
+    this.editEmployee!.staff!.internalValidFrom = transformDateToNgbDateStruct(this.editEmployee!.staff!.validFrom!)!;
+    this.editEmployee!.staff!.internalValidUntil = transformDateToNgbDateStruct(this.editEmployee!.staff!.validUntil!)!;
 
   }
 

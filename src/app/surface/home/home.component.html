@@ -35,10 +35,7 @@
   <app-header></app-header>
   <app-nav></app-nav>
 
-  <app-main [isDashboard]="isDashboard" [isAllAddsresses]="isAllAddsresses" [isAllWorkshops]="isAllWorkshops"
-    [isAllDocuments]="isAllDocuments" [isInvoices]="isInvoices" [isAllInvoices]="isAllInvoices" [isProfile]="isProfile"
-    [isReminder]="isReminder" [isSetting]="isSetting" [isEditAddress]="isEditAddress" [isEditWorkshop]="isEditWorkshop"
-    [isAllExports]="isAllExports" [isEditExport]="isEditExport" (isChangingEvent)="onIsChanging($event)"
+  <app-main  [isAllAddsresses]="isAllAddsresses"  (isChangingEvent)="onIsChanging($event)"
     (isEnterEvent)="onIsEnter()">
   </app-main>
   

@@ -5,7 +5,7 @@ import { MessageLibrary } from './string-constants';
 import { catchError, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { DataManagementSwitchboardService } from '../data/management/data-management-switchboard.service';
-import { DataManagementInvoiceService } from '../data/management/data-management-invoice.service';
+import { DataManagementEmployeeService } from '../data/management/data-management-employee.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -40,7 +40,7 @@ export class ResponseInterceptor implements HttpInterceptor {
 
   constructor(
     private dataManagementSwitchboardService: DataManagementSwitchboardService,
-    private dataManagementInvoiceService: DataManagementInvoiceService,
+    private dataManagementEmployeeService: DataManagementEmployeeService,
     @Inject(AuthService) private authService: AuthService,
   ) { }
 
@@ -77,9 +77,9 @@ export class ResponseInterceptor implements HttpInterceptor {
 
 
           // error in PostcodeCH occurs if no postcode is found-> IT IS NO ERROR
-          if (error.url.includes('PostcodeCH')) { return throwError(error); }
+          if (error.url!.includes('PostcodeCH')) { return throwError(error); }
 
-          if (error.url.includes('Accounts/ChangePassword')) {
+          if (error.url!.includes('Accounts/ChangePassword')) {
             let msg = MessageLibrary.NOT_REGISTER + '\n\r';
 
             if (error.error && error.error.modelState && error.error.modelState.PasswordMismatch.errors.
@@ -92,7 +92,7 @@ export class ResponseInterceptor implements HttpInterceptor {
             return throwError(error);
           }
 
-          if (error.url.includes('Accounts/Register')) {
+          if (error.url!.includes('Accounts/Register')) {
 
             let msg = MessageLibrary.NOT_REGISTER + '\n\r';
             try {
@@ -117,60 +117,15 @@ export class ResponseInterceptor implements HttpInterceptor {
             return throwError(error);
           }
 
-          if (error.url.includes('InvoiceBases/UploadV11File')) {
-
-            let msg = MessageLibrary.BESR_ERROR + '\n\r';
-            try {
-              if (error.status === 400) { msg += MessageLibrary.BESR_ERROR_400 + '\n\r'; }
-              if (error.status === 404) { msg += MessageLibrary.BESR_ERROR_404 + '\n\r'; }
-
-              this.authService.showError(msg, 'wrong File');
-            } catch (e) {
-
-            }
-            this.dataManagementInvoiceService.showProgressSpinner = false;
-            return throwError(error);
-          }
-
-          if (error.url.includes('backend/InvoiceBases/UploadIso20022File')) {
-
-            let msg = MessageLibrary.BESR_ERROR + '\n\r';
-            try {
-              if (error.status === 400) { msg += MessageLibrary.BESR_ERROR_400 + '\n\r'; }
-              if (error.status === 404) { msg += MessageLibrary.BESR_ERROR_404 + '\n\r'; }
-
-              this.authService.showError(msg, 'wrong File');
-            } catch (e) {
-
-            }
-            this.dataManagementInvoiceService.showProgressSpinner = false;
-            return throwError(error);
-          }
-
-          if (error.url.includes('backend/LoadFile/DownLoadImage') && error.status === 500) {
-            const msg = MessageLibrary.ERROR_LOADIMAGE_HTTP500 + '\n\r';
-
-            this.authService.showInfo(msg, 'DownLoadImage');
-
-            return throwError(error);
-          }
-
-          if (error.url.includes('backend/LoadFile/GetSimpleImage')) {
-            const msg = MessageLibrary.ERROR_LOADIMAGE_HTTP500 + '\n\r';
-
-            this.authService.showInfo(msg, 'DownLoadImage');
-
-            return throwError(error);
-          }
-
-          if (error.url.includes('backend/Clients/GetSimpleList') && error.status === 500) {
+          
+          if (error.url!.includes('Employees/GetSimpleList') && error.status === 500) {
             try {
 
               this.authService.showError(MessageLibrary.CLIENTLIST_ERROR_500 + '\n\r', 'CLIENTLIST_ERROR_500');
             } catch (e) {
 
             }
-            this.dataManagementInvoiceService.showProgressSpinner = false;
+            this.dataManagementEmployeeService.showProgressSpinner = false;
             return throwError(error);
           }
 

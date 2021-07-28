@@ -53,7 +53,7 @@ export class AddressEditHomeComponent implements OnInit {
       }
     }
 
-    this.dataManagementSwitchboardService.isFocused = 'DataManagementClientService';
+    this.dataManagementSwitchboardService.isFocused = 'DataManagementEmployeeService';
 
   }
 

@@ -8,7 +8,6 @@ import { NgbDateCustomParserFormatter } from 'src/app/helpers/NgbDateParserForma
 
 import { AddressHistoryListComponent } from './address-edit/address-list/address-list.component';
 import { NoteComponent } from './address-edit/note/note.component';
-import { WorkshopComponent } from './address-edit/workshop/workshop.component';
 import { MembershipComponent } from './address-edit/membership/membership.component';
 import { AddressEditPersonaComponent } from './address-edit/address-edit-persona/address-edit-persona.component';
 import { AddressEditHomeComponent } from './address-edit/address-edit-home/address-edit-home.component';
@@ -26,11 +25,6 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 
 
-
-
-
-
-
 @NgModule({
   declarations: [
     AddressHomeComponent,
@@ -39,7 +33,6 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     AddressEditHomeComponent,
     AddressEditPersonaComponent,
     MembershipComponent,
-    WorkshopComponent,
     NoteComponent,
     AddressHistoryListComponent,
     AddressEditNavComponent,
@@ -63,7 +56,6 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     AddressEditHomeComponent,
     AddressEditPersonaComponent,
     MembershipComponent,
-    WorkshopComponent,
     NoteComponent,
     AddressHistoryListComponent,
     AddressEditNavComponent,

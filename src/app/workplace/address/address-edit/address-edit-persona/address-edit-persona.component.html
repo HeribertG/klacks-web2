@@ -29,21 +29,6 @@
 
 
 
-      <div class="row-line-modal"
-        *ngIf="dataManagementClientService.clientAttribute  &&  dataManagementClientService.clientAttribute.length >1">
-        <div class="form-group ">
-
-          <label for="profil-gender">Adresstyp</label>
-          <select class="form-control " [(ngModel)]="editClientType" name="editClient.type">
-            <option *ngFor="let c of dataManagementClientService.clientAttribute" [value]="c.type"
-              [selected]="dataManagementClientService.editClient.type === c.type">{{c.name}}</option>
-
-          </select>
-        </div>
-      </div>
-
-
-
     </div>
   </form>
 
@@ -123,8 +108,8 @@
     </div>
     <div class="modal-body ">
 
-      <app-address-history-list [countries]="dataManagementClientService.countries" (isChangingAddress)="onChangingAddress($event)"
-        [addressList]="dataManagementClientService.clientAdressListWithoutQueryFilter">
+      <app-address-history-list [countries]="dataManagementEmployeeService.countries" (isChangingAddress)="onChangingAddress($event)"
+        [addressList]="dataManagementEmployeeService.employeeAdressListWithoutQueryFilter">
       </app-address-history-list>
 
     </div>
@@ -147,8 +132,8 @@
   </div>
   <div class="modal-body">
 
-    <app-history [historyList]="dataManagementClientService.currentHistoryList"
-      [filterHistory]="dataManagementClientService.filterHistory" (isChanged)="onIsHistoryPageChange()"></app-history>
+    <app-history [historyList]="dataManagementEmployeeService.currentHistoryList"
+      [filterHistory]="dataManagementEmployeeService.filterHistory" (isChanged)="onIsHistoryPageChange()"></app-history>
   </div>
 
 
@@ -161,143 +146,67 @@
 
 <form #clientForm="ngForm" class="container-card"  >
   <div class="container-header header-container">
-    <div>
-      ID Nummer: {{dataManagementClientService.editClient?.typeAbbreviation}}   {{dataManagementClientService.editClient?.idNumber}}
-      <div class="container-subline-borderless">
-        {{dataManagementClientService.editClientLastMutation}}
-      </div>
-    </div>
+    
 
     <span class="filler"></span>
 
     <div>
 
       <app-button-new (click)="openNewAddress(newAddress)" placement="top" ngbTooltip="neue Adresse erstellen"
-        *ngIf="dataManagementClientService.editClientDeleted === false">
+        *ngIf="dataManagementEmployeeService.editEmployeeDeleted === false">
       </app-button-new>
 
       <div class="btn dropdown-toggle  ownStyle-button" role="button" data-toggle="dropdown">
         <icon-gear-grey></icon-gear-grey>
       </div>
 
-      <div class="dropdown-menu dropdown-menu-right">
-
-        <a class="dropdown-item" (click)="openAddressType(addressTypeModal) "
-          *ngIf="dataManagementClientService.editClientDeleted === false">
-          <div class="custom-control-inline" style="height: 25px;">
-            <i class="far fa-address-book"></i>
-            <p style="margin-left: 10px;; font-size: 13px;">
-              Adresstyp ändern
-            </p>
-          </div>
-        </a>
-
-        <a class="dropdown-item" (click)="openAddressList(addressList)"
-          *ngIf="dataManagementClientService.editClient !== undefined && dataManagementClientService.editClient.id !==null">
-          <div class="custom-control-inline" style="height: 25px;">
-            <i class="fas fa-history"></i>
-            <p style="margin-left: 10px;; font-size: 13px;">
-              Adressverlauf anzeigen
-            </p>
-          </div>
-        </a>
-
-        <ng-container *ngIf=" dataManagementClientService.hasHistory">
-          <a class="dropdown-item" (click)="openHistoryList(historyList)"
-            *ngIf="dataManagementClientService.editClient !== undefined && dataManagementClientService.editClient.id !==null">
-            <div class="custom-control-inline" style="height: 25px;">
-              <i class="fas fa-exchange-alt"></i>
-              <p style="margin-left: 10px;; font-size: 13px;">
-                Änderungen anzeigen
-              </p>
-            </div>
-          </a>
-        </ng-container>
-
-        <a class="dropdown-item "
-          *ngIf="dataManagementClientService.editClient !== undefined "
-          (click)="openDeleteAddress(contentDelete)">
-          <div class="custom-control-inline" style="height: 25px;">
-            <i class="fas fa-trash" style="color:var(--standartRedColor)"></i>
-            <p style="margin-left: 10px; font-size: 13px; color:var(--standartRedColor)">
-              Adresse deaktivieren
-            </p>
-          </div>
-        </a>
-
-
       </div>
-    </div>
   </div>
 
 
   <div class="container-line"></div>
 
 
-  <div class="container-bank-box" *ngIf="dataManagementClientService.editClient !==undefined">
+  <div class="container-bank-box" *ngIf="dataManagementEmployeeService.editEmployee">
 
     <div class="firstColumContainer">
 
-      <div class="row-line-company"
-        *ngIf="dataManagementClientService.editClient.legalEntity && dataManagementClientService.isCurrentAddressMainAdress()">
-        <div class="form-group firstColumn">
+    
 
-          <label for="company">Firma</label>
-          <div class="  custom-control-inline">
-            <input type="text" class="form-control default-width"  autocomplete="off"
-              [disabled]="dataManagementClientService.editClientDeleted"
-              [(ngModel)]="dataManagementClientService.editClient.company" id="company" name="company" maxlength="50">
-
-          </div>
-          <label class="grey-color"
-            [hidden]="dataManagementClientService.editClient.gender.toString() =='2' ">Ansprechsperson</label>
-        </div>
-      </div>
-
-      <div class="row-line-simple" *ngIf="dataManagementClientService.isCurrentAddressMainAdress()">
+      <div class="row-line-simple" >
         <div class="form-group firstColumn">
           <div Style="width: 200px; padding-right: 20px;">
             <label for="gender">Anrede</label>
-            <select class="form-control " [ngModel]="dataManagementClientService.editClient.gender" id="gender"
-              [disabled]="dataManagementClientService.editClientDeleted"
-              (ngModelChange)="dataManagementClientService.editClient.gender = $event" name="client.gender">
+            <select class="form-control " [ngModel]="dataManagementEmployeeService.editEmployee!.gender" id="gender"
+              [disabled]="dataManagementEmployeeService.editEmployeeDeleted"
+              (ngModelChange)="dataManagementEmployeeService.editEmployee!.gender = $event" name="client.gender">
               <option value="1">Herr</option>
               <option value="0">Frau</option>
-              <option value="2" *ngIf="dataManagementClientService.editClient.legalEntity===true ">nicht definiert
-              </option>
             </select>
           </div>
 
         </div>
-        <label class="checkbox-label" Style="width: 200px; margin-top: 45px;">
-          <input type="checkbox" [(ngModel)]="dataManagementClientService.editClient.legalEntity" name="legalEntity"
-            [disabled]="dataManagementClientService.editClientDeleted">
-          Juristische Person
-        </label>
-
-      </div>
+          </div>
 
 
-      <div class="row-line"
-        *ngIf="dataManagementClientService.editClient.gender.toString() !=='2'  && dataManagementClientService.isCurrentAddressMainAdress()=== true ">
+      <div class="row-line" >
         <div class="form-group firstColumn">
 
           <label for="title">Titel</label>
           <input type="text" class="form-control default-width" id="title" autocomplete="off"
-            [disabled]="dataManagementClientService.editClientDeleted"
-            [(ngModel)]="dataManagementClientService.editClient.title" name="title" maxlength="15">
+            [disabled]="dataManagementEmployeeService.editEmployeeDeleted"
+            [(ngModel)]="dataManagementEmployeeService.editEmployee!.title" name="title" maxlength="15">
         </div>
       </div>
 
-      <div class="row-line"
-        *ngIf="dataManagementClientService.editClient.gender.toString() !=='2'  && dataManagementClientService.isCurrentAddressMainAdress()=== true ">
+      <div class="row-line">
         <div class="form-group firstColumn">
 
           <label for="firstname">Vorname</label>
           <div class="  custom-control-inline">
             <input type="text" class="form-control default-width" autofocus autocomplete="off"
-              [disabled]="dataManagementClientService.editClientDeleted"
-              [(ngModel)]="dataManagementClientService.editClient.firstName" id="firstname" name="FirstName"
+              [disabled]="dataManagementEmployeeService.editEmployeeDeleted"
+              [(ngModel)]="dataManagementEmployeeService.editEmployee!.firstName" id="firstname" name="FirstName"
               maxlength="50">
             <span class="add-button" type="button" (click)="addFirstNameLine2 = true;"
               *ngIf="!addFirstNameLine2== true">+</span>
@@ -305,15 +214,14 @@
         </div>
       </div>
 
-      <div class="row-line"
-        *ngIf="addFirstNameLine2== true && +dataManagementClientService.editClient.gender !==2   && dataManagementClientService.isCurrentAddressMainAdress()">
+      <div class="row-line">
         <div class="form-group firstColumn">
 
           <label for="secondName">Zweiter Vorname</label>
           <div class="  custom-control-inline">
             <input type="text" class="form-control default-width"
-              [disabled]="dataManagementClientService.editClientDeleted"
-              [(ngModel)]="dataManagementClientService.editClient.secondName" id="secondName" name="SecondName"
+              [disabled]="dataManagementEmployeeService.editEmployeeDeleted"
+              [(ngModel)]="dataManagementEmployeeService.editEmployee!.secondName" id="secondName" name="SecondName"
               maxlength="50">
             <span class="del-button" type="button" (click)="addFirstNameLine2 = false;"
               *ngIf="addFirstNameLine2== true">-</span>
@@ -322,14 +230,13 @@
 
       </div>
 
-      <div class="row-line"
-        *ngIf="+dataManagementClientService.editClient.gender !==2  && dataManagementClientService.isCurrentAddressMainAdress()">
+      <div class="row-line">
         <div class="form-group firstColumn">
           <label for="profil-name">Nachname</label>
           <div class="  custom-control-inline">
             <input type="text" class="form-control default-width"
-              [disabled]="dataManagementClientService.editClientDeleted"
-              [(ngModel)]="dataManagementClientService.editClient.name" name="Name" id="profil-name" required
+              [disabled]="dataManagementEmployeeService.editEmployeeDeleted"
+              [(ngModel)]="dataManagementEmployeeService.editEmployee!.name" name="Name" id="profil-name" required
               maxlength="50">
             <span class="add-button" type="button" (click)="addNameLine2 = true;" *ngIf="!addNameLine2== true">+</span>
           </div>
@@ -337,51 +244,26 @@
       </div>
 
       <div class="row-line"
-        *ngIf="addNameLine2 && +dataManagementClientService.editClient.gender !==2  && dataManagementClientService.isCurrentAddressMainAdress()">
+        *ngIf="addNameLine2  ">
         <div class="form-group firstColumn">
           <label for="maidenName">Ledigname</label>
           <div class="  custom-control-inline">
             <input type="text" class="form-control default-width"
-              [disabled]="dataManagementClientService.editClientDeleted"
-              [(ngModel)]="dataManagementClientService.editClient.maidenName" id="maidenName" name="MaidenName"
+              [disabled]="dataManagementEmployeeService.editEmployeeDeleted"
+              [(ngModel)]="dataManagementEmployeeService.editEmployee!.maidenName" id="maidenName" name="MaidenName"
               maxlength="50">
             <span class="del-button" type="button" (click)="addNameLine2 = false;" *ngIf="addNameLine2== true">-</span>
           </div>
         </div>
       </div>
 
-      <div class="row-line" *ngIf="dataManagementClientService.isCurrentAddressMainAdress()=== false">
-        <div class="form-group firstColumn">
-          <label for="addressLine1">Anschrift Linie 1</label>
-          <div class="  custom-control-inline">
-            <input type="text" class="form-control default-width" id="addressLine1"
-              [disabled]="dataManagementClientService.editClientDeleted"
-              [(ngModel)]="dataManagementClientService.editClient.addresses[dataManagementClientService.currentAddressIndex].addressLine1"
-              name="addressLine1">
-
-
-          </div>
-        </div>
-      </div>
-      <div class="row-line" *ngIf="dataManagementClientService.isCurrentAddressMainAdress()=== false">
-        <div class="form-group firstColumn">
-          <label for="addressLine2">Anschrift Linie 2</label>
-          <div class="  custom-control-inline">
-            <input type="text" class="form-control default-width" id="addressLine2"
-              [disabled]="dataManagementClientService.editClientDeleted"
-              [(ngModel)]="dataManagementClientService.editClient.addresses[dataManagementClientService.currentAddressIndex].addressLine2"
-              name="addressLine2">
-          </div>
-        </div>
-      </div>
-
-      <div class="row-line">
+            <div class="row-line">
         <div class="form-group firstColumn">
           <label for="street">Adresse</label>
           <div class="  custom-control-inline">
             <input type="text" class="form-control default-width" id="street"
-              [disabled]="dataManagementClientService.editClientDeleted"
-              [(ngModel)]="dataManagementClientService.editClient.addresses[dataManagementClientService.currentAddressIndex].street"
+              [disabled]="dataManagementEmployeeService.editEmployeeDeleted"
+              [(ngModel)]="dataManagementEmployeeService.editEmployee!.addresses[dataManagementEmployeeService.currentAddressIndex].street"
               name="street">
             <span class="add-button" type="button" (click)="addStreetLine2 = true;"
               *ngIf="!addStreetLine2== true">+</span>
@@ -395,8 +277,8 @@
           <label for="street2">Adresse Linie 2</label>
           <div class="  custom-control-inline">
             <input type="text" class="form-control default-width" id="street2"
-              [disabled]="dataManagementClientService.editClientDeleted"
-              [(ngModel)]="dataManagementClientService.editClient.addresses[dataManagementClientService.currentAddressIndex].street2"
+              [disabled]="dataManagementEmployeeService.editEmployeeDeleted"
+              [(ngModel)]="dataManagementEmployeeService.editEmployee!.addresses[dataManagementEmployeeService.currentAddressIndex].street2"
               name="street2">
             <span class="add-button" type="button" (click)="addStreetLine3 = true;"
               *ngIf="!addStreetLine3== true">+</span>
@@ -411,8 +293,8 @@
           <label for="street3">Adresse Linie 3</label>
           <div class="  custom-control-inline">
             <input type="text" class="form-control default-width" id="street3"
-              [disabled]="dataManagementClientService.editClientDeleted"
-              [(ngModel)]="dataManagementClientService.editClient.addresses[dataManagementClientService.currentAddressIndex].street3"
+              [disabled]="dataManagementEmployeeService.editEmployeeDeleted"
+              [(ngModel)]="dataManagementEmployeeService.editEmployee.addresses[dataManagementEmployeeService.currentAddressIndex].street3"
               name="street3">
             <span class="del-button" type="button" (click)="addStreetLine3 = false"
               *ngIf="addStreetLine3== true">-</span>
@@ -424,8 +306,8 @@
         <div class="form-group firstColumn">
           <label for="zip" class="zip">PLZ</label>
           <input type="text" class="form-control zip" (focusout)="onZipFocusout()" id="zip"
-            [disabled]="dataManagementClientService.editClientDeleted"
-            [(ngModel)]="dataManagementClientService.editClient.addresses[dataManagementClientService.currentAddressIndex].zip"
+            [disabled]="dataManagementEmployeeService.editEmployeeDeleted"
+            [(ngModel)]="dataManagementEmployeeService.editEmployee.addresses[dataManagementEmployeeService.currentAddressIndex].zip"
             name="zip">
 
 
@@ -433,11 +315,11 @@
         <div>
           <label for="city" class="place">Ort</label>
           <input type="text" class="form-control place" id="city"
-            [disabled]="dataManagementClientService.editClientDeleted"
-            [(ngModel)]="dataManagementClientService.editClient.addresses[dataManagementClientService.currentAddressIndex].city"
+            [disabled]="dataManagementEmployeeService.editEmployeeDeleted"
+            [(ngModel)]="dataManagementEmployeeService.editEmployee.addresses[dataManagementEmployeeService.currentAddressIndex].city"
             name="city" list="dynamicPlace">
           <datalist id="dynamicPlace">
-            <option *ngFor="let item of dataManagementClientService.lastContries" [ngValue]="item">{{item.city}}
+            <option *ngFor="let item of dataManagementEmployeeService.lastContries" [ngValue]="item">{{item.city}}
             </option>
           </datalist>
         </div>
@@ -447,11 +329,11 @@
         <div class=" firstColumn">
           <label for="state" class="zip" [hidden]="!showState">Kanton</label>
           <select class="form-control zip" [hidden]="!showState" id="state"
-            [disabled]="dataManagementClientService.editClientDeleted"
-            [(ngModel)]="dataManagementClientService.editClient.addresses[dataManagementClientService.currentAddressIndex].state"
+            [disabled]="dataManagementEmployeeService.editEmployeeDeleted"
+            [(ngModel)]="dataManagementEmployeeService.editEmployee.addresses[dataManagementEmployeeService.currentAddressIndex].state"
             name="state">
-            <option *ngFor="let c of dataManagementClientService.stateList" [value]="c"
-              [selected]="dataManagementClientService.editClient.addresses[dataManagementClientService.currentAddressIndex].state === c">
+            <option *ngFor="let c of dataManagementEmployeeService.stateList" [value]="c"
+              [selected]="dataManagementEmployeeService.editEmployee.addresses[dataManagementEmployeeService.currentAddressIndex].state === c">
               {{c}}</option>
 
           </select>
@@ -459,11 +341,11 @@
         <div>
           <label for="country" class="place">Land</label>
 
-          <select class="form-control place" id="country" [disabled]="dataManagementClientService.editClientDeleted"
-            [(ngModel)]="dataManagementClientService.editClient.addresses[dataManagementClientService.currentAddressIndex].country"
+          <select class="form-control place" id="country" [disabled]="dataManagementEmployeeService.editEmployeeDeleted"
+            [(ngModel)]="dataManagementEmployeeService.editEmployee.addresses[dataManagementEmployeeService.currentAddressIndex].country"
             name="country">
-            <option *ngFor="let c of dataManagementClientService.countries" [value]="c.abbreviation"
-              [selected]="dataManagementClientService.editClient.addresses[dataManagementClientService.currentAddressIndex].country === c.abbreviation">
+            <option *ngFor="let c of dataManagementEmployeeService.countries" [value]="c.abbreviation"
+              [selected]="dataManagementEmployeeService.editEmployee.addresses[dataManagementEmployeeService.currentAddressIndex].country === c.abbreviation">
               {{c.name}}</option>
 
           </select>
@@ -484,7 +366,7 @@
 
     <div class="secondColumnContainer">
 
-      <div *ngFor="let phoneData of  dataManagementClientService.communicationPhoneList; index as ii">
+      <div *ngFor="let phoneData of  dataManagementEmployeeService.communicationPhoneList; index as ii">
 
         <div class="row-line ">
           <div class="form-group ">
@@ -492,25 +374,25 @@
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Telefon</label>
             <div class="  custom-control-inline">
               <select class="form-control gap-prefix " [value]="phoneData.prefix" name="phonePrefix"
-                [disabled]="dataManagementClientService.editClientDeleted" (change)="onChangePhonePrefix(ii,$event)">
-                <option *ngFor="let c of dataManagementClientService.communicationPrefixList" [value]="c.prefix"
+                [disabled]="dataManagementEmployeeService.editEmployeeDeleted" (change)="onChangePhonePrefix(ii,$event)">
+                <option *ngFor="let c of dataManagementEmployeeService.communicationPrefixList" [value]="c.prefix"
                   [selected]="phoneData.prefix === c.prefix" data-toggle="tooltip" title="{{c.name}}">{{c.prefix}}
                 </option>
               </select>
 
               <input type="text" class="form-control medium-width-tel" [value]="phoneData.value" name="phoneValue"
-                [disabled]="dataManagementClientService.editClientDeleted" (change)="onChangePhoneValue(ii,$event)"
+                [disabled]="dataManagementEmployeeService.editEmployeeDeleted" (change)="onChangePhoneValue(ii,$event)"
                 (keyup)="onKeyupPhoneNumber(ii,$event) ">
 
               <select class="form-control gap" [value]="phoneData.type" name="pohneType"
-                (change)="onChangePhoneType(ii,$event)" [disabled]="dataManagementClientService.editClientDeleted">
-                <option *ngFor="let c of  dataManagementClientService.communicationTypePhoneList" [value]="c.type"
+                (change)="onChangePhoneType(ii,$event)" [disabled]="dataManagementEmployeeService.editEmployeeDeleted">
+                <option *ngFor="let c of  dataManagementEmployeeService.communicationTypePhoneList" [value]="c.type"
                   [selected]="phoneData.type === c.type">
                   {{c.name}}
                 </option>
               </select>
               <span class="add-button" type="button"
-                *ngIf="(ii === dataManagementClientService.communicationPhoneList.length-1 )"
+                *ngIf="(ii === dataManagementEmployeeService.communicationPhoneList.length-1 )"
                 (click)="onClickAddPhone()">+</span>
               <span class="del-button" type="button" *ngIf="(ii !==0 )" (click)="onClickDelPhone(phoneData)">-</span>
             </div>
@@ -518,7 +400,7 @@
         </div>
       </div>
 
-      <div *ngFor="let emailData of  dataManagementClientService.communicationEmailList; index as i">
+      <div *ngFor="let emailData of  dataManagementEmployeeService.communicationEmailList; index as i">
 
         <div class="row-line">
           <div class="form-group">
@@ -527,16 +409,16 @@
 
 
               <input type="email" class="form-control medium-width" [value]="emailData.value"
-                [disabled]="dataManagementClientService.editClientDeleted" (change)="onChangeEmailValue(i,$event)"
+                [disabled]="dataManagementEmployeeService.editEmployeeDeleted" (change)="onChangeEmailValue(i,$event)"
                 name="emailValue" (keyup)="onChangeEmailValue(i,$event)">
 
               <select class="form-control gap" [value]="emailData.type" name="emailType"
-                [disabled]="dataManagementClientService.editClientDeleted" (change)="onChangeEmailType(i,$event)">
-                <option *ngFor="let c of  dataManagementClientService.communicationTypeEmailList " [value]="c.type"
+                [disabled]="dataManagementEmployeeService.editEmployeeDeleted" (change)="onChangeEmailType(i,$event)">
+                <option *ngFor="let c of  dataManagementEmployeeService.communicationTypeEmailList " [value]="c.type"
                   [selected]="emailData.type === c.type">{{c.name}}</option>
               </select>
               <span class="add-button" type="button"
-                *ngIf="(i === dataManagementClientService.communicationEmailList.length-1 )"
+                *ngIf="(i === dataManagementEmployeeService.communicationEmailList.length-1 )"
                 (click)="onClickAddEmail()">+</span>
               <span class="del-button" type="button" *ngIf="(i !==0 )" (click)="onClickDelEmail(emailData)">-</span>
             </div>
@@ -546,16 +428,15 @@
       </div>
 
 
-      <div class="row-line"
-        *ngIf="dataManagementClientService.editClient.gender.toString() !=='2' && dataManagementClientService.isCurrentAddressMainAdress()=== true">
+      <div class="row-line">
         <div class="form-group ">
           <label for="profil-birthday">Geburtsdatum</label>
 
           <div class="input-group  medium-width">
             <input class="form-control " name="birthdate" id="profil-birthday"
-              [disabled]="dataManagementClientService.editClientDeleted"
-              [ngModel]="dataManagementClientService.editClient.internalBirthdate"
-              (ngModelChange)="dataManagementClientService.editClient.internalBirthdate = $event" ngbDatepicker btn-dark #birthdate="ngbDatepicker">
+              [disabled]="dataManagementEmployeeService.editEmployeeDeleted"
+              [ngModel]="dataManagementEmployeeService.editEmployee.internalBirthdate"
+              (ngModelChange)="dataManagementEmployeeService.editEmployee.internalBirthdate = $event" ngbDatepicker btn-dark #birthdate="ngbDatepicker">
             <div class="input-group-append">
               <span class="input-group-text"  style="width:40px;" (click)="birthdate.toggle()">
                 <i class="fa fa-calendar" style="color:#464e5f;"></i>

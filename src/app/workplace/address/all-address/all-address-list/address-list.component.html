@@ -12,91 +12,6 @@
   </div>
 </ng-template>
 
-<!-- Settings for bulk invoices Window -->
-<ng-template #contentSerialInvoice id="content" let-modal role="dialog">
-
-  <div class="modal-header">
-    <div class="container-header-modal modal-title" id="modal-title">Massenrechnungen</div>
-
-  </div>
-
-  <div class="modal-body first-modal">
-
-    <div class="form-group ">
-      <label for="invoicedOn">Rechnungserstellung</label>
-
-      <div class="input-group">
-        <input class="form-control" name="invoicedOn" [ngModel]="dataManagementEmployeeService.invoicedOn"
-          (change)="onChangeDate($event)" (ngModelChange)="dataManagementEmployeeService.invoicedOn = $event"
-          ngbDatepicker #dataInvoicedOn="ngbDatepicker">
-        <div class="input-group-append">
-          <span class="input-group-text" style="width:40px;" (click)="dataInvoicedOn.toggle()">
-            <i class="fa fa-calendar" style="font-size: 16px; color:#464e5f;"></i>
-          </span>
-        </div>
-      </div>
-
-      <div class="form-group "
-        *ngIf="dataManagementEmployeeService.bankDetails && dataManagementEmployeeService.bankDetails.length > 0"
-        style="margin-top: 15px;">
-        <label for="invoiceAccount">Konto</label>
-        <select class="form-control" [(ngModel)]="dataManagementEmployeeService.invoiceBankDetail" name="invoiceAccount">
-          <option *ngFor="let c of dataManagementEmployeeService.bankDetails; index as i" [ngValue]="c">
-            {{i+1}}
-            &nbsp;&nbsp; {{c.name}} -
-            {{c.accountNumber}}</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="form-group ">
-      <label for="invoice-annual-fee">Gilt für Jahr</label>
-      <input type="number" [(ngModel)]="dataManagementEmployeeService.invoiceYear" class="form-control "
-        id="invoice-annual-fee" min="2019" name="nvoice-annual-fee">
-
-    </div>
-
-    <div class="form-group ">
-      <div class="form-group comboBox">
-        <label for="invoiceMonth">Gilt für Monat</label>
-        <select class="form-control" id="invoiceMonth" (change)="onChangeMonthIndex($event)">
-          <option *ngFor="let c of monthList ; index as i" [selected]="dataManagementEmployeeService.invoiceMonth === i">
-            {{c}}</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group ">
-      <label for="invoice-name">Name der Rechnung</label>
-      <input type="search" [(ngModel)]="dataManagementEmployeeService.invoiceName"
-        class="form-control signup-input text-value" autocomplete="on" id="invoice-name" list="dynamicInvoiceName"
-        name="invoicename">
-      <datalist id="dynamicInvoiceName">
-        <option *ngFor="let c of dataManagementEmployeeService.invoiceBaseNamelist; index as i" [ngValue]="c">
-          {{c.name}} </option>
-      </datalist>
-    </div>
-
-    <div class="form-group ">
-      <label class="checkbox-label">
-        <input type="checkbox" [(ngModel)]="dataManagementEmployeeService.sendInvoicePerEmail"
-          name="sendInvoicePerEmail" [disabled]="!dataManagementEmployeeService.invoiceCanBeSenByMail">
-          Rechnungen via Email versenden
-      </label>
-    </div>
-
-    <p></p>
-    <p></p>
-
-  </div>
-
-  <div class="modal-footer ">
-    <span type="button" class="link-button darkgrey-font font-underline"
-      (click)="modal.dismiss('Cancel click')">Abbrechen</span>
-    <button type="button" class="btn btn-primary normal-btn" [disabled]="!isModalDirty()"
-      (click)="modal.close()">Erstellen</button>
-  </div>
-</ng-template>
-
 
 <form id="allAddressForm">
   <div class="container-header header-container">
@@ -104,36 +19,7 @@
 
     <span class="filler"></span>
 
-    <app-button-pdf [buttonDisabled]="!(dataManagementEmployeeService.headerCheckBoxValue || checkBoxIndeterminate ) "
-      *ngIf="isAuthorised && onPdfIconVisible()" (click)="openSerial(contentSerialInvoice)">
-    </app-button-pdf>
-
-    <ng-container *ngIf="!(dataManagementEmployeeService.headerCheckBoxValue || checkBoxIndeterminate)">
-      <div class="btn dropdown-toggle ownStyle-button-disabled" role="button">
-        <icon-excel></icon-excel>
-      </div>
-    </ng-container>
-
-    <ng-container *ngIf="(dataManagementEmployeeService.headerCheckBoxValue || checkBoxIndeterminate) ">
-      <div class="btn dropdown-toggle ownStyle-button" role="button" data-toggle="dropdown">
-        <icon-excel></icon-excel>
-      </div>
-
-      <div class="dropdown-menu dropdown-menu-right">
-
-        <a class="dropdown-item" (click)="onClickExportExcel(0)">
-          Adressen
-        </a>
-        <a class="dropdown-item" (click)="onClickExportExcel(1)">
-          Rechnungsadressen
-        </a>
-        <a class="dropdown-item" [ngClass]="{'disabled': !onFluctuationEnabled()}" (click)="onClickExportExcel(2)">
-          Fluktuation
-        </a>
-
-      </div>
-    </ng-container>
-
+   
   </div>
 
 
@@ -168,8 +54,7 @@
   </div>
 
   <div class="container-table">
-    <table class="table table-borderless" (blur)="onLostFocus()" #myTable id="myTable" resizeObserver
-    (resizeElement)="onResize($event)">
+    <table class="table table-borderless" (blur)="onLostFocus()" #myTable id="myTable">
       <thead>
         <tr>
           <th class="table-header" style="width: 40px; max-width: 40px;">
@@ -180,20 +65,6 @@
 
           <th class="table-header" style="width: 20px; max-width: 20px;"></th>
 
-          <th class="table-header" (click)="onClickHeader('idNumber')" style="width: 90px; max-width: 90px;min-width: 90px;">
-            <div class="table-header-cell custom-control-inline">
-              <p class="gap noselect">NR</p>
-              <p class="table-header-cell-arrow noselect">{{arrowNo}}</p>
-            </div>
-
-          </th>
-          <th class="table-header" (click)="onClickHeader('company')" style="width: 160px; ">
-            <div class="table-header-cell custom-control-inline">
-              <p class="gap noselect">FIRMA</p>
-              <p class="table-header-cell-arrow noselect">{{arrowCompany}}</p>
-            </div>
-
-          </th>
           <th class="table-header" (click)="onClickHeader('firstName')" style="width: 160px; ">
             <div class="table-header-cell custom-control-inline">
               <p class="gap noselect">VORNAME</p>
@@ -221,7 +92,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="table-row"  class="table-row"  *ngFor="let data of dataManagementEmployeeService.listWrapper?.clients; index as i"
+        <tr class="table-row"  class="table-row"  *ngFor="let data of dataManagementEmployeeService.listWrapper?.employees; index as i"
           (click)="onClickedRow(data)" [class.active]="data.id == highlightRowId">
           <td class="table-cell">
             <input type="checkbox" [checked]="checkBoxValue(i)" (change)="onChangeCheckBox(i,$event)" name="checkbox"
@@ -229,23 +100,19 @@
           </td>
           <td class="table-cell">{{data.typeAbbreviation}}</td>
           <td [ngClass]="{
-            'table-cell':data.isDeleted===false , 'table-cell-delete':data.isDeleted ===true }">{{data.idNumber}}</td>
-          <td [ngClass]="{
-            'table-cell':data.isDeleted===false , 'table-cell-delete':data.isDeleted ===true }">{{data.company}}</td>
-          <td [ngClass]="{
             'table-cell':data.isDeleted===false , 'table-cell-delete':data.isDeleted ===true }">{{data.firstName}}</td>
           <td [ngClass]="{
             'table-cell':data.isDeleted===false , 'table-cell-delete':data.isDeleted ===true }">{{data.name}}</td>
           <td [ngClass]="{
             'table-cell':data.isDeleted===false , 'table-cell-delete':data.isDeleted ===true }">
-            {{data.membership.status}}</td>
+           </td>
           <td class="table-cell cell-right">
             <div>
               <div class="icon icon-padding" (click)="onClickEdit(data)">
                 <icon-pencil-icon-grey></icon-pencil-icon-grey>
               </div>
 
-              <div class="icon" (click)="open(contentDelete,data)" *ngIf="!data.isDeleted">
+              <div class="icon"   *ngIf="!data.isDeleted">
                 <icon-trash-icon-red></icon-trash-icon-red>
 
               </div>

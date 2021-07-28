@@ -31,14 +31,14 @@ export class AuthService {
 
     return await this.httpClient.post<MyToken>(
       `${environment.baseUrl}Accounts/LoginUser`, user).toPromise()
-      .then(tok => {
+      .then((tok:any) => {
 
         if (tok === null) {
           this.showInfo(MessageLibrary.AUTH_USER_ERROR + MessageLibrary.RESPONSE_ERROR, 'AUTH_USER_ERROR');
           return false;
         }
 
-        if (tok && typeof tok === 'object' && tok['user not exist'] !== undefined) {
+        if (tok && typeof tok === 'object'  && tok['user not exist']) {
           this.showInfo(MessageLibrary.AUTH_USER_NOT_EXIST);
           return false;
         } else {
@@ -125,7 +125,7 @@ export class AuthService {
     const token = localStorage.getItem(MessageLibrary.TOKEN);
     if (token !== null) {
       const currentDate = new Date();
-      const tokenDate = new Date(localStorage.getItem(MessageLibrary.TOKEN_EXP));
+      const tokenDate = new Date(localStorage.getItem(MessageLibrary.TOKEN_EXP) as string);
 
       const res = EqualDate(currentDate, tokenDate);
       if (res <= 0) {
@@ -162,7 +162,7 @@ export class AuthService {
         break;
 
       case '200':
-        this.showInfo(message);
+        this.showInfo(message as string);
         break;
 
       case '204':
@@ -208,7 +208,7 @@ export class AuthService {
     localStorage.setItem(MessageLibrary.TOKEN_SUBJECT, token.subject);
     localStorage.setItem(MessageLibrary.TOKEN_USERNAME, token.username);
     localStorage.setItem(MessageLibrary.TOKEN_USERID, token.id);
-    localStorage.setItem(MessageLibrary.TOKEN_EXP, token.expTime.toString());
+    localStorage.setItem(MessageLibrary.TOKEN_EXP, token.expTime!.toString());
     localStorage.setItem(MessageLibrary.TOKEN_ADMIN, token.isAdmin.toString());
     localStorage.setItem(MessageLibrary.TOKEN_AUTHORISED, token.isAuthorised.toString());
     localStorage.setItem(MessageLibrary.TOKEN_APPVERSION, token.version);
@@ -247,7 +247,7 @@ export class AuthService {
     let admin = false;
 
     if (localStorage.getItem(MessageLibrary.TOKEN_ADMIN)) {
-      admin = JSON.parse(localStorage.getItem(MessageLibrary.TOKEN_ADMIN));
+      admin = JSON.parse(localStorage.getItem(MessageLibrary.TOKEN_ADMIN) as string);
     }
 
     return admin;

@@ -1,16 +1,14 @@
 <div class="header-container">
-  <div class="icon" (click)="onClickDashboard()" *ngIf="!dataLoadFileService.logoImage">
+  <div class="icon" (click)="onClickDashboard()" >
     <img src="/assets/png/MADLAB_64.png" width="32" height="32" alt="image">
   </div>
 
-  <div *ngIf="dataLoadFileService.logoImage" (click)="onClickDashboard()" class="icon">
-    <img [src]="dataLoadFileService.logoImage" width="32" height="32" alt="">
-  </div>
+  
 
 
 
-  <span style="margin-left: 35px; margin-top: 45px; font-size: small; color:var(--VersionNumberColor)">{{version}}</span>
-  <app-signalr-message class="signalr" (refreshEvent)="refreshPage()"></app-signalr-message>
+  <!-- <span style="margin-left: 35px; margin-top: 45px; font-size: small; color:var(--VersionNumberColor)">{{version}}</span> -->
+  <!-- <app-signalr-message class="signalr" (refreshEvent)="refreshPage()"></app-signalr-message> -->
   <span class="filler"></span>
 
 
@@ -22,11 +20,7 @@
       <span class="sr-only">Toggle Dropdown</span>
     </button>
     <ul class="dropdown-menu dropdown-menu-right" >
-      <li class="dropdown-item" (click)="onClickDropdown('Export erstellen')" [hidden]="!authorised">Export erstellen
-      </li>
-      <li class="dropdown-item" (click)="onClickDropdown('Kurs erfassen')" [hidden]="false">Kurs erfassen</li>
-      <li class="dropdown-item" (click)="onClickDropdown('Rechnung erstellen')" [hidden]="!authorised">Rechnung
-        erstellen</li>
+     
       <li class="dropdown-item" (click)="onClickDropdown('Adresse erfassen')">Adresse erfassen</li>
     </ul>
   </div>

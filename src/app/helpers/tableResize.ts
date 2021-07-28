@@ -1,11 +1,11 @@
 import { ElementRef } from '@angular/core';
 
 
-export function measureTableHeight(myTable: ElementRef): number {
+export function measureTableHeight(myTable: ElementRef): number|undefined {
   const win = window.innerHeight;
 
   const table = myTable.nativeElement as HTMLTableElement;
-  if (!table) { return; }
+  if (!table) { return undefined; }
 
   const realTopCard = table.offsetTop;
 

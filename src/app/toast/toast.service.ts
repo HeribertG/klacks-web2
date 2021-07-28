@@ -21,7 +21,7 @@ export class ToastService {
   }
 
 
-  remove(toast) {
+  remove(toast : any) {
     this.toasts = this.toasts.filter(t => t !== toast);
   }
 

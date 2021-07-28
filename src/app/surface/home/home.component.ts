@@ -11,9 +11,7 @@ import { MessageLibrary } from 'src/app/helpers/string-constants';
 import { CanComponentDeactivate } from 'src/app/helpers/can-deactivate.guard';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
-import { AppSetting, ISetting } from 'src/app/core/settings-various-class';
-import { DataSettingsVariousService } from 'src/app/data/data-settings-various.service';
-import { DataLoadFileService } from 'src/app/data/data-load-file.service';
+
 
 
 
@@ -33,27 +31,14 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
     public dataManagementSwitchboardService: DataManagementSwitchboardService,
     private router: Router,
     private titleService: Title,
-    @Inject(DataSettingsVariousService) private dataSettingsVariousService: DataSettingsVariousService,
-    @Inject(DataLoadFileService) private dataLoadFileService: DataLoadFileService,
+
   ) { }
 
-  @ViewChild('content', { static: false }) private content;
+  @ViewChild('content', { static: false }) private content:any;
 
-  isDashboard = true;
-  isAllAddsresses = false;
-  isAllWorkshops = false;
-  isAllDocuments = false;
-  isAllInvoices = false;
-  isInvoices = false;
-  isProfile = false;
-  isSetting = false;
-  isReminder = false;
-  isAllExports = false;
-
-  isEditAddress = false;
-  isEditWorkshop = false;
-  isEditExport = false;
-
+  
+  isAllAddsresses = true;
+  isEditAddress= false;
 
   isSavebarVisible = false;
   routerToken = '';
@@ -68,28 +53,14 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
   }
   ngOnInit(): void {
     this.setTheme();
-    this.tryLoadIcon();
-    this.saveBarWrapper.style.setProperty('--footer_height', '0px');
+    // this.tryLoadIcon();
+    this.saveBarWrapper!.style.setProperty('--footer_height', '0px');
 
     this.dataManagementSwitchboardService.showProgressSpinner = false;
 
     this.route.params.subscribe((params) => {
       this.getClientType(params.id);
     });
-
-
-    try {
-      this.dataSettingsVariousService.readSettingList().subscribe((l) => {
-        if (l) {
-          const tmp = l as ISetting[];
-          const title = tmp.find(x => x.type === AppSetting.APP_NAME);
-          if (title && title.value) { this.titleService.setTitle(title.value); }
-        }
-      });
-    } catch (e) {
-      console.log(e);
-    }
-
 
   }
 
@@ -139,7 +110,7 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
     }
 
     this.routerToken = localStorage.getItem(MessageLibrary.ROUTER_TOKEN) === null ?
-      '' : localStorage.getItem(MessageLibrary.ROUTER_TOKEN);
+      '' : localStorage.getItem(MessageLibrary.ROUTER_TOKEN) as string;
 
     if (this.routerToken !== '') {
       this.router.navigate([this.routerToken]);
@@ -155,14 +126,7 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
     this.reset();
 
     switch (value) {
-      case 'dashboard':
-
-        localStorage.removeItem(MessageLibrary.ROUTER_SUBTOKEN);
-        localStorage.removeItem(MessageLibrary.ROUTER_TOKEN);
-        localStorage.setItem(MessageLibrary.ROUTER_TOKEN, 'workplace/dashboard');
-        this.isDashboard = true;
-
-        break;
+      
       case 'all-addresses':
 
         localStorage.removeItem(MessageLibrary.ROUTER_SUBTOKEN);
@@ -171,104 +135,28 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
         this.isAllAddsresses = true;
         break;
 
-      case 'all-workshops':
-        import('./../../workplace/workshop/workshop.module').then(m => m.WorkshopModule);
-
-
-        localStorage.removeItem(MessageLibrary.ROUTER_SUBTOKEN);
-        localStorage.removeItem(MessageLibrary.ROUTER_TOKEN);
-        localStorage.setItem(MessageLibrary.ROUTER_TOKEN, 'workplace/all-workshops');
-        this.isAllWorkshops = true;
-        break;
-
-      case 'all-documents':
-        import('./../../workplace/document/document.module').then(m => m.DocumentModule);
-
-        localStorage.removeItem(MessageLibrary.ROUTER_SUBTOKEN);
-        localStorage.removeItem(MessageLibrary.ROUTER_TOKEN);
-        localStorage.setItem(MessageLibrary.ROUTER_TOKEN, 'workplace/all-documents');
-        this.isAllDocuments = true;
-        break;
-      case 'all-invoices':
-        import('./../../workplace/invoice/invoice.module').then(m => m.InvoiceModule);
-
-        localStorage.removeItem(MessageLibrary.ROUTER_SUBTOKEN);
-        localStorage.removeItem(MessageLibrary.ROUTER_TOKEN);
-        localStorage.setItem(MessageLibrary.ROUTER_TOKEN, 'workplace/all-invoices');
-        this.isAllInvoices = true;
-        break;
-      case 'invoices':
-        localStorage.removeItem(MessageLibrary.ROUTER_SUBTOKEN);
-        import('./../../workplace/invoice/invoice.module').then(m => m.InvoiceModule);
-
-        this.isInvoices = true;
-        break;
-
-      case 'reminder':
-        localStorage.removeItem(MessageLibrary.ROUTER_SUBTOKEN);
-        import('./../../workplace/reminder/reminder.module').then(m => m.ReminderModule);
-
-        this.isReminder = true;
-        break;
-
-      case 'all-exports':
-        localStorage.removeItem(MessageLibrary.ROUTER_SUBTOKEN);
-        localStorage.removeItem(MessageLibrary.ROUTER_TOKEN);
-        localStorage.setItem(MessageLibrary.ROUTER_TOKEN, 'workplace/all-exports');
-        this.isAllExports = true;
-        break;
-
-      case 'profile':
-        localStorage.removeItem(MessageLibrary.ROUTER_SUBTOKEN);
-        import('./../../workplace/profil/profil.module').then(m => m.ProfilModule);
-
-        this.isProfile = true;
-        this.isSavebarVisible = true;
-        break;
-      case 'settings':
-        localStorage.removeItem(MessageLibrary.ROUTER_SUBTOKEN);
-        import('./../../workplace/setting/settings.module').then(m => m.SettingsModule);
-
-        this.isSetting = true;
-        this.isSavebarVisible = true;
-        break;
-
-
-
       case 'edit-address':
         this.isEditAddress = true;
         this.isSavebarVisible = true;
         break;
 
-      case 'edit-workshop':
-        import('./../../workplace/workshop/workshop.module').then(m => m.WorkshopModule);
-
-        this.isEditWorkshop = true;
-        this.isSavebarVisible = true;
-        break;
-
-      case 'edit-export':
-
-        localStorage.setItem(MessageLibrary.ROUTER_SUBTOKEN, '/workplace/edit-export');
-        this.isEditExport = true;
-
-        break;
+     
 
       default:
 
         localStorage.removeItem(MessageLibrary.ROUTER_TOKEN);
         localStorage.setItem(MessageLibrary.ROUTER_TOKEN, 'workplace/dashboard');
-        this.isDashboard = true;
+        this.isAllAddsresses = true;
     }
 
     if (this.isSavebarVisible) {
-      this.saveBarWrapper.style.setProperty('--footer_height', '65px');
+      this.saveBarWrapper!.style.setProperty('--footer_height', '65px');
     } else {
-      this.saveBarWrapper.style.setProperty('--footer_height', '0px');
+      this.saveBarWrapper!.style.setProperty('--footer_height', '0px');
     }
   }
 
-  open(content): Promise<boolean> {
+  open(content:any): Promise<boolean> {
     return this.modalService
       .open(content, { size: 'sm', centered: true })
       .result.then((x) => {
@@ -284,30 +172,21 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
 
   private reset() {
 
-    this.isDashboard = false;
+    
     this.isAllAddsresses = false;
-    this.isAllWorkshops = false;
-    this.isAllDocuments = false;
-    this.isAllInvoices = false;
-    this.isInvoices = false;
-    this.isProfile = false;
-    this.isSetting = false;
-    this.isReminder = false;
-    this.isAllExports = false;
+    
 
     this.isEditAddress = false;
-    this.isEditWorkshop = false;
-    this.isEditExport = false;
-
+    
     this.isSavebarVisible = false;
     this.dataManagementSwitchboardService.isDisabled = false;
   }
 
-  tryLoadIcon() {
+  // tryLoadIcon() {
 
-    this.dataLoadFileService.downLoadIcon();
-    this.dataLoadFileService.downLoadLogo();
-  }
+  //   this.dataLoadFileService.downLoadIcon();
+  //   this.dataLoadFileService.downLoadLogo();
+  // }
 
   setTheme() {
     const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null;

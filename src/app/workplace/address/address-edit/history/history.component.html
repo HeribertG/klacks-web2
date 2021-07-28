@@ -45,7 +45,7 @@
     </thead>
     <tbody>
 
-      <tr *ngFor="let data of historyList; index as i">
+      <tr *ngFor="let data of historyList!; index as i">
 
         <th class="table-cell">{{data.validFrom | date: 'dd.MM.yyyy'}}</th>
         <td class="table-cell">{{data.currentUserCreated}}</td>
@@ -59,9 +59,9 @@
   </table>
 
   <div class="pagination justify-content-end" >
-    <label class="entry-info">Anzahl Einträge: {{filterHistory.maxItems}}</label>
-    <ngb-pagination [collectionSize]="filterHistory.maxItems + 1" (pageChange)="onPageChange()"
-      [(page)]="filterHistory.requiredPage" [maxSize]="filterHistory.numberOfItemsPerPage" [pageSize]="5"
+    <label class="entry-info">Anzahl Einträge: {{filterHistory!.maxItems!}}</label>
+    <ngb-pagination [collectionSize]="filterHistory!.maxItems! + 1" (pageChange)="onPageChange()"
+      [(page)]="filterHistory!.requiredPage!" [maxSize]="filterHistory!.numberOfItemsPerPage!" [pageSize]="5"
       [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
 
   </div>

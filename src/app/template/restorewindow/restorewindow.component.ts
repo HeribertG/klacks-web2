@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class RestorewindowComponent implements OnInit {
   @Input() title = 'Reaktiveren';
-  @Input() message: string;
+  @Input() message: string='';
   constructor() { }
 
   ngOnInit(): void {

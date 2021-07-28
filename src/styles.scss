@@ -1,1 +1,60 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import '~bootstrap/scss/bootstrap';
+
+@import './assets/standard-styles/datepicker.scss';
+
+@import './assets/standard-styles/colors.scss';
+
+body {
+
+
+  box-sizing: border-box;
+  background-color:var( --backgroundColorWindow);
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+
+
+@media screen and (max-width : 768px) {
+  .container {
+
+    max-width: 100%;
+    width: 100%;
+    min-width: 100%;
+
+    display: flex;
+    flex-flow: row wrap;
+    padding: 0px;
+    background-color:var( --backgroundColorWindow);
+
+  }
+}
+
+@media screen and (max-width : 1024px)   {
+  .container {
+
+    max-width: 100%;
+    width: 100%;
+    min-width: 100%;
+
+    display: flex;
+    flex-flow: row wrap;
+    padding: 0px;
+    background-color:var( --backgroundColorWindow);
+  }
+}
+
+@media screen and (min-width : 1025px) {
+  .container {
+
+    max-width: 1445px;
+    display: flex;
+    flex-flow: row wrap;
+    padding: 0px;
+    background-color:var( --backgroundColorWindow);
+  }
+}
+
+

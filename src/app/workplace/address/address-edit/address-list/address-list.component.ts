@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, AfterViewInit, OnChanges, EventEmitter, Output } from '@angular/core';
 import { HeaderProperties, HeaderDirection } from 'src/app/core/headerProperties';
-import { IAddress, ICountry } from 'src/app/core/client-class';
+import { Address, IAddress, ICountry } from 'src/app/core/employee-class';
 import { AddressTypeEnum } from 'src/app/helpers/enums/client-enum';
 import { MessageLibrary } from 'src/app/helpers/string-constants';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -12,8 +12,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AddressHistoryListComponent implements OnInit, AfterViewInit, OnChanges {
   @Output() isChangingAddress = new EventEmitter<string>();
-  @Input() addressList: IAddress[];
-  @Input() countries: ICountry[];
+  @Input() addressList: IAddress[] = [];
+  @Input() countries: ICountry[] = [];
 
   messageReactive = MessageLibrary.REACTIVE_ADDRESS;
   titleReactive = MessageLibrary.REACTIVE_ADDRESS_TITLE;
@@ -42,7 +42,7 @@ export class AddressHistoryListComponent implements OnInit, AfterViewInit, OnCha
   requiredPage = 1;
   maxItems = 0;
   sortedAddressList = new Array<IAddress>();
-  tmpAdress: IAddress;
+  tmpAdress: IAddress = new Address();
 
   constructor(private modalService: NgbModal) { }
 
@@ -55,7 +55,7 @@ export class AddressHistoryListComponent implements OnInit, AfterViewInit, OnCha
   }
 
 
-  ngOnChanges(changes) {
+  ngOnChanges(changes: any) {
     this.readPage();
   }
 
@@ -128,13 +128,13 @@ export class AddressHistoryListComponent implements OnInit, AfterViewInit, OnCha
     this.orderBy = orderBy;
     this.sortOrder = sortOrder;
     this.setHeaderArrowToUndefined();
-    this.setDirection(sortOrder, this.setPosition(orderBy));
+    this.setDirection(sortOrder, this.setPosition(orderBy)!);
     this.setHeaderArrowTemplate();
 
     this.readPage();
   }
 
-  private setPosition(orderBy: string): HeaderProperties {
+  private setPosition(orderBy: string): HeaderProperties | undefined {
     if (orderBy === 'zip') {
       return this.zipHeader;
     }
@@ -150,6 +150,7 @@ export class AddressHistoryListComponent implements OnInit, AfterViewInit, OnCha
     if (orderBy === 'country') {
       return this.countryHeader;
     }
+    return undefined;
   }
 
   private setDirection(sortOrder: string, value: HeaderProperties): void {
@@ -196,7 +197,7 @@ export class AddressHistoryListComponent implements OnInit, AfterViewInit, OnCha
 
   setCountry(id: string): string {
     const c = this.countries.find(x => x.abbreviation === id);
-    if (c) { return c.name; }
+    if (c) { return c.name!; }
     return id;
   }
 
@@ -215,20 +216,20 @@ export class AddressHistoryListComponent implements OnInit, AfterViewInit, OnCha
   readPage() {
     if (!this.addressList) {
       this.requiredPage = 1;
-      this.sortedAddressList = undefined;
+      this.sortedAddressList = [];
       return;
     }
 
     if (this.addressList.length === 0) {
       this.requiredPage = 1;
-      this.sortedAddressList = undefined;
+      this.sortedAddressList = [];
       return;
     }
 
 
     if (!this.addressList[0].id) {
       this.requiredPage = 1;
-      this.sortedAddressList = undefined;
+      this.sortedAddressList = [];
       return;
     }
 
@@ -240,7 +241,7 @@ export class AddressHistoryListComponent implements OnInit, AfterViewInit, OnCha
         function compare(
           a: IAddress,
           b: IAddress
-        ) {
+        ) :any{
           switch (that.orderBy) {
 
             case 'validFrom':
@@ -272,7 +273,8 @@ export class AddressHistoryListComponent implements OnInit, AfterViewInit, OnCha
                 return b.city.localeCompare(a.city);
               }
               break;
-
+            default:
+              return undefined;
           }
 
           function subCompare(tmpA: Date, tmpB: Date): number {
@@ -294,8 +296,10 @@ export class AddressHistoryListComponent implements OnInit, AfterViewInit, OnCha
               }
             }
           }
+          
 
-        });
+        }
+      );
 
 
       if (this.addressList.length > 0) {
@@ -315,12 +319,12 @@ export class AddressHistoryListComponent implements OnInit, AfterViewInit, OnCha
   }
 
 
-  onClickRestore(content, event: IAddress) {
+  onClickRestore(content:any, event: IAddress) {
 
     this.modalService.open(content, { size: 'sm', centered: true }).result.then(
       () => {
 
-        this.isChangingAddress.emit(event.id);
+        this.isChangingAddress.emit(event.id!);
         event.isDeleted = false;
 
       },

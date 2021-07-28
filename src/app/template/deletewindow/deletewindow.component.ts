@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class DeletewindowComponent implements OnInit {
   @Input() title = 'Löschen';
-  @Input() message: string;
+  @Input() message: string='';
   constructor() { }
 
   ngOnInit(): void {

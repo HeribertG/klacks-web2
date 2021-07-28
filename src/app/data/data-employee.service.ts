@@ -165,7 +165,7 @@ export class DataEmployeeService {
     }
 
     if (isNgbDateStructOk(value.staff!.internalValidFrom as NgbDateStruct )) {
-      value.staff!.validFrom = dateWithLocalTimeCorrection(transformNgbDateStructToDate(value.staff!.internalValidFrom as NgbDateStruct ));
+      value.staff!.validFrom = dateWithLocalTimeCorrection(transformNgbDateStructToDate(value.staff!.internalValidFrom as NgbDateStruct ))!;
     }
     if (isNgbDateStructOk(value.staff!.internalValidUntil as NgbDateStruct )) {
       value.staff!.validUntil = dateWithLocalTimeCorrection(transformNgbDateStructToDate(value.staff!.internalValidUntil  as NgbDateStruct ));
@@ -175,7 +175,7 @@ export class DataEmployeeService {
 
 
     value.addresses.forEach(x => {
-      x.validFrom = dateWithLocalTimeCorrection(x.validFrom);
+      x.validFrom = dateWithLocalTimeCorrection(x.validFrom)!;
 
     });
 

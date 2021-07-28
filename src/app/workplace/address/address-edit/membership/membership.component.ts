@@ -1,10 +1,8 @@
 import { Component, OnInit, IterableDiffers, OnDestroy, AfterViewInit, ViewChild, Output, EventEmitter, NgZone } from '@angular/core';
-import { DataManagementClientService } from 'src/app/data/management/data-management-client.service';
+import { DataManagementEmployeeService } from 'src/app/data/management/data-management-employee.service';
 import { NgForm } from '@angular/forms';
-import { IMembershipAttribute, OwnerDefinedValue } from 'src/app/core/client-class';
-import { IAttributeValue } from 'src/app/core/address-attribute-member-class';
+ 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ICredit } from 'src/app/core/journal-class';
 import { MessageLibrary } from 'src/app/helpers/string-constants';
 
 
@@ -16,7 +14,7 @@ import { MessageLibrary } from 'src/app/helpers/string-constants';
 })
 export class MembershipComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @ViewChild('membershipForm', { static: false }) membershipForm: NgForm;
+  @ViewChild('membershipForm', { static: false }) membershipForm: NgForm|undefined;
   @Output() isChangingEvent = new EventEmitter<boolean>();
 
 
@@ -28,14 +26,14 @@ export class MembershipComponent implements OnInit, AfterViewInit, OnDestroy {
   objectForUnsubscribe: any;
 
   iterableDiffer: any;
-  membershipAttribute: IMembershipAttribute[];
+
 
 
   constructor(
-    public dataManagementClientService: DataManagementClientService,
+    public dataManagementEmployeeService: DataManagementEmployeeService,
     private modalService: NgbModal,
     private iterableDiffers: IterableDiffers
-  ) { this.iterableDiffer = iterableDiffers.find([]).create(null); }
+  ) { this.iterableDiffer = iterableDiffers.find([]).create(undefined); }
 
 
   ngOnInit(): void {
@@ -44,9 +42,9 @@ export class MembershipComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.objectForUnsubscribe = this.membershipForm.valueChanges.subscribe(() => {
+    this.objectForUnsubscribe = this.membershipForm!.valueChanges!.subscribe(() => {
 
-      if (this.membershipForm.dirty === true) {
+      if (this.membershipForm!.dirty === true) {
         setTimeout(() => this.isChangingEvent.emit(true), 100);
 
       }
@@ -54,7 +52,7 @@ export class MembershipComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     if (localStorage.getItem(MessageLibrary.TOKEN_AUTHORISED)) {
-      this.isAuthorised = JSON.parse(localStorage.getItem(MessageLibrary.TOKEN_AUTHORISED));
+      this.isAuthorised = JSON.parse(localStorage.getItem(MessageLibrary.TOKEN_AUTHORISED) as string);
     }
   }
 
@@ -66,77 +64,8 @@ export class MembershipComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  onClickRadio(c: IMembershipAttribute, opt: IAttributeValue, event) {
-    const ev = event.srcElement.value;
-
-    const index = this.dataManagementClientService?.editClient?.membership.ownerDefinedValues.findIndex(x => x.attributeBaseId === c.id);
-
-    if (index === -1) {
-      const tmp = new OwnerDefinedValue();
-      tmp.attributeBaseId = c.id;
-      tmp.name = c.name;
-      tmp.value = opt.value;
-      this.dataManagementClientService?.editClient?.membership.ownerDefinedValues.push(tmp);
-
-    } else {
-      const tmp = this.dataManagementClientService?.editClient?.membership.ownerDefinedValues[index];
-      tmp.value = opt.value;
-      if (tmp.isDeleted) { tmp.isDeleted = false; }
-    }
-
-    this.isChangingEvent.emit(true);
-  }
-
-  valueRadio(c: IMembershipAttribute, opt: IAttributeValue) {
-
-    const index = this.dataManagementClientService?.editClient?.membership.ownerDefinedValues.findIndex(x => x.attributeBaseId === c.id);
-
-    if (index === -1) {
-      return null;
-
-    } else {
-      const tmp = this.dataManagementClientService?.editClient?.membership.ownerDefinedValues[index];
-      if (tmp.isDeleted) { return null; }
-      return (tmp.value === opt.value) as boolean;
-    }
-  }
-
-  onChangeList(c: IMembershipAttribute, event) {
-    const ev = event.srcElement.value;
-
-    const index = this.dataManagementClientService?.editClient?.membership.ownerDefinedValues.findIndex(x => x.attributeBaseId === c.id);
-
-    if (index === -1) {
-      const tmp = new OwnerDefinedValue();
-      tmp.attributeBaseId = c.id;
-      tmp.name = c.name;
-      tmp.value = +ev;
-      this.dataManagementClientService?.editClient?.membership.ownerDefinedValues.push(tmp);
-
-    } else {
-      const tmp = this.dataManagementClientService?.editClient?.membership.ownerDefinedValues[index];
-      tmp.value = +ev;
-    }
-
-    this.isChangingEvent.emit(true);
-
-
-  }
-
-  valueList(c: IMembershipAttribute, value: number) {
-
-    const index = this.dataManagementClientService?.editClient?.membership.ownerDefinedValues.findIndex(x => x.attributeBaseId === c.id);
-
-    if (index === -1) {
-      return null;
-
-    } else {
-      const tmp = this.dataManagementClientService?.editClient?.membership.ownerDefinedValues[index];
-      return (tmp.value === value) as boolean;
-    }
-  }
-
-  onChangeDateBack(event) {
+  
+  onChangeDateBack(event:any) {
 
     if (event) {
       if (typeof event === 'object' && (event.hasOwnProperty('year') && event.hasOwnProperty('month') && event.hasOwnProperty('day'))) {
@@ -151,10 +80,10 @@ export class MembershipComponent implements OnInit, AfterViewInit, OnDestroy {
     return null;
   }
 
-  openCredits(content) {
+  openCredits(content:any) {
 
-    this.dataManagementClientService.creditFilter.requiredPage = 1;
-    this.dataManagementClientService.readTruncatedCreditList();
+     
+
 
     this.modalService.open(content, { size: 'lg', centered: true }).result.then(
       () => {
@@ -165,16 +94,4 @@ export class MembershipComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  onPageChange(event: number) {
-    this.dataManagementClientService.creditFilter.requiredPage = event;
-    this.dataManagementClientService.readTruncatedCreditList();
-  }
-
-  onCorrection(event: ICredit) {
-    this.dataManagementClientService.addCredit(event);
-  }
-
-  dowloadTestaHeft(){
-    this.dataManagementClientService.dowloadTestatHeft();
-  }
 }

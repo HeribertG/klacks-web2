@@ -23,7 +23,7 @@ export class DataManagementSwitchboardService {
 
   ) {
     const tmp = this.dataManagementEmployeeService.isF5ReRead.subscribe(() => {
-      this.isFocused = 'DataManagementClientService';
+      this.isFocused = 'DataManagementEployeeService';
       tmp.unsubscribe();
     });
   }

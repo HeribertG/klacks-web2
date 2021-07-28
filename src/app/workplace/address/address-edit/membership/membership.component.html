@@ -2,14 +2,6 @@
 
 
 
-  <app-credits-list [journalHeader]="'Credits'" [journalSum]="dataManagementClientService.creditSum"
-    [journalCount]="dataManagementClientService.creditMaxItems"
-    [journalRequiredPage]="dataManagementClientService.creditFilter.requiredPage" [journalNumberOfItemsPerPage]="5"
-    [clientId]="dataManagementClientService.editClient.id" [isAuthorised]="isAuthorised"
-    [journalBases]="dataManagementClientService.creditsBases"  (pageChange)="onPageChange($event)" (dowloadTestaHeft) ="dowloadTestaHeft()"
-    (addJournal)="onCorrection($event)"></app-credits-list>
-
-
 
   <div class="modal-footer ">
     <button type="button" class="btn save-btn" (click)="modal.close()">Schliessen</button>
@@ -26,102 +18,25 @@
 
   <div class="container-line"></div>
 
-  <div class="container-bank-box " *ngIf="dataManagementClientService.editClient !==undefined">
+  <div class="container-bank-box " *ngIf="dataManagementEmployeeService.editEmployee">
 
     <div class="container-bank-value">
 
-      <div class="row-line"
-        *ngIf="dataManagementClientService.hasSections && dataManagementClientService.currentFilter.sectionList && dataManagementClientService.currentFilter.sectionList.length >0">
-        <div class="form-group firstColumn">
+          
 
-          <label for="membership-section">Sektion</label>
-          <select class="form-control" [(ngModel)]="dataManagementClientService.editClient.membership.section"
-            [disabled]="dataManagementClientService.editClientDeleted" name="section" id="membership-section">
-            <option *ngFor="let c of dataManagementClientService.currentFilter.sectionList; index as i"
-              [value]="c.abbreviation" [disabled]="dataManagementClientService.editClientDeleted"
-              [selected]="dataManagementClientService.editClient.membership.section === c.abbreviation">
-              {{c.section}}</option>
-
-          </select>
-        </div>
-      </div>
-
-      <!-- erster Eintrag ist <kein> , deswegen dataManagementClientService.editStatusList.length >1-->
-      <div class="row-line"
-        *ngIf="dataManagementClientService.editStatusList && dataManagementClientService.editStatusList.length >1">
-        <div class="form-group firstColumn">
-
-          <label for="membership-status">Status</label>
-          <select class="form-control" [(ngModel)]="dataManagementClientService.editClient.membership.status"
-            name="status" id="membership-status" [disabled]="dataManagementClientService.editClientDeleted">
-            <option *ngFor="let c of dataManagementClientService.editStatusList; index as i" [value]="c.status"
-              [selected]="dataManagementClientService.editClient.membership.status === c.status">
-              {{c.status}}</option>
-
-          </select>
-        </div>
-      </div>
-
-
-      <!-- Owner Defined Value Radio buttons-->
-      <div
-        *ngIf="dataManagementClientService.editMembershipAttribute && dataManagementClientService.editMembershipAttribute.length >0">
-        <div class="row-line" *ngFor="let c of dataManagementClientService.editMembershipAttribute; index as i ; ">
-          <div class="firstColumn" *ngIf="c.kindOfCollection === 0">
-            <label>{{c.name}}</label>
-            <div class="custom-control-inline ">
-
-
-              <div class="btn-group btn-group-toggle" *ngFor="let opt of c.attributeValues; index as ii">
-                <div class="custom-control-inline" style=" height: 35px; width: max-content; ">
-                  <input type="radio" id="{{opt.id}} + {{opt.name}}" [checked]="valueRadio(c,opt)" name="{{c.id}}"
-                    style="width: 14px; margin-right: 10px;" (click)="onClickRadio(c,opt, $event)"
-                    [disabled]="dataManagementClientService.editClientDeleted">
-                  <label for="{{opt.id}} + {{opt.name}}" style="width: 40px; margin-top: 8px;">{{opt.name}}</label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Owner Defined Value List-->
-      <div *ngIf="membershipAttribute && membershipAttribute.length >0">
-        <div class="row-line" *ngFor="let cc of membershipAttribute; index as i ; ">
-          <div class="firstColumn" *ngIf="cc.kindOfCollection === 1">
-            <label>{{cc.name}}</label>
-            <select class="form-control" (change)="onChangeList(cc, $event)" name="status" id="membership-status"
-              [disabled]="dataManagementClientService.editClientDeleted">
-              <option *ngFor="let opt of cc.attributeValues;" value="{{opt.value}}"
-                [selected]="valueList(cc, opt.value )">
-                {{opt.name}}</option>
-
-            </select>
-          </div>
-        </div>
-      </div>
     </div>
 
 
     <div class="container-bank-value secondColumn">
 
-      <div class="row-line" style=" height: 80px;">
-        <div class="form-group ">
-          <label for="membership-credits">Aktueller Jahressaldo</label>
-          <input type="text" [value]="dataManagementClientService.creditSum"
-            class="form-control medium-width text-right" id="membership-credits"
-            [disabled]="dataManagementClientService.editClientDeleted">
-          <span class="add-credits " (click)="openCredits(creditsTypeModal)">Credits verwalten</span>
-        </div>
-      </div>
-
+     
       <div class="row-line ">
         <div class="form-group medium-width">
           <label for="membership-entry-date">Eintrittsdatum</label>
           <div class="input-group medium-width">
-            <input class="form-control" name="validFrom" [disabled]="dataManagementClientService.editClientDeleted"
-              [ngModel]="dataManagementClientService.editClient.membership.internalValidFrom"
-              (ngModelChange)="dataManagementClientService.editClient.membership.internalValidFrom = $event"
+            <input class="form-control" name="validFrom" 
+              [ngModel]="dataManagementEmployeeService.editEmployee!.staff!.internalValidFrom"
+              (ngModelChange)="dataManagementEmployeeService.editEmployee!.staff!.internalValidFrom = $event"
               ngbDatepicker #validFrom="ngbDatepicker">
             <div class="input-group-append">
               <div class="input-group-append">
@@ -139,9 +54,9 @@
         <div class="form-group medium-width">
           <label for="membership-entry-date">Austrittsdatum</label>
           <div class="input-group  medium-width">
-            <input class="form-control" name="validUntil" [disabled]="dataManagementClientService.editClientDeleted"
-              [ngModel]="dataManagementClientService.editClient.membership.internalValidUntil"
-              (ngModelChange)="dataManagementClientService.editClient.membership.internalValidUntil  = $event"
+            <input class="form-control" name="validUntil" 
+              [ngModel]="dataManagementEmployeeService.editEmployee!.staff!.internalValidUntil"
+              (ngModelChange)="dataManagementEmployeeService.editEmployee!.staff!.internalValidUntil  = $event"
               ngbDatepicker #validUntil="ngbDatepicker">
             <div class="input-group-append">
               <div class="input-group-append">

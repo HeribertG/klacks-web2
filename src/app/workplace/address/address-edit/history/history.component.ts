@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FilterHistory, IHistory } from 'src/app/core/client-class';
+import { FilterHistory, IHistory } from 'src/app/core/employee-class';
 import { HeaderDirection, HeaderProperties } from 'src/app/core/headerProperties';
 
 @Component({
@@ -9,8 +9,8 @@ import { HeaderDirection, HeaderProperties } from 'src/app/core/headerProperties
 })
 export class HistoryComponent implements OnInit {
   @Output() isChanged = new EventEmitter();
-  @Input() historyList: IHistory[];
-  @Input() filterHistory: FilterHistory;
+  @Input() historyList: IHistory[]=[];
+  @Input() filterHistory: FilterHistory|undefined;
 
   requiredPage = 1;
   private tmplateArrowDown = '↓';
@@ -102,14 +102,14 @@ export class HistoryComponent implements OnInit {
   }
 
   private sort(orderBy: string, sortOrder: string) {
-    this.filterHistory.orderBy = orderBy;
-    this.filterHistory.sortOrder = sortOrder;
+    this.filterHistory!.orderBy = orderBy;
+    this.filterHistory!.sortOrder = sortOrder;
     this.setHeaderArrowToUndefined();
-    this.setDirection(sortOrder, this.setPosition(orderBy));
+    this.setDirection(sortOrder, this.setPosition(orderBy)!);
     this.setHeaderArrowTemplate();
   }
 
-  private setPosition(orderBy: string): HeaderProperties {
+  private setPosition(orderBy: string): HeaderProperties| undefined {
     if (orderBy === 'currentUserCreated') {
       return this.currentUserCreatedHeader;
     }
@@ -125,6 +125,7 @@ export class HistoryComponent implements OnInit {
     if (orderBy === 'newData') {
       return this.newDataHeader;
     }
+    return undefined;
   }
 
   private setDirection(sortOrder: string, value: HeaderProperties): void {
@@ -154,10 +155,11 @@ export class HistoryComponent implements OnInit {
         return ''; // this.tmplateArrowUndefined;
 
     }
+    return ''
   }
 
   private reReadSortData() {
-    this.sort(this.filterHistory.orderBy, this.filterHistory.sortOrder);
+    this.sort(this.filterHistory!.orderBy, this.filterHistory!.sortOrder);
   }
 
   private setHeaderArrowToUndefined() {

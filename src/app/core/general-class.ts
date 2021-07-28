@@ -90,3 +90,76 @@ export class BaseOptionFilter implements IBaseOptionFilter {
   select = null;
   isEmptyStatus = null;
 }
+
+export interface IOwnTime {
+  hours: string | null;
+  minutes: string | null;
+}
+
+export class OwnTime implements IOwnTime {
+
+  private pHours = '00';
+  private pMinutes = '00';
+  constructor(hours: string, minutes: string) {
+    this.hours = hours;
+    this.minutes = minutes;
+  }
+  get hours(): string {
+    return this.pHours;
+  }
+
+  set hours(hours: string) {
+    this.pHours = this.formatHours(hours);
+  }
+  get minutes(): string {
+    return this.pMinutes;
+  }
+
+  set minutes(minutes: string) {
+    this.pMinutes = this.formatMinutes(minutes);
+  }
+
+  public toString(): string {
+    return this.pHours + ':' + this.pMinutes + ':00';
+  }
+
+  private formatHours(value: string): string {
+
+    value = value.replace(/\D/g, '');
+
+    if (value.length === 0) {
+      value = '00';
+
+    } else if (value.length === 1) {
+      value = '0' + value;
+      value = value.replace(/^(\d{0,2})/, '$1');
+    } else if (value.length >= 2) {
+      if (+value > 23) { value = '23'; }
+      if (value.length === 3) { value = value.substring(1); }
+
+      value = value.replace(/^(\d{0,2})/, '$1');
+    }
+
+    return value;
+  }
+
+  private formatMinutes(value: string): string {
+
+    value = value.replace(/\D/g, '');
+
+    if (value.length === 0) {
+      value = '00';
+
+    } else if (value.length === 1) {
+      value = '0' + value;
+      value = value.replace(/^(\d{0,2})/, '$1');
+    } else if (value.length >= 2) {
+      if (+value > 59) { value = '59'; }
+      if (value.length === 3) { value = value.substring(1); }
+
+      value = value.replace(/^(\d{0,2})/, '$1');
+    }
+
+    return value;
+  }
+}

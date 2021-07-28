@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, IterableDiffers, OnDestroy, HostListener, ViewChild, AfterViewInit, Renderer2, ElementRef } from '@angular/core';
 import { CheckBoxValue, IFilterEmployee, IEmployee } from 'src/app/core/employee-class';
-import {  DataManagementEmployeeService } from 'src/app/data/management/data-management-employee.service';
+import { DataManagementEmployeeService } from 'src/app/data/management/data-management-employee.service';
 import { Router } from '@angular/router';
 import { HeaderProperties, HeaderDirection } from 'src/app/core/headerProperties';
-import {  NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MessageLibrary } from 'src/app/helpers/string-constants';
 import { saveFilter, restoreFilter, copyObjectValues } from 'src/app/helpers/object-helpers';
 import { InitFinished } from 'src/app/helpers/enums/client-enum';
@@ -20,9 +20,9 @@ import { measureTableHeight } from 'src/app/helpers/tableResize';
 
 })
 export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('myTable', { static: false }) myTable: ElementRef|undefined;
+  @ViewChild('myTable', { static: false }) myTable: ElementRef | undefined;
 
-  @Input() header='';
+  @Input() header = '';
 
 
   highlightRowId: string | null = null;
@@ -57,9 +57,9 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
   checkBoxIndeterminate = false;
   iterableDiffer: any;
   isAuthorised = false;
- 
 
-  tableSize: DOMRectReadOnly|undefined;
+
+  tableSize: DOMRectReadOnly | undefined;
   isMeasureTable = false;
   isFirstRead = true;
 
@@ -90,14 +90,14 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
 
-    
+
     if (localStorage.getItem(MessageLibrary.TOKEN_AUTHORISED)) {
       this.isAuthorised = JSON.parse(localStorage.getItem(MessageLibrary.TOKEN_AUTHORISED) as string);
     }
 
     this.reReadSortData();
     this.dataManagementEmployeeService.init();
-   
+
 
     window.addEventListener('resize', this.resize, true);
 
@@ -150,7 +150,7 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
   private isInit(): void {
     const tmp = restoreFilter('edit-address');
 
-   
+
     if (!tmp) {
       this.dataManagementEmployeeService.currentFilter.setEmpty();
       this.recalcHeight();
@@ -183,7 +183,7 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  private resize = (event:any): void => {
+  private resize = (event: any): void => {
     setTimeout(() => this.recalcHeight(), 100);
   }
 
@@ -193,10 +193,10 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const tmpNumberOfItemsPerPage = this.numberOfItemsPerPage;
 
-    if (this.page * addLine < this.dataManagementEmployeeService.maxItems) {
+    if (this.page * addLine! < this.dataManagementEmployeeService.maxItems) {
       this.numberOfItemsPerPage = 5;
-      if (addLine > 5) {
-        this.numberOfItemsPerPage = addLine;
+      if (addLine! > 5) {
+        this.numberOfItemsPerPage = addLine!;
       }
     }
 
@@ -217,7 +217,7 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
     //  this.highlightRowId = value.id;
   }
 
-  
+
 
   onLostFocus() {
     this.highlightRowId = null;
@@ -269,7 +269,7 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataManagementEmployeeService.readPage(isSecondRead);
   }
 
-  
+
 
   private restoreFilter(value: IFilterEmployee) {
 
@@ -290,13 +290,13 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.readPage();
   }
 
-  onKeyupSearch(event:any) {
+  onKeyupSearch(event: any) {
 
     if (event.srcElement && event.srcElement.value.toString() === '') { this.onClickSearch(); }
 
   }
 
- 
+
 
   onFluctuationEnabled(): boolean {
 
@@ -308,10 +308,10 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
     return tmp;
   }
 
-  
+
 
   /* #region   MsgBox */
-  
+
   /* #endregion   MsgBox */
 
   /* #region   header */
@@ -380,11 +380,11 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.orderBy = orderBy;
     this.sortOrder = sortOrder;
     this.setHeaderArrowToUndefined();
-    this.setDirection(sortOrder, this.setPosition(orderBy));
+    this.setDirection(sortOrder, this.setPosition(orderBy)!);
     this.setHeaderArrowTemplate();
   }
 
-  private setPosition(orderBy: string): HeaderProperties {
+  private setPosition(orderBy: string): HeaderProperties | undefined {
     if (orderBy === 'firstName') {
       return this.firstNameHeader;
     }
@@ -400,6 +400,7 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
     if (orderBy === 'status') {
       return this.statusHeader;
     }
+    return undefined;
   }
 
   private setDirection(sortOrder: string, value: HeaderProperties): void {
@@ -429,7 +430,7 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
         return ''; // this.tmplateArrowUndefined;
 
     }
-    return ''; 
+    return '';
   }
 
   private reReadSortData() {
@@ -476,7 +477,7 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  onChangeCheckBox(i: number, value:any) {
+  onChangeCheckBox(i: number, value: any) {
 
     try {
 

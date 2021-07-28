@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { IOwnTime, OwnTime } from '../core/workshop-class';
+import { IOwnTime, OwnTime } from '../core/general-class';
+
 
 
 
@@ -26,7 +27,7 @@ export function DateToStringShort(date: Date | string): string {
 }
 
 
-export function dateWithLocalTimeCorrection(date: Date | string | null): Date {
+export function dateWithLocalTimeCorrection(date: Date | string | null): Date |null{
   if (date === null) { return null; }
   const userTimezoneOffset = moment(date).utcOffset();
   const hourDiff = userTimezoneOffset / 60;
@@ -42,11 +43,11 @@ export function addMonths(date: Date, value: number): Date {
   d.setDate(Math.min(n, getDaysInMonth(d.getFullYear(), d.getMonth())));
   return d;
 
-  function isLeapYear(year) {
+  function isLeapYear(year:number):boolean {
     return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0));
   }
 
-  function getDaysInMonth(year, month) {
+  function getDaysInMonth(year:number, month:number):number {
     return [31, (isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
   }
 }
@@ -64,7 +65,7 @@ export function getFileExtension(fileName: string): string {
   return fileName.slice((Math.max(0, fileName.lastIndexOf('.')) || Infinity) + 1);
 }
 
-export function dateWithUTCCorrection(date: Date): Date {
+export function dateWithUTCCorrection(date: Date): Date|null {
   if (!date) {
     return null;
   }
@@ -166,8 +167,8 @@ export function transformNgbDateStructToDate(value: NgbDateStruct): Date | null 
 
   if (value) {
     if (typeof value === 'object' && (value.hasOwnProperty('year') && value.hasOwnProperty('month') && value.hasOwnProperty('day'))) {
-      if (isYearOk(value.year) && isMonhtOk(value.month) && isDayhOk(value.day)) {
-        return new Date(value.year, value.month - 1, value.day);
+      if (isYearOk(value.year!) && isMonhtOk(value.month!) && isDayhOk(value.day!)) {
+        return new Date(value.year!, value.month! - 1, value.day);
       }
     }
   }
@@ -176,18 +177,19 @@ export function transformNgbDateStructToDate(value: NgbDateStruct): Date | null 
 
 }
 
-export function transformDateToNgbDateStruct(value: Date | string): NgbDateStruct {
+export function transformDateToNgbDateStruct(value: Date | string): NgbDateStruct|undefined {
   if (value) {
     const now = new Date(value);
     return { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
   }
+  return undefined;
 }
 
 export function isNgbDateStructOk(event: NgbDateStruct): boolean {
 
   if (event) {
     if (typeof event === 'object' && (event.hasOwnProperty('year') && event.hasOwnProperty('month') && event.hasOwnProperty('day'))) {
-      if (isYearOk(event.year) && isMonhtOk(event.month) && isDayhOk(event.day)) {
+      if (isYearOk(event.year!) && isMonhtOk(event.month!) && isDayhOk(event.day!)) {
 
         return true;
 
@@ -218,9 +220,11 @@ function isDayhOk(value: number): boolean {
 
 
 
-export function transformStringToOwnTime(value: string): IOwnTime {
+export function transformStringToOwnTime(value: string): IOwnTime| undefined {
   if (value) {
     const now = value.split(':');
     return new OwnTime(now[0], now[1]);
   }
+
+  return undefined;
 }
