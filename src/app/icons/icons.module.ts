@@ -29,6 +29,8 @@ import { PencilIconBlackComponent } from './pencil-icon-black.component';
 import { IconExportComponent } from './icon-export.component';
 import { IconDashboardComponent } from './icon-dashboard.component';
 import { IconSignOutComponent } from './icon-sign-out.component';
+import { IconBugComponent } from './icon-bug.component';
+import { IconBug2Component } from './icon-bug2.component';
 
 
 
@@ -61,7 +63,8 @@ import { IconSignOutComponent } from './icon-sign-out.component';
     IconExportComponent,
     IconDashboardComponent,
     IconSignOutComponent,
-
+    IconBugComponent,
+    IconBug2Component
 
   ],
   exports: [
@@ -91,7 +94,9 @@ import { IconSignOutComponent } from './icon-sign-out.component';
     PencilIconBlackComponent,
     IconExportComponent,
     IconDashboardComponent,
-    IconSignOutComponent
+    IconSignOutComponent,
+    IconBugComponent,
+    IconBug2Component
   ],
   imports: [
     CommonModule

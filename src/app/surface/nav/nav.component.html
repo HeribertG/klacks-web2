@@ -1,7 +1,7 @@
 <div class="main-container">
   <div class="main-cell">
     <div class="icon_group"  >
-      <app-icon-clients  (click)="onClickAddresses()" placement="right"  autoClose="true" ngbTooltip="Alle Adressen">
+      <app-icon-clients  (click)="onClickAddresses()" placement="right" [openDelay] ="1000" autoClose="true" ngbTooltip="Alle Adressen">
       </app-icon-clients>
     </div>
 
@@ -24,16 +24,16 @@
 
     <div class="icon " (click)="onClickExport()" *ngIf="authorised">
       <app-icon-export placement="right" ngbTooltip="Alle Abacus Exporte"  openDelay ="1000" autoClose="true" ></app-icon-export>
-    </div>
-  </div> -->
+    </div> -->
+  </div>
 
 
   <div class="main-bottomcell">
     
 
-    <!-- <div class="imgIconContainer" (click)="onClickProfile()">
-      <img [src]="dataLoadFileService.profileImage" alt="" class="imgIcon" *ngIf="dataLoadFileService.profileImage">
-    </div> -->
+    <div class="icon icon_user " >
+      <app-icon-user (click)="onClickProfile()"></app-icon-user>
+    </div>
 
     <!-- <div class="icon " *ngIf="isAdmin">
       <app-icon-setting (click)="onClickSettings()"></app-icon-setting>

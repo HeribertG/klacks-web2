@@ -42,6 +42,8 @@ namespace klacks_web_api.Resources
 
     public GenderEnum Gender { get; set; }
 
+    public bool IsDeleted { get; set; }
+
     public ICollection<AddressResource> Addresses { get; set; }
     public ICollection<CommunicationResource> Communications { get; set; }
     public ICollection<AnnotationResource> Annotations { get; set; }

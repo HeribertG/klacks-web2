@@ -63,8 +63,7 @@
               class="checkbox">
           </th>
 
-          <th class="table-header" style="width: 20px; max-width: 20px;"></th>
-
+         
           <th class="table-header" (click)="onClickHeader('firstName')" style="width: 160px; ">
             <div class="table-header-cell custom-control-inline">
               <p class="gap noselect">VORNAME</p>
@@ -98,7 +97,6 @@
             <input type="checkbox" [checked]="checkBoxValue(i)" (change)="onChangeCheckBox(i,$event)" name="checkbox"
               class="checkbox ">
           </td>
-          <td class="table-cell">{{data.typeAbbreviation}}</td>
           <td [ngClass]="{
             'table-cell':data.isDeleted===false , 'table-cell-delete':data.isDeleted ===true }">{{data.firstName}}</td>
           <td [ngClass]="{
