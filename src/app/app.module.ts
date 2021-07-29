@@ -25,7 +25,10 @@ import { NavComponent } from './surface/nav/nav.component';
 import { TemplateModule } from './template/template.module';
 import { ToastModule } from './toast/toast.module';
 import { AddressModule } from './workplace/address/address.module';
+import { registerLocaleData } from '@angular/common';
+import localeDECH from '@angular/common/locales/de-CH';
 
+registerLocaleData(localeDECH);
 @NgModule({
   declarations: [
     AppComponent,
