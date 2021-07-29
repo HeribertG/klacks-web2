@@ -343,17 +343,7 @@ namespace klacks_web_api.Repository
 
       return user;
     }
-    public async Task<AuthenticatedResult> GeneratePasswordResetToken(Guid id)
-    {
 
-      var authenticatedResult = new AuthenticatedResult();
-
-
-      authenticatedResult.Success = false;
-
-      authenticatedResult.Message = "client with this email address do not exist";
-      return authenticatedResult;
-    }
 
     private async Task<AuthenticatedResult> GenerateAuthentication(AppUser user, bool withRefreshToken = true)
     {

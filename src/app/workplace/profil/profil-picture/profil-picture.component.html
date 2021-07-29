@@ -1,0 +1,46 @@
+<div class="container-dashboard">
+
+  <div class="container-header">
+    Profilbild
+  </div>
+
+
+  <div class="container-line"></div>
+
+
+  <div class="row" *ngIf="!dataLoadFileService.profileImage">
+    <label>Profilbild hochladen
+    </label>
+  </div>
+  <div class="row" *ngIf="dataLoadFileService.profileImage">
+    <label>Profilbild
+    </label>
+  </div>
+  <div class="row">
+
+    <div class="image-container" *ngIf="dataLoadFileService.profileImage">
+      <img [src]="dataLoadFileService.profileImage" alt="" class="imgIcon">
+    </div>
+
+
+    <div *ngIf="!dataLoadFileService.profileImage">
+
+
+      <div class="fileupload" appDragDropFileUpload (click)="fileField.click()" (fileDropped)="onUpload($event)">
+
+        <span class="ddinfo">Image-Datei hierhin ziehen oder klicken um eine Datei hochzuladen.
+        </span>
+        <input type="file" name="avatars" #fileField (change)="onUpload1($event)" hidden multiple>
+      </div>
+    </div>
+
+
+
+  </div>
+  <div class="row" *ngIf="dataLoadFileService.profileImage">
+    <div class="filler"></div>
+    <span class="delete-button" type="button" (click)="onDeleteImg()">Profilbild entfernen
+    </span>
+  </div>
+
+</div>

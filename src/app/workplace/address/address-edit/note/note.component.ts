@@ -52,5 +52,7 @@ export class NoteComponent implements OnInit {
     this.dataManagementEmployeeService.currentAnnotationIndex = index;
   }
 
+  onIsChanging(event:boolean){
 
+  }
 }

@@ -34,11 +34,12 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
 
   ) { }
 
-  @ViewChild('content', { static: false }) private content:any;
+  @ViewChild('content', { static: false }) private content: any;
 
-  
-  isAllAddsresses = true;
-  isEditAddress= false;
+
+  isAllAddress = true;
+  isEditAddress = false;
+  isProfile = false;
 
   isSavebarVisible = false;
   routerToken = '';
@@ -126,27 +127,34 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
     this.reset();
 
     switch (value) {
-      
-      case 'all-addresses':
 
+      case 'all-addresses':
+        import('./../../workplace/address/address.module').then(m => m.AddressModule);
         localStorage.removeItem(MessageLibrary.ROUTER_SUBTOKEN);
         localStorage.removeItem(MessageLibrary.ROUTER_TOKEN);
         localStorage.setItem(MessageLibrary.ROUTER_TOKEN, 'workplace/all-addresses');
-        this.isAllAddsresses = true;
+        this.isAllAddress = true;
         break;
 
       case 'edit-address':
+        import('./../../workplace/address/address.module').then(m => m.AddressModule);
         this.isEditAddress = true;
         this.isSavebarVisible = true;
         break;
 
-     
+      case 'profile':
+        localStorage.removeItem(MessageLibrary.ROUTER_SUBTOKEN);
+        import('./../../workplace/profil/profil.module').then(m => m.ProfilModule);
+
+        this.isProfile = true;
+        this.isSavebarVisible = true;
+        break;
 
       default:
 
         localStorage.removeItem(MessageLibrary.ROUTER_TOKEN);
         localStorage.setItem(MessageLibrary.ROUTER_TOKEN, 'workplace/dashboard');
-        this.isAllAddsresses = true;
+        this.isAllAddress = true;
     }
 
     if (this.isSavebarVisible) {
@@ -156,7 +164,7 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
     }
   }
 
-  open(content:any): Promise<boolean> {
+  open(content: any): Promise<boolean> {
     return this.modalService
       .open(content, { size: 'sm', centered: true })
       .result.then((x) => {
@@ -172,12 +180,11 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
 
   private reset() {
 
-    
-    this.isAllAddsresses = false;
-    
 
+    this.isAllAddress = false;
     this.isEditAddress = false;
-    
+    this.isProfile = false;
+
     this.isSavebarVisible = false;
     this.dataManagementSwitchboardService.isDisabled = false;
   }

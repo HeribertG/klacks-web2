@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, HostListener } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, HostListener, Input } from '@angular/core';
 import { DataManagementSwitchboardService } from 'src/app/data/management/data-management-switchboard.service';
 import { DataManagementEmployeeService } from 'src/app/data/management/data-management-employee.service';
 import { Router } from '@angular/router';
@@ -11,6 +11,7 @@ import { MessageLibrary } from 'src/app/helpers/string-constants';
   styleUrls: ['./address-edit-home.component.scss']
 })
 export class AddressEditHomeComponent implements OnInit {
+  @Input() isEditAddress: boolean= false;
   @Output() isChangingEvent = new EventEmitter();
   @Output() isEnterEvent = new EventEmitter();
 

@@ -162,4 +162,29 @@ export class OwnTime implements IOwnTime {
 
     return value;
   }
+  
+}
+
+export interface IImage {
+  id: string;
+  type: number;
+  path: string;
+  name: string;
+  description: string;
+  documentType: string;
+  additionalData: string;
+  img: any;
+
+}
+
+export class Image implements IImage {
+  id = '';
+  type =0;
+  path = '';
+  name = '';
+  description = '';
+  documentType = '';
+  additionalData = '';
+  img = undefined;
+
 }

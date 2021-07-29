@@ -1,40 +1,42 @@
-<div class="container-dashboard">
+<ng-container *ngIf="isEditAddress">
+  <div class="container-dashboard">
 
-  <div class="container-headline">
-    Adresse und persönliche Daten
+    <div class="container-headline">
+      Mitarbeiter
+    </div>
+
+    <div class="container-profilline">
+      <app-address-edit-persona (isChangingEvent)="onIsChanging($event)"
+        class="container-profil  first border-right-card border-bottom-card"></app-address-edit-persona>
+
+    </div>
+
+
+
+    <div class="container-profilline">
+      <app-membership (isChangingEvent)="onIsChanging($event)"
+        class="container-profil first border-right-card border-bottom-card"
+        (click)="dataManagementEmployeeService.currentAnnotationIndex =-1">
+      </app-membership>
+
+    </div>
+
+
+
+    <div class="container-profilline">
+      <app-note (isChangingEvent)="onIsChanging($event)"
+        class="container-profil first border-right-card border-bottom-card">
+      </app-note>
+
+    </div>
+
+    <!-- <div class="container-address-nav  border-right-card border-bottom-card">
+      <app-address-edit-nav></app-address-edit-nav>
+    </div> -->
+
+    <p>
+
+    </p>
+
   </div>
-
-  <div class="container-profilline">
-    <app-address-edit-persona (isChangingEvent)="onIsChanging($event)"
-      class="container-profil  first border-right-card border-bottom-card"></app-address-edit-persona>
-
-  </div>
-
-
-
-  <div class="container-profilline">
-    <app-membership (isChangingEvent)="onIsChanging($event)"
-      class="container-profil first border-right-card border-bottom-card"
-      (click)="dataManagementEmployeeService.currentAnnotationIndex =-1">
-    </app-membership>
-
-  </div>
-
-
-
-  <div class="container-profilline">
-    <app-note (isChangingEvent)="onIsChanging($event)"
-      class="container-profil first border-right-card border-bottom-card">
-    </app-note>
-
-  </div>
-
-  <div class="container-address-nav  border-right-card border-bottom-card">
-    <app-address-edit-nav></app-address-edit-nav>
-  </div>
-
-  <p>
-
-  </p>
-
-</div>
+</ng-container>

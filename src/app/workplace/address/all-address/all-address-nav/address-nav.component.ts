@@ -11,7 +11,7 @@ import { InitFinished } from 'src/app/helpers/enums/client-enum';
   styleUrls: ['./address-nav.component.scss']
 })
 export class AddressNavComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('navClientForm', { static: false }) navClientForm: NgForm| undefined;
+  @ViewChild('navAddressForm', { static: false }) navAddressForm: NgForm| undefined;
    navClient: any;
 
   isComboboxOpen = false;
@@ -52,9 +52,9 @@ export class AddressNavComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     const res = localStorage.getItem(MessageLibrary.TOKEN) !== null;
-    this.objectForUnsubscribe = this.navClientForm!.valueChanges!.subscribe((x) => {
+    this.objectForUnsubscribe = this.navAddressForm!.valueChanges!.subscribe((x) => {
 
-      if (this.navClientForm!.dirty) {
+      if (this.navAddressForm!.dirty) {
 
         if (!this.isComboboxOpen) { setTimeout(() => this.dataManagementEmployeeService.readPage(), 100); }
       }

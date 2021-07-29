@@ -19,9 +19,9 @@ $login-background: "../../../assets/png/login-background.png" !default;
   justify-content: flex-start space-around;
   flex-direction: column;
   border-radius: 5px;
-  width: 600px;
-  max-width: 600px;
-  min-width: 600px;
+  width: 550px;
+  max-width: 550px;
+  min-width: 550px;
   box-sizing: border-box;
 
 }
@@ -47,6 +47,7 @@ label {
 }
 
 .center {
+  margin-top: 15px;
   text-align: center;
 }
 

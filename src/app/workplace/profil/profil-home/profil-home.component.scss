@@ -1,0 +1,60 @@
+
+  @import '../../../../assets/standard-styles/standard-home-page.scss';
+
+  
+  .container-headline {
+    justify-content: flex-start space-around;
+    flex-direction: column;
+    padding-left: 80px;
+    padding-top: 70px;
+    font-size: 23px;
+    font-weight: 600;
+    color :var(--colorHeadline);
+    text-decoration: none solid  var(-colorWorkplaceHeadlineDecoration);
+    width: 100%;
+
+  }
+
+  .container-profilline{
+    display: flex;
+    flex-flow: row;
+
+    padding-top: 40px;
+    max-width: 100%;
+
+  }
+
+  .first{
+    margin-left: 80px;
+  }
+
+  .container-profil{
+    width: 940px;
+    border-radius: 5px;
+    background-color: var(--backgroundColorCard);
+  }
+
+  .container-profil-small{
+    width: 400px;
+    border-radius: 5px;
+    background-color:var(--backgroundColorCard);
+  }
+
+  
+
+  .container-profil-mask{
+
+    height: 620px;
+    
+  }
+
+  .container-profil-login{
+
+    height: 507px;
+    
+  }
+  .container-profil-login-margin{
+
+    margin-right: 140px;
+    
+  }

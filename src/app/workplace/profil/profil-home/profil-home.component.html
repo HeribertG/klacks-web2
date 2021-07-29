@@ -1,0 +1,24 @@
+<ng-container *ngIf="isProfile">
+
+  <div class="container-dashboard"  >
+
+    <div class="container-headline">
+      Mein Profil
+    </div>
+
+
+    <div class="container-profilline">
+      <app-profil-picture
+        class="container-profil-small container-profil-login container-profil-login-margin first border-right-card border-bottom-card"
+        (isChangingEvent)="onIsChanging($event)"></app-profil-picture>
+      <app-login-data-edit   class="container-profil-small container-profil-login  border-right-card border-bottom-card"
+        (isChangingEvent)="onIsChanging($event)"></app-login-data-edit>
+
+    </div>
+
+
+   <div style="height:30px"></div>
+
+  </div>
+</ng-container>
+

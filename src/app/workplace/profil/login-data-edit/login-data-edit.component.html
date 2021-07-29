@@ -1,0 +1,63 @@
+<div class="container-dashboard">
+
+  <div class="container-header">
+    Meine Logindaten ändern
+  </div>
+
+
+  <div class="container-line"></div>
+
+  <form #clientForm="ngForm" autocomplete="off">
+    <div class="row-line">
+      <div class="form-group firstColumn">
+
+        <label for="profil-userName">Benutzername</label>
+        <input type="text" AutoCompleteType="Disabled"
+          [(ngModel)]="dataManagementProfileService.changePasswordWrapper!.userName" name="userName" class="form-control"
+          id="profil-userName" readonly>
+      </div>
+    </div>
+
+    <div class="row-line">
+      <div class="input-group firstColumn my-password">
+
+        <label for="profil-oldPassword">Aktuelles Passwort</label>
+        <input  [type]="showOldPassword ? 'text' : 'password'" (change)="onChange()"
+          [(ngModel)]="dataManagementProfileService.changePasswordWrapper!.oldPassword" name="oldPassword"
+          class="form-control" id="profil-oldPassword">
+        <div class="input-group-append">
+          <span class="input-group-text"  (click)="showOldPassword =!showOldPassword">
+            <i class="fa" [ngClass]="{
+              'fa-eye-slash': !showOldPassword,
+              'fa-eye': showOldPassword
+            }" style ="font-size: 16px; color:#464e5f;"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row-line">
+      <div class="form-group firstColumn">
+
+        <label for="profil-newPassword">Neues Passwort</label>
+        <input type="password" (change)="onChange()" (keyup)="onKeyUp()"
+          [(ngModel)]="dataManagementProfileService.changePasswordWrapper!.password" name="newPassword"
+          class="form-control" id="profil-newPassword">
+        <span [ngClass]="{
+        'weak': passwordStrengthFlag === false ,
+        'strong': passwordStrengthFlag === true }">{{passwordStrength}}</span>
+      </div>
+    </div>
+
+    <div class="row-line">
+      <div class="form-group firstColumn move-on-top">
+
+        <label for="profil-newPassword1">Neues Passwort wiederholen</label>
+        <input type="password" (change)="onChange()" (keyup)="onChange()" [disabled]="passwordStrengthFlag===false"
+          [(ngModel)]="newPassword1" name="newPassword1" class="form-control" id="profil-newPassword1">
+      </div>
+    </div>
+
+  </form>
+
+</div>
