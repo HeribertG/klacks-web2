@@ -19,8 +19,6 @@ namespace klacks_web_api.Models.Authentfication
     public string RefreshToken { get; set; }
     public string TotpHash { get; set; }
     public bool TotpEnabled { get; set; } = false;
-    public bool IsClient { get; set; } = false;
-    public Guid? ClientId { get; set; }
     public String PasswortResetToken { get; set; }
   }
 }

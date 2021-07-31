@@ -4,6 +4,8 @@ import { DataManagementEmployeeService } from './data-management-employee.servic
 import { MessageLibrary } from 'src/app/helpers/string-constants';
 import { EqualDate } from 'src/app/helpers/format-helper';
 import { AuthService } from 'src/app/auth/auth.service';
+import { DataManagementProfileService } from './data-management-profile.service';
+import { DataManagementSettingsService } from './data-management-settings.service';
 
 
 
@@ -18,6 +20,8 @@ export class DataManagementSwitchboardService {
   isSavedOrReset = false;
 
   constructor(
+    public dataManagementProfileService: DataManagementProfileService,
+    public dataManagementSettingsService: DataManagementSettingsService,
     public dataManagementEmployeeService: DataManagementEmployeeService,
     private authService: AuthService,
 
@@ -54,7 +58,13 @@ export class DataManagementSwitchboardService {
       case 'DataManagementClientService':
         this.isDirty = this.dataManagementEmployeeService.areObjectsDirty();
         break;
-     default:
+      case 'DataManagementSettingsService':
+        this.isDirty = this.dataManagementSettingsService.areObjectsDirty();
+        break;
+      case 'DataManagementProfileService':
+        this.isDirty = this.dataManagementProfileService.areObjectsDirty();
+        break;
+      default:
         this.isDirty = false;
         break;
     }
@@ -79,7 +89,7 @@ export class DataManagementSwitchboardService {
             this.authService.logOut();
           }
         });
-      }else {
+      } else {
         this.onSave();
       }
     }
@@ -95,7 +105,19 @@ export class DataManagementSwitchboardService {
         this.dataManagementEmployeeService.save();
 
         break;
-      }
+      case 'DataManagementSettingsService':
+        this.isDisabled = true;
+        this.showProgressSpinner = true;
+        this.isSavedOrReset = true;
+        this.dataManagementSettingsService.save();
+        break;
+      case 'DataManagementProfileService':
+        this.isDisabled = true;
+        this.showProgressSpinner = true;
+        this.isSavedOrReset = true;
+        this.dataManagementProfileService.save();
+        break;
+    }
 
   }
 
@@ -105,6 +127,14 @@ export class DataManagementSwitchboardService {
       case 'DataManagementClientService':
         this.isSavedOrReset = true;
         this.dataManagementEmployeeService.resetData();
+        break;
+      case 'DataManagementSettingsService':
+        this.isSavedOrReset = true;
+        this.dataManagementSettingsService.resetData();
+        break;
+      case 'DataManagementProfileService':
+        this.isSavedOrReset = true;
+        this.dataManagementProfileService.readData();
         break;
     }
   }

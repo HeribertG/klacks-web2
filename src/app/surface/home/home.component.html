@@ -35,10 +35,10 @@
   <app-header></app-header>
   <app-nav></app-nav>
 
-  <app-main  [isAllAddress]="isAllAddress" [isEditAddress]="isEditAddress" [isProfile]="isProfile" (isChangingEvent)="onIsChanging($event)"
-    (isEnterEvent)="onIsEnter()">
+  <app-main [isAllAddress]="isAllAddress" [isEditAddress]="isEditAddress" [isProfile]="isProfile"
+    [isSetting]="isSetting" (isChangingEvent)="onIsChanging($event)" (isEnterEvent)="onIsEnter()">
   </app-main>
-  
+
   <div class="footer custom-control-inline" *ngIf="isSavebarVisible">
     <span type="button" class="link-button blue-font" (click)="onClickGoBack()">Zurück</span>
 

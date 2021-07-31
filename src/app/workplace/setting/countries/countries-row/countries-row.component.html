@@ -1,0 +1,22 @@
+<form  >
+    <div class="first custom-control-inline">
+  
+      <div  >
+        <input type="text" [(ngModel)]="data!.abbreviation" (change)="onChange($event)" (keyup)="onKeyUp($event)"  
+          name="data.abbreviation"  class="form-control abbreviation"  >
+      </div>
+      <div  >
+        <input type="text" [(ngModel)]="data!.name" (change)="onChange($event)" (keyup)="onKeyUp($event)"  
+          name="data.name"  class="form-control country-name"  >
+      </div>
+      <div  >
+        <input type="text" [(ngModel)]="data!.prefix" (change)="onChange($event)" (keyup)="onKeyUp($event)"  
+          name="data.prefix"  class="form-control country-prefix"  >
+      </div>
+  
+  
+  
+      <span class="delete-button " type="button" (click)="onClickDelete()">✕</span>
+  
+    </div>
+  </form>

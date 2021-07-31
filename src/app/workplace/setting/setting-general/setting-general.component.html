@@ -1,0 +1,82 @@
+<form>
+  <div class="container-header">
+    Allgemeines
+  </div>
+
+
+  <div class="container-line"></div>
+
+
+  <div class="form-group first">
+    <label for="setting-genaral-name">Titel</label>
+    <input type="text" class="form-control" [(ngModel)]="dataManagementSettingsService.appName" (change)="onChange()"
+      (keyup)="onKeyUp()" name="appName">
+
+  </div>
+
+  <div class="row-line first">
+
+
+    <div class="image-container-show" *ngIf="dataLoadFileService.iconImage">
+      <img [src]="dataLoadFileService.iconImage" alt="" class="imgIcon">
+
+      <div class="row">
+        <div class="filler"></div>
+        <span class="delete-button delete-button-icon" type="button" (click)="onClickDeleteIcon()">Icon entfernen
+        </span>
+      </div>
+    </div>
+
+
+    <div class="image-container" *ngIf="!dataLoadFileService.iconImage" ngbTooltip="ico Datei 32px x 32px"
+      [openDelay]="1000" autoClose="true">
+]
+      <label class="first">Icon</label>
+
+      <div class="fileupload-ico" appDragDropFileUpload  (click)="fileField1.click()"
+        (fileDropped)="onUploadIcon($event)">
+        <span class="ddinfo">ico-Datei hierhin ziehen oder klicken um eine Datei hochzuladen.
+        </span>
+        <input type="file" name="avatars" #fileField1 (change)="onUploadIcon1($event)" hidden multiple>
+      </div>
+    </div>
+
+    <div class="image-container-show" *ngIf="dataLoadFileService.logoImage">
+      <img [src]="dataLoadFileService.logoImage" alt="" class="imgIcon">
+
+      <div class="row">
+        <div class="filler"></div>
+        <span class="delete-button delete-button-icon" type="button" (click)="onClickDeleteLogo()">Logo entfernen
+        </span>
+      </div>
+    </div>
+
+    <div class="image-container " *ngIf="!dataLoadFileService.logoImage" ngbTooltip="png Datei 32px x 32px"
+      [openDelay]="1000" autoClose="true">
+      <label class="first">Logo</label>
+      <div class="fileupload-ico" appDragDropFileUpload (click)="fileField.click()"
+        (fileDropped)="onUploadLogo($event)">
+        <span class="ddinfo">png-Datei hierhin ziehen oder klicken um eine Datei hochzuladen.
+        </span>
+        <input type="file" name="avatars" #fileField (change)="onUploadLogo1($event)" hidden multiple>
+      </div>
+    </div>
+
+
+    <div class="theme-switch-wrapper">
+      <label class="theme-switch" for="checkbox">
+        <input type="checkbox" id="checkbox" [(ngModel)]="isChecked" (change)="onDarkmodeChecked()" name="isChecked"/>
+        <div class="slider round"></div>
+      </label>
+      <em>Dark Mode!</em>
+    </div>
+
+
+  </div>
+
+
+
+
+
+  <div style="height: 30px;"></div>
+</form>

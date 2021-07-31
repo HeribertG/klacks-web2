@@ -1,0 +1,70 @@
+<div class="container-dashboard">
+
+  <div class="container-header">
+    Adresse Sekretariat
+  </div>
+
+
+  <div class="container-line"></div>
+
+  <form #ownerAddressForm="ngForm">
+    <div class="row-line">
+      <div class="form-group firstColumn">
+
+        <label for="setting-owner-address-name">Name</label>
+        <input type="text" class="form-control" [(ngModel)]="dataManagementSettingsService.appAddressName"
+          name="appAddressName">
+      </div>
+
+      <div>
+        <div class="form-group secondColumn">
+          <label for="setting-owner-address-tel">Tel</label>
+          <input type="text" class="form-control" [(ngModel)]="dataManagementSettingsService.appAddressPhone"
+            name="appAddressPhone">
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row-line">
+      <div class="form-group firstColumn">
+        <label for="setting-owner-address-supplement">Zusatz</label>
+        <input type="text" class="form-control" [(ngModel)]="dataManagementSettingsService.appSupplementAddress"
+          name="appSupplementAddress">
+      </div>
+
+      <div>
+        <div class="form-group secondColumn">
+          <label for="setting-owner-addressl-email">E-Mail</label>
+          <input type="email" class="form-control" [(ngModel)]="dataManagementSettingsService.appAddressMail"
+            name="appAddressMail">
+        </div>
+      </div>
+    </div>
+
+    <div class="row-line-single">
+      <div class="form-group firstColumn">
+        <label for="setting-owner-address-street">Adresse</label>
+        <input type="text" class="form-control" [(ngModel)]="dataManagementSettingsService.appAddressAddress"
+          name="appAddressAddress">
+      </div>
+    </div>
+
+    <div class="row-line-single">
+      <div class="form-group firstColumn">
+        <label for="setting-owner-address-zip">PLZ</label>
+        <input type="text" class="form-control" [(ngModel)]="dataManagementSettingsService.appAddressZip"
+          name="appAddressZip">
+      </div>
+    </div>
+
+    <div class="row-line-single">
+      <div class="form-group firstColumn">
+        <label for="setting-owner-address-city">Ort</label>
+        <input type="text" class="form-control" [(ngModel)]="dataManagementSettingsService.appAddressPlace"
+          name="appAddressPlace">
+      </div>
+    </div>
+  </form>
+</div>

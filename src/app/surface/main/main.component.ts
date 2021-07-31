@@ -13,6 +13,7 @@ import {
 import { AddressHomeComponent } from 'src/app/workplace/address/all-address/all-address-home/address-home.component';
 import { AddressEditHomeComponent } from './../../workplace/address/address-edit/address-edit-home/address-edit-home.component';
 import { ProfilHomeComponent } from './../../workplace/profil/profil-home/profil-home.component';
+import { SettingsHomeComponent } from './../../workplace/setting/settings-home/settings-home.component';
 
 
 @Component({
@@ -29,13 +30,15 @@ export class MainComponent implements OnInit, OnChanges {
   @Input() isAllAddress: boolean = false;
   @Input() isEditAddress: boolean = false;
   @Input() isProfile: boolean = false;
+  @Input() isSetting: boolean = false;;
 
   @Output() isChangingEvent = new EventEmitter<boolean>();
   @Output() isEnterEvent = new EventEmitter();
 
   compInstanceAddressHome: AddressHomeComponent | undefined;
   compInstanceAddressEditHome: AddressEditHomeComponent | undefined;
-  compInstanceProfilHome: ProfilHomeComponent | undefined;;
+  compInstanceProfilHome: ProfilHomeComponent | undefined;
+  compInstanceSettingHome: SettingsHomeComponent| undefined;;
 
   constructor(
     private injector: Injector,
@@ -129,7 +132,38 @@ export class MainComponent implements OnInit, OnChanges {
     if (this.compInstanceProfilHome) {
       this.compInstanceProfilHome.isProfile = this.isProfile;
     }
-    /* #region   profile */
+    /* #endregion   profile */
+
+    /* #region   setting */
+
+    if (this.isSetting && !this.compInstanceSettingHome) {
+      import('./../../workplace/setting/settings-home/settings-home.component').then(m => {
+        const comp = m.SettingsHomeComponent;
+
+
+        const factory =
+          this.cfr.resolveComponentFactory(comp);
+
+        const compRef = this.viewContainer!.createComponent(
+          factory, undefined, this.injector);
+
+        this.compInstanceSettingHome = compRef.instance;
+        this.compInstanceSettingHome.isSetting = this.isSetting;
+
+        compRef.instance.isChangingEvent.subscribe(event => {
+          this.isChangingEvent.emit(event);
+        });
+
+
+      });
+    }
+
+    if (this.compInstanceSettingHome) {
+      this.compInstanceSettingHome.isSetting = this.isSetting;
+    }
+
+    
+    /* #endregion   setting */
   }
 
   onIsChanging(value: boolean) {

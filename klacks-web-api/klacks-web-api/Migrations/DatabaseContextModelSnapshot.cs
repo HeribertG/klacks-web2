@@ -268,6 +268,74 @@ namespace klacks_web_api.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("klacks_web_api.Image.Image", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("AdditionalData")
+                        .HasColumnType("text")
+                        .HasColumnName("additional_data");
+
+                    b.Property<DateTime?>("CreateTime")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("create_time");
+
+                    b.Property<string>("CurrentUserCreated")
+                        .HasColumnType("text")
+                        .HasColumnName("current_user_created");
+
+                    b.Property<string>("CurrentUserDeleted")
+                        .HasColumnType("text")
+                        .HasColumnName("current_user_deleted");
+
+                    b.Property<string>("CurrentUserUpdated")
+                        .HasColumnType("text")
+                        .HasColumnName("current_user_updated");
+
+                    b.Property<DateTime?>("DeletedTime")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("deleted_time");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<Guid>("DocumentType")
+                        .HasColumnType("uuid")
+                        .HasColumnName("document_type");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("text")
+                        .HasColumnName("path");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer")
+                        .HasColumnName("type");
+
+                    b.Property<DateTime?>("UpdateTime")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("update_time");
+
+                    b.HasKey("Id")
+                        .HasName("pk_image");
+
+                    b.HasIndex("IsDeleted")
+                        .HasDatabaseName("ix_image_is_deleted");
+
+                    b.ToTable("image");
+                });
+
             modelBuilder.Entity("klacks_web_api.Models.Authentfication.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
@@ -735,6 +803,28 @@ namespace klacks_web_api.Migrations
                         .HasName("pk_postcode_ch");
 
                     b.ToTable("postcode_ch");
+                });
+
+            modelBuilder.Entity("klacks_web_api.Models.Setting.Settings", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Type")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasColumnName("type");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("text")
+                        .HasColumnName("value");
+
+                    b.HasKey("Id")
+                        .HasName("pk_settings");
+
+                    b.ToTable("settings");
                 });
 
             modelBuilder.Entity("klacks_web_api.Models.Authentfication.AppUser", b =>

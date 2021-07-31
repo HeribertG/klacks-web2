@@ -1,7 +1,7 @@
 using System.Linq;
 using klacks_web_api.Data;
 
-namespace klacks_web_api.Helper.Email
+namespace klacks_web_api.Helper
 {
   public class MsgEMail
   {

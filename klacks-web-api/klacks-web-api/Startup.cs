@@ -3,11 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Logging;
@@ -24,6 +22,7 @@ using klacks_web_api.Interface;
 using AutoMapper;
 using AutoMapper.EquivalencyExpression;
 using klacks_web_api.BasicScriptInterpreter;
+using SVA.API.Repository;
 
 namespace klacks_web_api
 {
@@ -72,7 +71,8 @@ namespace klacks_web_api
       services.AddScoped<IStaffRepository, StaffRepository>();
       services.AddScoped<IAccountRepository, AccountRepository>();
       services.AddSingleton<IMacroEngine, MacroEngine>();
-
+      services.AddScoped<ISettingsRepository, SettingsRepository>();
+      services.AddScoped<ILoadFileRepository, LoadFileRepository>();
 
       var connectionString = Configuration.GetConnectionString("Default"); 
 

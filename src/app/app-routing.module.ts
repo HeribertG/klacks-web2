@@ -9,8 +9,6 @@ import { HomeComponent } from './surface/home/home.component';
 const routes: Routes = [
 
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-
-  { path: 'workplace/edit-address/:id', canActivate: [AuthGuard], component: HomeComponent, canDeactivate: [CanDeactivateGuard], },
   { path: 'workplace/:id', canActivate: [AuthGuard], component: HomeComponent, canDeactivate: [CanDeactivateGuard], },
   { path: 'workplace', canActivate: [AuthGuard], component: HomeComponent },
   { path: 'login', component: LoginComponent },

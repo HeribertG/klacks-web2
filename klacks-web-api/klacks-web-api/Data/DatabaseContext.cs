@@ -2,6 +2,7 @@ using klacks_web_api.Models.Authentfication;
 using klacks_web_api.Models.Corporation;
 using klacks_web_api.Models.Employee;
 using klacks_web_api.Models.Options;
+using klacks_web_api.Models.Setting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,8 @@ namespace klacks_web_api.Data
     public DbSet<Countries> Countries { get; set; }
     public DbSet<AppUser> AppUser { get; set; }
     public DbSet<RefreshToken> RefreshToken { get; set; }
+    public DbSet<Settings> Settings { get; set; }
+    public DbSet<Image.Image> Image { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
      optionsBuilder.UseSnakeCaseNamingConvention();
@@ -46,11 +49,13 @@ namespace klacks_web_api.Data
       modelBuilder.Entity<Communication>().HasQueryFilter(p => !p.IsDeleted);
       modelBuilder.Entity<Staff>().HasQueryFilter(p => !p.IsDeleted);
       modelBuilder.Entity<Annotation>().HasQueryFilter(p => !p.IsDeleted);
+      modelBuilder.Entity<Image.Image>().HasQueryFilter(p => !p.IsDeleted);
 
       modelBuilder.Entity<Employee>().HasIndex(p => new { p.FirstName, p.SecondName, p.Name, p.MaidenName, p.Gender, p.IsDeleted });
       modelBuilder.Entity<Address>().HasIndex(p => new { p.Street, p.Street2, p.Street3, p.City, p.IsDeleted });
       modelBuilder.Entity<Communication>().HasIndex(p => new { p.Value, p.IsDeleted });
       modelBuilder.Entity<Staff>().HasIndex(p => new { p.ValidFrom, p.ValidUntil, p.IsDeleted });
+      modelBuilder.Entity<Image.Image>().HasIndex(p => new { p.IsDeleted });
 
 
       modelBuilder.Entity<Address>()

@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 import { ProfilPictureComponent } from './profil-picture/profil-picture.component';
 import { ProfilHomeComponent } from './profil-home/profil-home.component';
 import { LoginDataEditComponent } from './login-data-edit/login-data-edit.component';
+import { ProfileCustomSettingComponent } from './profile-custom-setting/profile-custom-setting.component';
 
 
 
@@ -20,6 +21,7 @@ import { LoginDataEditComponent } from './login-data-edit/login-data-edit.compon
     ProfilHomeComponent,
     ProfilPictureComponent,
     LoginDataEditComponent,
+    ProfileCustomSettingComponent
   ],
   imports: [
     CommonModule,
@@ -36,6 +38,7 @@ import { LoginDataEditComponent } from './login-data-edit/login-data-edit.compon
     ProfilHomeComponent,
     ProfilPictureComponent,
     LoginDataEditComponent,
+    ProfileCustomSettingComponent
 
   ]
 })

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { IAuthentication, ChangePassword, ChangeRole, ResponseAuthentication } from '../core/authentification-class';
 import { environment } from 'src/environments/environment';
 import { retry } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class UserAdministrationService {
 
   constructor(private httpClient: HttpClient) { }
 
-  readAccountsList() {
+  readAccountsList(): Observable<IAuthentication[]> {
     return this.httpClient
       .get<IAuthentication[]>(
         `${environment.baseUrl}Accounts/`
@@ -19,7 +20,7 @@ export class UserAdministrationService {
       .pipe(retry(3));
   }
 
-  getAccount(id: string) {
+  getAccount(id: string) : Observable<IAuthentication>{
     return this.httpClient
       .get<IAuthentication>(
         `${environment.baseUrl}Accounts/` + id
@@ -27,9 +28,7 @@ export class UserAdministrationService {
       .pipe();
   }
 
-  updateAccount(
-    value: IAuthentication
-  ) {
+  updateAccount( value: IAuthentication) : Observable<IAuthentication>{
     return this.httpClient
       .put<IAuthentication>(
         `${environment.baseUrl}Accounts/`,
@@ -38,9 +37,7 @@ export class UserAdministrationService {
       .pipe(retry(3));
   }
 
-  addAccount(
-    value: IAuthentication
-  ) {
+  addAccount( value: IAuthentication ): Observable<IAuthentication> {
     
     this.copyAccountData(value);
 
@@ -52,7 +49,7 @@ export class UserAdministrationService {
       .pipe();
   }
 
-  deleteAccount(id: string) {
+  deleteAccount(id: string) : Observable<IAuthentication>{
     return this.httpClient
       .delete<IAuthentication>(
         `${environment.baseUrl}Accounts/` + id
@@ -62,9 +59,7 @@ export class UserAdministrationService {
   }
 
 
-  changePassword(
-    value: ChangePassword
-  ) {
+  changePassword( value: ChangePassword): Observable<IAuthentication> {
 
     return this.httpClient
       .post<IAuthentication>(
@@ -86,21 +81,19 @@ export class UserAdministrationService {
       .pipe();
   }
 
-  SentPassword(value: ChangePassword
-    )  {
+  SentPassword(value: ChangePassword): Observable<ResponseAuthentication> {
 
     return this.httpClient
       .put<ResponseAuthentication>(
         `${environment.baseUrl}Accounts/SentPasswordUser`,
         value
-      )
-      .pipe();
+      ).pipe();
   }
 
 
 
 
-  copyAccountData(value: IAuthentication) {
+  copyAccountData(value: IAuthentication):void {
 
     let data = `${value.firstName} ${value.lastName}\n`;
     data = data + `Username: ${value.userName}\n`;

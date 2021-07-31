@@ -31,13 +31,18 @@
   <div class="main-bottomcell">
     
 
-    <div class="icon icon_user " >
+    <div class="icon icon_user " *ngIf="!dataLoadFileService.profileImage">
       <app-icon-user (click)="onClickProfile()"></app-icon-user>
+
     </div>
 
-    <!-- <div class="icon " *ngIf="isAdmin">
+    <div *ngIf="dataLoadFileService.profileImage" class="imgIconContainer" (click)="onClickProfile()">
+      <img [src]="dataLoadFileService.profileImage" alt="" class="imgIcon" *ngIf="dataLoadFileService.profileImage">
+    </div>
+
+    <div class="icon " *ngIf="isAdmin">
       <app-icon-setting (click)="onClickSettings()"></app-icon-setting>
-    </div> -->
+    </div>
 
 
   </div>

@@ -1,0 +1,35 @@
+<div class="first custom-control-inline">
+
+  <div class="form-group ">
+
+    <input type="text" [(ngModel)]="user!.firstName + ' ' + user!.lastName"  name="user.name" class="form-control gap"  readonly>
+  </div>
+  <div class="form-group ">
+
+    <input type="email" [(ngModel)]="user!.email"  class="form-control gap" name="user.email" readonly>
+    <span  class="send-to" (click)="onClickSentTo()">Zugangsdaten versenden</span>
+
+  </div>
+  <div class="form-group ">
+
+
+    <select   [(ngModel)]="user!.isAuthorised" (change) ="onChange()"   class="form-control gap" name=" user.visa" [disabled] ="!enabled">
+      <option  value="true" [selected]="user!.isAuthorised === true" >Ja</option>
+      <option   value="false" [selected]="user!.isAuthorised === false">Nein</option>
+    </select>
+  </div>
+
+  <div class="form-group ">
+
+
+    <select  [(ngModel)]="user!.isAdmin" (change) ="onChange()"  class="form-control" name=" user.rights"  [disabled] ="!enabled" >
+      <option   value="true"  [selected]="user!.isAdmin === true">Admin</option>
+      <option  value="false" [selected]="user!.isAdmin === false">User</option>
+    </select>
+  </div>
+  <div>
+
+
+    <span  class="delete-button " type="button" (click)="onDelete()" *ngIf="enabled" >✕</span>
+  </div>
+</div>

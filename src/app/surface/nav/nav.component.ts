@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { DataLoadFileService } from 'src/app/data/data-load-file.service';
 import { MessageLibrary } from 'src/app/helpers/string-constants';
 
 @Component({
@@ -15,12 +16,13 @@ export class NavComponent implements OnInit {
 
   constructor(
     @Inject(Router) private router: Router,
+    @Inject(DataLoadFileService) public dataLoadFileService: DataLoadFileService
   ) { }
 
   ngOnInit(): void {
-     
+    this.tryLoadProfileImage();
     if (localStorage.getItem(MessageLibrary.TOKEN_ADMIN)) {
-      this.isAdmin = JSON.parse(localStorage.getItem(MessageLibrary.TOKEN_ADMIN) as string);
+      this.isAdmin =  JSON.parse(localStorage.getItem(MessageLibrary.TOKEN_ADMIN) as string);
     }
     if (localStorage.getItem(MessageLibrary.TOKEN_AUTHORISED)) {
       this.authorised = JSON.parse(localStorage.getItem(MessageLibrary.TOKEN_AUTHORISED) as  string);
@@ -31,28 +33,24 @@ export class NavComponent implements OnInit {
   onClickAddresses() {
     this.router.navigate(['/workplace/all-addresses']);
   }
-  onClickWorkshops() {
-    this.router.navigate(['/workplace/all-workshops']);
-  }
-  onClickDocuments() {
-    this.router.navigate(['/workplace/all-documents']);
-  }
-  onClickInvoices() {
-    this.router.navigate(['/workplace/all-invoices']);
-  }
+ 
   onClickProfile() {
     this.router.navigate(['/workplace/profile']);
   }
   onClickSettings() {
-    this.router.navigate(['/workplace/settings']);
+    this.router.navigate(['/workplace/setting']);
   }
 
-  onClickReminder() {
-    this.router.navigate(['/workplace/reminder']);
-  }
+  private tryLoadProfileImage() {
 
-  onClickExport() {
-    this.router.navigate(['/workplace/all-exports']);
+    const id = localStorage.getItem(MessageLibrary.TOKEN_USERID);
+
+    if (id) {
+
+      const imgId = `${id}profile`;
+
+      this.dataLoadFileService.downLoadFile(imgId);
+    }
   }
 
  

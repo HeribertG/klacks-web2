@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using klacks_web_api.Helper.Email;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -462,13 +461,12 @@ namespace klacks_web_api.Repository
 
     private async Task<AuthenticatedResult> SetAuthenticatedResult(AuthenticatedResult authenticatedResult, AppUser user, DateTime expires)
     {
-      var isClient = await _userManager.IsInRoleAsync(user, "Client");
+     
       var email = user.Email;
 
 
 
       authenticatedResult.Token = CreateToken(user, expires);
-      authenticatedResult.IsClient = isClient;
       authenticatedResult.Success = true;
       authenticatedResult.Expires = expires;
       authenticatedResult.UserName = user.UserName;
@@ -481,9 +479,29 @@ namespace klacks_web_api.Repository
       return authenticatedResult;
     }
 
-    public Task<List<UserResource>> GetUserList()
+    public async Task<List<UserResource>> GetUserList()
     {
-      throw new NotImplementedException();
+      var result = new List<UserResource>();
+      var lst = await _appDbContext.AppUser.ToListAsync();
+
+      foreach (var item in lst)
+      {
+        var c = new UserResource
+        {
+          Id = item.Id,
+          UserName = item.UserName,
+          FirstName = item.FirstName,
+          LastName = item.LastName,
+          Email = item.Email,
+          IsAuthorised = await _userManager.IsInRoleAsync(item, "Authorised"),
+          IsAdmin = await _userManager.IsInRoleAsync(item, "Admin"),
+        };
+
+        result.Add(c);
+      }
+
+
+      return result;
     }
   }
 }

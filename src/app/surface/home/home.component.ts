@@ -5,12 +5,15 @@ import {
   ViewChild,
   HostListener,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DataManagementSwitchboardService } from 'src/app/data/management/data-management-switchboard.service';
 import { MessageLibrary } from 'src/app/helpers/string-constants';
 import { CanComponentDeactivate } from 'src/app/helpers/can-deactivate.guard';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
+import { DataLoadFileService } from 'src/app/data/data-load-file.service';
+import { DataSettingsVariousService } from 'src/app/data/data-settings-various.service';
+import { AppSetting, ISetting } from 'src/app/core/settings-various-class';
 
 
 
@@ -31,6 +34,8 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
     public dataManagementSwitchboardService: DataManagementSwitchboardService,
     private router: Router,
     private titleService: Title,
+    @Inject(DataSettingsVariousService) private dataSettingsVariousService: DataSettingsVariousService,
+    @Inject(DataLoadFileService) private dataLoadFileService: DataLoadFileService,
 
   ) { }
 
@@ -40,6 +45,7 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
   isAllAddress = true;
   isEditAddress = false;
   isProfile = false;
+  isSetting= false;
 
   isSavebarVisible = false;
   routerToken = '';
@@ -54,14 +60,27 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
   }
   ngOnInit(): void {
     this.setTheme();
-    // this.tryLoadIcon();
+     this.tryLoadIcon();
     this.saveBarWrapper!.style.setProperty('--footer_height', '0px');
 
     this.dataManagementSwitchboardService.showProgressSpinner = false;
 
-    this.route.params.subscribe((params) => {
+    this.route.params.subscribe((params: Params) => {
       this.getClientType(params.id);
     });
+
+    try {
+      this.dataSettingsVariousService.readSettingList().subscribe((l:ISetting[]) => {
+        if (l) {
+          const tmp = l;
+          const title = tmp.find(x => x.type === AppSetting.APP_NAME);
+          if (title && title.value) { this.titleService.setTitle(title.value); }
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
 
   }
 
@@ -150,6 +169,14 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
         this.isSavebarVisible = true;
         break;
 
+        case 'setting':
+          localStorage.removeItem(MessageLibrary.ROUTER_SUBTOKEN);
+          import('./../../workplace/setting/settings.module').then(m => m.SettingsModule);
+  
+          this.isSetting = true;
+          this.isSavebarVisible = true;
+          break;
+
       default:
 
         localStorage.removeItem(MessageLibrary.ROUTER_TOKEN);
@@ -184,16 +211,17 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
     this.isAllAddress = false;
     this.isEditAddress = false;
     this.isProfile = false;
+    this.isSetting = false;
 
     this.isSavebarVisible = false;
     this.dataManagementSwitchboardService.isDisabled = false;
   }
 
-  // tryLoadIcon() {
+  tryLoadIcon() {
 
-  //   this.dataLoadFileService.downLoadIcon();
-  //   this.dataLoadFileService.downLoadLogo();
-  // }
+    this.dataLoadFileService.downLoadIcon();
+    this.dataLoadFileService.downLoadLogo();
+  }
 
   setTheme() {
     const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null;
