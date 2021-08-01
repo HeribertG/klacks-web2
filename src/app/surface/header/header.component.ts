@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { DataManagementEmployeeService } from 'src/app/data/management/data-management-employee.service';
 import { MessageLibrary } from 'src/app/helpers/string-constants';
 import { DataManagementSwitchboardService } from 'src/app/data/management/data-management-switchboard.service';
+import { DataLoadFileService } from 'src/app/data/data-load-file.service';
 
 
 @Component({
@@ -18,7 +19,7 @@ export class HeaderComponent implements OnInit {
   version = '';
 
   constructor(
-
+    @Inject(DataLoadFileService) public dataLoadFileService: DataLoadFileService,
     @Inject(Router) private router: Router,
     private auth: AuthService,
     public dataManagementEmployeeService: DataManagementEmployeeService,

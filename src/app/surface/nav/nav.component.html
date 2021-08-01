@@ -5,15 +5,15 @@
       </app-icon-clients>
     </div>
 
-    <!-- <div class="icon " >
-      <app-icon-workshop (click)="onClickWorkshops()" placement="right" ngbTooltip="Alle Kurse" openDelay ="1000" autoClose="true" ></app-icon-workshop>
+    <div class="icon " >
+      <app-icon-business-bag (click)="onClickShift()" placement="right" ngbTooltip="Alle Dienste und Beschäftigungen" [openDelay] ="1000" autoClose="true" ></app-icon-business-bag>
     </div>
 
-    <div class="icon">
-      <app-icon-files (click)="onClickDocuments()" placement="right" ngbTooltip="Alle Dokumente"  openDelay ="1000" autoClose="true" ></app-icon-files>
-    </div>
 
     <div class="icon">
+      <app-icon-calendar (click)="onClickSchedule()" placement="right" ngbTooltip="Alle Planungen"  [openDelay] ="1000" autoClose="true" ></app-icon-calendar>
+    </div> 
+    <!-- <div class="icon">
       <app-icon-credit-card (click)="onClickInvoices()" placement="right"  ngbTooltip="Alle Rechnungen" openDelay ="1000" autoClose="true" >
       </app-icon-credit-card>
     </div>

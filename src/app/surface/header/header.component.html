@@ -1,6 +1,15 @@
 <div class="header-container">
+
+  <div class="icon" (click)="onClickDashboard()" *ngIf="!dataLoadFileService.logoImage">
+  <app-icon-bug2></app-icon-bug2>
+  </div>
+
+  <div *ngIf="dataLoadFileService.logoImage" (click)="onClickDashboard()" class="icon">
+    <img [src]="dataLoadFileService.logoImage" width="32" height="32" alt="">
+  </div>
+
   <div class="icon" (click)="onClickDashboard()" >
-    <app-icon-bug2></app-icon-bug2>
+   
   </div>
 
   

@@ -31,6 +31,8 @@ import { IconDashboardComponent } from './icon-dashboard.component';
 import { IconSignOutComponent } from './icon-sign-out.component';
 import { IconBugComponent } from './icon-bug.component';
 import { IconBug2Component } from './icon-bug2.component';
+import { IconCalendarComponent } from './icon-calendar.component';
+import { IconBusinessBagComponent } from './icon-business-bag.component';
 
 
 
@@ -64,7 +66,9 @@ import { IconBug2Component } from './icon-bug2.component';
     IconDashboardComponent,
     IconSignOutComponent,
     IconBugComponent,
-    IconBug2Component
+    IconBug2Component,
+    IconCalendarComponent,
+    IconBusinessBagComponent,
 
   ],
   exports: [
@@ -96,7 +100,9 @@ import { IconBug2Component } from './icon-bug2.component';
     IconDashboardComponent,
     IconSignOutComponent,
     IconBugComponent,
-    IconBug2Component
+    IconBug2Component,
+    IconCalendarComponent,
+    IconBusinessBagComponent,
   ],
   imports: [
     CommonModule

@@ -15,8 +15,7 @@
 
 <form id="allAddressForm">
   <div class="container-header header-container">
-    {{header}}
-
+    Mitarbeiter
     <span class="filler"></span>
 
    
@@ -110,7 +109,7 @@
                 <icon-pencil-icon-grey></icon-pencil-icon-grey>
               </div>
 
-              <div class="icon"   *ngIf="!data.isDeleted">
+              <div class="icon"   *ngIf="!data.isDeleted" (click)="open(contentDelete,data)">
                 <icon-trash-icon-red></icon-trash-icon-red>
 
               </div>

@@ -41,11 +41,11 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
 
   @ViewChild('content', { static: false }) private content: any;
 
-
-  isAllAddress = true;
+  isDashboard = true;
+  isAllAddress = false;
   isEditAddress = false;
   isProfile = false;
-  isSetting= false;
+  isSetting = false;
 
   isSavebarVisible = false;
   routerToken = '';
@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
   }
   ngOnInit(): void {
     this.setTheme();
-     this.tryLoadIcon();
+    this.tryLoadIcon();
     this.saveBarWrapper!.style.setProperty('--footer_height', '0px');
 
     this.dataManagementSwitchboardService.showProgressSpinner = false;
@@ -70,7 +70,7 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
     });
 
     try {
-      this.dataSettingsVariousService.readSettingList().subscribe((l:ISetting[]) => {
+      this.dataSettingsVariousService.readSettingList().subscribe((l: ISetting[]) => {
         if (l) {
           const tmp = l;
           const title = tmp.find(x => x.type === AppSetting.APP_NAME);
@@ -147,6 +147,15 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
 
     switch (value) {
 
+      case 'dashboard':
+        import('./../../workplace/dashboard/dashboard.module').then(m => m.DashboardModule);
+        localStorage.removeItem(MessageLibrary.ROUTER_SUBTOKEN);
+        localStorage.removeItem(MessageLibrary.ROUTER_TOKEN);
+        localStorage.setItem(MessageLibrary.ROUTER_TOKEN, 'workplace/dashboard');
+        this.isDashboard = true;
+
+        break;
+
       case 'all-addresses':
         import('./../../workplace/address/address.module').then(m => m.AddressModule);
         localStorage.removeItem(MessageLibrary.ROUTER_SUBTOKEN);
@@ -169,19 +178,19 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
         this.isSavebarVisible = true;
         break;
 
-        case 'setting':
-          localStorage.removeItem(MessageLibrary.ROUTER_SUBTOKEN);
-          import('./../../workplace/setting/settings.module').then(m => m.SettingsModule);
-  
-          this.isSetting = true;
-          this.isSavebarVisible = true;
-          break;
+      case 'setting':
+        localStorage.removeItem(MessageLibrary.ROUTER_SUBTOKEN);
+        import('./../../workplace/setting/settings.module').then(m => m.SettingsModule);
+
+        this.isSetting = true;
+        this.isSavebarVisible = true;
+        break;
 
       default:
 
         localStorage.removeItem(MessageLibrary.ROUTER_TOKEN);
         localStorage.setItem(MessageLibrary.ROUTER_TOKEN, 'workplace/dashboard');
-        this.isAllAddress = true;
+        this.isDashboard = true;
     }
 
     if (this.isSavebarVisible) {
@@ -207,7 +216,7 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
 
   private reset() {
 
-
+    this.isDashboard = false;
     this.isAllAddress = false;
     this.isEditAddress = false;
     this.isProfile = false;

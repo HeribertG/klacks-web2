@@ -22,7 +22,6 @@ import { measureTableHeight } from 'src/app/helpers/tableResize';
 export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('myTable', { static: false }) myTable: ElementRef | undefined;
 
-  @Input() header = '';
 
 
   highlightRowId: string | null = null;
@@ -311,6 +310,23 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   /* #region   MsgBox */
+  open(content:any, data: IEmployee) {
+
+
+    this.modalService.open(content, { size: 'sm', centered: true }).result.then(
+      (x) => {
+        // tslint:disable-next-line: deprecation
+        this.dataManagementEmployeeService.deleteEmployee(data.id!).subscribe(() => {
+
+          this.readPage();
+       
+        });
+
+      },
+      (reason) => { }
+    );
+
+  }
 
   /* #endregion   MsgBox */
 

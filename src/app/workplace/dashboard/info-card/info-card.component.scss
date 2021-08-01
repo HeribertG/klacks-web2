@@ -1,0 +1,31 @@
+@import '../../../../assets/standard-styles/colors.scss';
+
+.container-info{
+
+    padding-top: 25px;
+    padding-left: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--colorHeadline);
+
+}
+.container-line{
+    margin-top: 25px;
+    border-top: 1px solid var(--colorLine);
+}
+
+.container-subline{
+    margin-top: 15px;
+    margin-left: 30px;
+    font-size: 12px;
+    font-weight: 600;
+    color:#b6b6c3;
+ }
+
+.container-value{
+
+    margin-left: 30px;
+    font-size: 18px;
+    font-weight: 700;
+    color:$standartBlueColor;
+}

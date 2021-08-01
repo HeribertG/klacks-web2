@@ -1,0 +1,24 @@
+<ng-container *ngIf="isDashboard">
+  <div class="container-dashboard">
+
+    <div class="container-headline">
+      Dashboard
+    </div>
+
+    <div class="container-infoline">
+      <app-info-card class="container-info first  border-right-card border-bottom-card " [header]="'Neumitglieder'"
+        [subTitle]="'Seit Anfang Monat'" [value]="newEntries">
+      </app-info-card>
+      <app-info-card class="container-info  border-right-card border-bottom-card " [header]="'Offene Rechnungen'"
+        [subTitle]="'Gesamt'" [value]="openEntries"></app-info-card>
+      <app-info-card class="container-info  border-right-card border-bottom-card" [header]="'Kurse mit freien Plätzen'"
+        [subTitle]="'Gesamt'" [value]="freePlaces"></app-info-card>
+
+    </div>
+
+    <div class="container-infolistline">
+      <app-change-list class="container-infolist first border-right-card border-bottom-card" ></app-change-list>
+    </div>
+    <div style="height: 30px;"></div>
+  </div>
+</ng-container>

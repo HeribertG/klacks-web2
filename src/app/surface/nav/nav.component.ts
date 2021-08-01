@@ -30,14 +30,22 @@ export class NavComponent implements OnInit {
   }
 
 
-  onClickAddresses() {
+  onClickAddresses(): void {
     this.router.navigate(['/workplace/all-addresses']);
   }
  
-  onClickProfile() {
+  onClickSchedule(): void {
+
+  }
+
+  onClickShift(): void {
+
+  }
+  
+  onClickProfile() : void {
     this.router.navigate(['/workplace/profile']);
   }
-  onClickSettings() {
+  onClickSettings(): void  {
     this.router.navigate(['/workplace/setting']);
   }
 

@@ -11,6 +11,7 @@ import {
   OnChanges,
 } from '@angular/core';
 import { AddressHomeComponent } from 'src/app/workplace/address/all-address/all-address-home/address-home.component';
+import { DashboardHomeComponent } from 'src/app/workplace/dashboard/dashboard-home/dashboard-home.component';
 import { AddressEditHomeComponent } from './../../workplace/address/address-edit/address-edit-home/address-edit-home.component';
 import { ProfilHomeComponent } from './../../workplace/profil/profil-home/profil-home.component';
 import { SettingsHomeComponent } from './../../workplace/setting/settings-home/settings-home.component';
@@ -26,7 +27,7 @@ export class MainComponent implements OnInit, OnChanges {
 
   viewContainer: ViewContainerRef | undefined;
 
-
+  @Input() isDashboard: boolean= false;
   @Input() isAllAddress: boolean = false;
   @Input() isEditAddress: boolean = false;
   @Input() isProfile: boolean = false;
@@ -35,6 +36,7 @@ export class MainComponent implements OnInit, OnChanges {
   @Output() isChangingEvent = new EventEmitter<boolean>();
   @Output() isEnterEvent = new EventEmitter();
 
+  compInstanceDashboardHome: DashboardHomeComponent | undefined;
   compInstanceAddressHome: AddressHomeComponent | undefined;
   compInstanceAddressEditHome: AddressEditHomeComponent | undefined;
   compInstanceProfilHome: ProfilHomeComponent | undefined;
@@ -49,6 +51,32 @@ export class MainComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any) {
+
+    /* #region   dashboard */
+    if (this.isDashboard && !this.compInstanceDashboardHome) {
+      import('./../../workplace/dashboard/dashboard-home/dashboard-home.component').then(m => {
+        const comp = m.DashboardHomeComponent;
+
+
+        const factory =
+          this.cfr.resolveComponentFactory(comp);
+
+        const compRef = this.viewContainer!.createComponent(
+          factory, undefined, this.injector);
+
+        this.compInstanceDashboardHome = compRef.instance;
+        this.compInstanceDashboardHome.isDashboard = this.isDashboard;
+
+      });
+
+    }
+
+    if (this.compInstanceDashboardHome) {
+      (this.compInstanceDashboardHome as DashboardHomeComponent).isDashboard = this.isDashboard;
+    }
+
+    /* #endregion   dashboard */
+  
 
     /* #region   all-address */
     if (this.isAllAddress && !this.compInstanceAddressHome) {
