@@ -1,10 +1,12 @@
 using klacks_web_api.Data;
 using klacks_web_api.Enums;
 using klacks_web_api.Models.Corporation;
+using klacks_web_api.Models.Options;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace klacks_web_api.Models.Employee
 {
@@ -21,6 +23,11 @@ namespace klacks_web_api.Models.Employee
     public Guid Id { get; set; }
 
     public Staff Staff { get; set; }
+
+    [ForeignKey("CivilStatus")]
+    public Guid? CivilStatusId { get; set; }
+    public CivilStatus CivilStatus { get; set; }
+
 
     [StringLength(50)]
     public string Title { get; set; }

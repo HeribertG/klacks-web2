@@ -1,7 +1,9 @@
 
 using klacks_web_api.Data;
 using klacks_web_api.Interface;
+using klacks_web_api.Models.Options;
 using klacks_web_api.Models.Setting;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,7 +60,6 @@ namespace SVA.API.Repository
       return context.Settings.Any(e => e.Id == id);
     }
 
-
-
+  
   }
 }

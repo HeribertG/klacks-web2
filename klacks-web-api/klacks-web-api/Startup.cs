@@ -73,6 +73,7 @@ namespace klacks_web_api
       services.AddSingleton<IMacroEngine, MacroEngine>();
       services.AddScoped<ISettingsRepository, SettingsRepository>();
       services.AddScoped<ILoadFileRepository, LoadFileRepository>();
+      services.AddScoped<IOptionsRepository, OptionsRepository>();
 
       var connectionString = Configuration.GetConnectionString("Default"); 
 

@@ -1,6 +1,7 @@
 
 
 using klacks_web_api.Enums;
+using klacks_web_api.Models.Options;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,6 +21,9 @@ namespace klacks_web_api.Resources
     public Guid Id { get; set; }
 
     public StaffResource Staff { get; set; }
+
+    public Guid? CivilStatusId { get; set; }
+    public CivilStatus CivilStatus { get; set; }
 
     [StringLength(50)]
     public string Title { get; set; }

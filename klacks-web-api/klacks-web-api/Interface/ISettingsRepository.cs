@@ -1,3 +1,4 @@
+using klacks_web_api.Models.Options;
 using klacks_web_api.Models.Setting;
 using System;
 using System.Collections.Generic;
@@ -14,5 +15,6 @@ namespace klacks_web_api.Interface
     Settings AddSetting(Settings settings);
     Task<Settings> DeleteSetting(Guid id);
     bool SettingExists(Guid id);
+
   }
 }

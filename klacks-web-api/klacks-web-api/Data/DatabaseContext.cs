@@ -35,6 +35,8 @@ namespace klacks_web_api.Data
     public DbSet<RefreshToken> RefreshToken { get; set; }
     public DbSet<Settings> Settings { get; set; }
     public DbSet<Image.Image> Image { get; set; }
+    public DbSet<EmployeeStatus> EmployeeStatus { get; set; }
+    public DbSet<CivilStatus> CivilStatus { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
      optionsBuilder.UseSnakeCaseNamingConvention();
@@ -70,7 +72,13 @@ namespace klacks_web_api.Data
         .HasOne(p => p.Employee)
         .WithOne(b => b.Staff);
 
-       //new DataSeed(modelBuilder);
+      modelBuilder.Entity<Staff>()
+      .HasOne(p => p.EmployeeStatus);
+
+      modelBuilder.Entity<Employee>()
+     .HasOne(p => p.CivilStatus);
+
+      //new DataSeed(modelBuilder);
     }
 
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())

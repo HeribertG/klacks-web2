@@ -1,5 +1,4 @@
-
-using klacks_web_api.Models.Employee;
+using klacks_web_api.Models.Options;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,6 +12,10 @@ namespace klacks_web_api.Resources
     public Guid EmployeeId { get; set; }
 
     public EmployeeResource Employee { get; set; }
+
+    public Guid? EmployeeStatusId { get; set; }
+
+    public EmployeeStatus EmployeeStatus { get; set; }
 
     [DataType(DataType.Date)]
     public DateTime ValidFrom { get; set; }
