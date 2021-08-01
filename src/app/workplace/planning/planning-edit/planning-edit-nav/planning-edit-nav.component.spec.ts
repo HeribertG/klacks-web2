@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AllShiftHomeComponent } from './all-shift-home.component';
+import { PlanningEditNavComponent } from './planning-edit-nav.component';
 
-describe('AllShiftHomeComponent', () => {
-  let component: AllShiftHomeComponent;
-  let fixture: ComponentFixture<AllShiftHomeComponent>;
+describe('PlanningEditNavComponent', () => {
+  let component: PlanningEditNavComponent;
+  let fixture: ComponentFixture<PlanningEditNavComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AllShiftHomeComponent ]
+      declarations: [ PlanningEditNavComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AllShiftHomeComponent);
+    fixture = TestBed.createComponent(PlanningEditNavComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
