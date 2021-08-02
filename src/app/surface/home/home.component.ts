@@ -46,6 +46,7 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
   isEditAddress = false;
   isProfile = false;
   isSetting = false;
+  isAbsenceCalendar = false;
 
   isSavebarVisible = false;
   routerToken = '';
@@ -186,6 +187,14 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
         this.isSavebarVisible = true;
         break;
 
+      case 'absence-calendar':
+        localStorage.removeItem(MessageLibrary.ROUTER_SUBTOKEN);
+        import('./../../workplace/absence-calendar/absence-calendar.module').then(m => m.AbsenceCalendarModule);
+
+        this.isAbsenceCalendar = true;
+        this.isSavebarVisible = true;
+        break;
+
       default:
 
         localStorage.removeItem(MessageLibrary.ROUTER_TOKEN);
@@ -221,6 +230,7 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
     this.isEditAddress = false;
     this.isProfile = false;
     this.isSetting = false;
+    this.isAbsenceCalendar = false;
 
     this.isSavebarVisible = false;
     this.dataManagementSwitchboardService.isDisabled = false;

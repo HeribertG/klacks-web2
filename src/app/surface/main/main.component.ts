@@ -10,6 +10,7 @@ import {
   Injector,
   OnChanges,
 } from '@angular/core';
+import { AbsenceCalendarHomeComponent } from 'src/app/workplace/absence-calendar/absence-calendar-home/absence-calendar-home.component';
 import { AddressHomeComponent } from 'src/app/workplace/address/all-address/all-address-home/address-home.component';
 import { DashboardHomeComponent } from 'src/app/workplace/dashboard/dashboard-home/dashboard-home.component';
 import { AddressEditHomeComponent } from './../../workplace/address/address-edit/address-edit-home/address-edit-home.component';
@@ -27,11 +28,12 @@ export class MainComponent implements OnInit, OnChanges {
 
   viewContainer: ViewContainerRef | undefined;
 
-  @Input() isDashboard: boolean= false;
+  @Input() isDashboard: boolean = false;
   @Input() isAllAddress: boolean = false;
   @Input() isEditAddress: boolean = false;
   @Input() isProfile: boolean = false;
-  @Input() isSetting: boolean = false;;
+  @Input() isSetting: boolean = false;
+  @Input() isAbsenceCalendar: boolean = false;
 
   @Output() isChangingEvent = new EventEmitter<boolean>();
   @Output() isEnterEvent = new EventEmitter();
@@ -40,7 +42,8 @@ export class MainComponent implements OnInit, OnChanges {
   compInstanceAddressHome: AddressHomeComponent | undefined;
   compInstanceAddressEditHome: AddressEditHomeComponent | undefined;
   compInstanceProfilHome: ProfilHomeComponent | undefined;
-  compInstanceSettingHome: SettingsHomeComponent| undefined;;
+  compInstanceSettingHome: SettingsHomeComponent | undefined;;
+  compInstanceAbsenceCalendarHome: AbsenceCalendarHomeComponent | undefined;;
 
   constructor(
     private injector: Injector,
@@ -76,7 +79,7 @@ export class MainComponent implements OnInit, OnChanges {
     }
 
     /* #endregion   dashboard */
-  
+
 
     /* #region   all-address */
     if (this.isAllAddress && !this.compInstanceAddressHome) {
@@ -190,8 +193,38 @@ export class MainComponent implements OnInit, OnChanges {
       this.compInstanceSettingHome.isSetting = this.isSetting;
     }
 
-    
+
     /* #endregion   setting */
+
+    /* #region   absence-calendar */
+
+    if (this.isAbsenceCalendar && !this.compInstanceAbsenceCalendarHome) {
+      import('../../workplace/absence-calendar/absence-calendar-home/absence-calendar-home.component').then(m => {
+        const comp = m.AbsenceCalendarHomeComponent;
+
+
+        const factory =
+          this.cfr.resolveComponentFactory(comp);
+
+        const compRef = this.viewContainer!.createComponent(
+          factory, undefined, this.injector);
+
+        this.compInstanceAbsenceCalendarHome = compRef.instance;
+        this.compInstanceAbsenceCalendarHome.isAbsenceCalendar = this.isAbsenceCalendar;
+
+        compRef.instance.isChangingEvent.subscribe(event => {
+          this.isChangingEvent.emit(event);
+        });
+
+
+      });
+    }
+
+    if (this.compInstanceAbsenceCalendarHome) {
+      this.compInstanceAbsenceCalendarHome.isAbsenceCalendar = this.isAbsenceCalendar;
+    }
+
+    /* #endregion   absence-calendar */
   }
 
   onIsChanging(value: boolean) {

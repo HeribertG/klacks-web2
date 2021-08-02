@@ -36,7 +36,7 @@
   <app-nav></app-nav>
 
   <app-main [isDashboard]="isDashboard"  [isAllAddress]="isAllAddress" [isEditAddress]="isEditAddress" [isProfile]="isProfile"
-    [isSetting]="isSetting" (isChangingEvent)="onIsChanging($event)" (isEnterEvent)="onIsEnter()">
+    [isSetting]="isSetting" (isChangingEvent)="onIsChanging($event)" [isAbsenceCalendar]="isAbsenceCalendar" (isEnterEvent)="onIsEnter()">
   </app-main>
 
   <div class="footer custom-control-inline" *ngIf="isSavebarVisible">

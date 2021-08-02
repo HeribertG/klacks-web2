@@ -268,3 +268,10 @@ export function sortMultiFields(prop: any): any {
     return null;
   };
 }
+
+export abstract class MObject {
+  public static getElementPixelSize(elRef: HTMLElement): DOMRect {
+    return elRef.getBoundingClientRect();
+
+  }
+}

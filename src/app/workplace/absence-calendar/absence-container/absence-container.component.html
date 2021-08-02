@@ -1,0 +1,28 @@
+<div class="schedule-container" #containerElement>
+
+
+    <div class="container-top" #topElement>
+  
+      <div class="grid-container-left" #leftElement>
+     <div style="background-color: red;"></div>
+      </div>
+  
+      <div appResizerVerticale class="resizer-vertical" [leftElement]="leftElement" [parentElement]="containerElement"
+        [rightElement]="rightElement" [minLeft]="40" [minRight]="60" (changeSize)="onResize()">
+      </div>
+  <div class="grid-container-right" #rightElement >
+    <div tyle="background-color: green;"></div>
+  </div>
+  
+  
+    </div>
+      <div appResizerHorizontale class="resizer-horizontale" [topElement]="topElement" [parentElement]="containerElement"
+        [bottomElement]="bottomElement" [minTop]="80" [minBottom]="40"></div>
+  
+      <div class="container-bottom" #bottomElement>
+        <div class="container-bottom-1">
+  
+        </div>
+      </div>
+  </div>
+  

@@ -47,7 +47,8 @@ export class NavComponent implements OnInit {
   }
 
   onClickAbsences(): void {
-
+    this.router.navigate(['/workplace/absence-calendar']);
+    
   }
   
   onClickProfile() : void {
