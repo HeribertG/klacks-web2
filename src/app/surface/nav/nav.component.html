@@ -1,17 +1,26 @@
 <div class="main-container">
   <div class="main-cell">
     <div class="icon_group"  >
-      <app-icon-clients  (click)="onClickAddresses()" placement="right" [openDelay] ="1000" autoClose="true" ngbTooltip="Alle Mitarbeiter">
-      </app-icon-clients>
+      <app-icon-business-man  (click)="onClickClients()" placement="right" [openDelay] ="1000" autoClose="true" ngbTooltip="Alle Kunden">
+      </app-icon-business-man>
     </div>
 
     <div class="icon " >
-      <app-icon-business-bag (click)="onClickShift()" placement="right" ngbTooltip="Alle Dienste und Beschäftigungen" [openDelay] ="1000" autoClose="true" ></app-icon-business-bag>
+      <app-icon-business-bag (click)="onClickShift()" placement="right" ngbTooltip="Alle Aufträge" [openDelay] ="1000" autoClose="true" ></app-icon-business-bag>
+    </div>
+
+    <div class="icon " >
+      <app-icon-clients  (click)="onClickAddresses()" placement="right" [openDelay] ="1000" autoClose="true" ngbTooltip="Alle Mitarbeiter">
+      </app-icon-clients>
     </div>
 
 
     <div class="icon">
       <app-icon-calendar (click)="onClickSchedule()" placement="right" ngbTooltip="Alle Planungen"  [openDelay] ="1000" autoClose="true" ></app-icon-calendar>
+    </div> 
+
+    <div class="icon">
+      <app-icon-spreadsheet (click)="onClickAbsences()" placement="right" ngbTooltip="Absenzenkalender"  [openDelay] ="1000" autoClose="true" ></app-icon-spreadsheet>
     </div> 
     <!-- <div class="icon">
       <app-icon-credit-card (click)="onClickInvoices()" placement="right"  ngbTooltip="Alle Rechnungen" openDelay ="1000" autoClose="true" >

@@ -33,6 +33,8 @@ import { IconBugComponent } from './icon-bug.component';
 import { IconBug2Component } from './icon-bug2.component';
 import { IconCalendarComponent } from './icon-calendar.component';
 import { IconBusinessBagComponent } from './icon-business-bag.component';
+import { IconBusinessManComponent } from './icon-business-man.component';
+import { IconSpreadSheetComponent } from './icon-spreadsheet.component';
 
 
 
@@ -69,6 +71,8 @@ import { IconBusinessBagComponent } from './icon-business-bag.component';
     IconBug2Component,
     IconCalendarComponent,
     IconBusinessBagComponent,
+    IconBusinessManComponent,
+    IconSpreadSheetComponent,
 
   ],
   exports: [
@@ -103,6 +107,8 @@ import { IconBusinessBagComponent } from './icon-business-bag.component';
     IconBug2Component,
     IconCalendarComponent,
     IconBusinessBagComponent,
+    IconBusinessManComponent,
+    IconSpreadSheetComponent,
   ],
   imports: [
     CommonModule

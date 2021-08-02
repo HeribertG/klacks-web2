@@ -38,7 +38,15 @@ export class NavComponent implements OnInit {
 
   }
 
+  onClickClients(): void {
+
+  }
+
   onClickShift(): void {
+
+  }
+
+  onClickAbsences(): void {
 
   }
   
