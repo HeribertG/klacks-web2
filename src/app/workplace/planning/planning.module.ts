@@ -16,6 +16,12 @@ import { PlanningEditNavComponent } from './planning-edit/planning-edit-nav/plan
   ],
   imports: [
     CommonModule
+  ],
+  exports: [
+    AllPlanningComponent,
+    AllPlanningNavComponent,
+    PlanningEditComponent,
+    PlanningEditNavComponent
   ]
 })
 export class PlanningModule { }

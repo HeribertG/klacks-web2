@@ -1,28 +1,26 @@
 <div class="schedule-container" #containerElement>
 
+  <div class="container-top" #topElement>
 
-    <div class="container-top" #topElement>
-  
-      <div class="grid-container-left" #leftElement>
-     <div style="background-color: red;"></div>
-      </div>
-  
-      <div appResizerVerticale class="resizer-vertical" [leftElement]="leftElement" [parentElement]="containerElement"
-        [rightElement]="rightElement" [minLeft]="40" [minRight]="60" (changeSize)="onResize()">
-      </div>
-  <div class="grid-container-right" #rightElement >
-    <div tyle="background-color: green;"></div>
-  </div>
-  
-  
+    <div  #leftElement>
+      <div class=" container-left"></div>
     </div>
-      <div appResizerHorizontale class="resizer-horizontale" [topElement]="topElement" [parentElement]="containerElement"
-        [bottomElement]="bottomElement" [minTop]="80" [minBottom]="40"></div>
-  
-      <div class="container-bottom" #bottomElement>
-        <div class="container-bottom-1">
-  
-        </div>
-      </div>
+
+    <div appResizerVerticale class="resizer-vertical" [leftElement]="leftElement" [parentElement]="containerElement"
+      [rightElement]="rightElement" [minLeft]="60" [minRight]="60" [firstLeft]="195" (changeSize)="onResize()">
+    </div>
+    <div  #rightElement>
+      <app-absence-body-container tyle="background-color: yellow;"></app-absence-body-container>
+    </div>
+
+
   </div>
-  
+  <div appResizerHorizontale class="resizer-horizontale" [topElement]="topElement" [parentElement]="containerElement"
+    [bottomElement]="bottomElement" [minTop]="80" [minBottom]="40" [firstTop]="622"></div>
+
+  <div  #bottomElement>
+    <div class="container-bottom-1">
+
+    </div>
+  </div>
+</div>

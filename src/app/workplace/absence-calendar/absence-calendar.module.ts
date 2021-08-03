@@ -6,6 +6,8 @@ import { VScrollbarComponent } from './v-scrollbar/v-scrollbar.component';
 import { AbsenceContainerComponent } from './absence-container/absence-container.component';
 import { ResizerVerticalDirective } from 'src/app/directive/resizer-vertical.directive';
 import { ResizerHorizontalDirective } from 'src/app/directive/resizer-horizontal.directive';
+import { AbsenceBodyContainerComponent } from './absence-body-container/absence-body-container.component';
+import { AbsenceBodyComponent } from './absence-body/absence-body.component';
 
 
 
@@ -17,10 +19,22 @@ import { ResizerHorizontalDirective } from 'src/app/directive/resizer-horizontal
     AbsenceContainerComponent,
     ResizerVerticalDirective,
     ResizerHorizontalDirective,
+    AbsenceBodyContainerComponent,
+    AbsenceBodyComponent,
  
   ],
   imports: [
     CommonModule
+  ],
+  exports: [
+    AbsenceCalendarHomeComponent,
+    HScrollbarComponent,
+    VScrollbarComponent,
+    AbsenceContainerComponent,
+    ResizerVerticalDirective,
+    ResizerHorizontalDirective,
+    AbsenceBodyContainerComponent,
+    AbsenceBodyComponent,
   ]
 })
 export class AbsenceCalendarModule { }

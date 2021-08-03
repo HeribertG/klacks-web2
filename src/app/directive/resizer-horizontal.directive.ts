@@ -20,8 +20,9 @@ export class ResizerHorizontalDirective implements OnInit, AfterViewInit, OnDest
   @Input() parentElement: HTMLElement | undefined;
   @Input() bottomElement: HTMLElement | undefined;
 
-  @Input() minTop: number | null = null;
-  @Input() minBottom: number | null = null;
+  @Input() minTop: number | undefined = undefined;
+  @Input() minBottom: number | undefined = undefined;
+  @Input() firstTop: number | undefined = undefined;
   @Output() rightChange = new EventEmitter<number>();
 
   bottom: number = 0;
@@ -30,7 +31,12 @@ export class ResizerHorizontalDirective implements OnInit, AfterViewInit, OnDest
   }
 
   ngAfterViewInit(): void {
-    this.resizerHorizontal(0);
+    if(this.firstTop!){
+      this.firstResizerHorizontal(this.firstTop!);
+    } else {
+      this.resizerHorizontal(0);
+    }
+    
   }
 
   ngOnDestroy(): void { }
@@ -84,9 +90,31 @@ export class ResizerHorizontalDirective implements OnInit, AfterViewInit, OnDest
     let tmpTopHeight = this.bottom - topRect.top;
 
     if (this.minTop) {
-      if (tmpTopHeight < this.minTop) { tmpTopHeight = this.minTop; }
+      if (tmpTopHeight < this.minTop) { tmpTopHeight = this.minTop ;}
     }
 
+    this.resize(tmpTopHeight,parentRect,topRect,boderRect);
+
+  }
+
+
+  firstResizerHorizontal(offsetX: number) {
+    const topRect = MObject.getElementPixelSize(this.topElement!);
+    const parentRect = MObject.getElementPixelSize(this.parentElement!);
+    const boderRect = MObject.getElementPixelSize(this.el.nativeElement);
+
+    this.bottom = offsetX+topRect.top;
+    let tmpTopHeight = this.bottom - topRect.top;
+
+    if (this.minTop) {
+      if (tmpTopHeight < this.minTop) { tmpTopHeight = this.minTop ;}
+    }
+
+    this.resize(tmpTopHeight,parentRect,topRect,boderRect);
+
+  }
+
+  private resize(tmpTopHeight: number, parentRect: DOMRect,topRect: DOMRect,boderRect: DOMRect){
     const tmpHeight = parentRect.height - boderRect.height;
     let tmpBottomHeight = tmpHeight - tmpTopHeight;
     if (this.minBottom) {
@@ -105,9 +133,7 @@ export class ResizerHorizontalDirective implements OnInit, AfterViewInit, OnDest
     this.renderer.setStyle(this.bottomElement, 'height', tmpBottomHeight + 'px');
 
     if (this.grabber) { this.onDataChange(); }
-
   }
-
 
   @HostListener('document:mousedown', ['$event'])
   @HostListener('touchstart', ['$event'])

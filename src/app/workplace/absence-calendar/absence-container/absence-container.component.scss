@@ -41,18 +41,18 @@
 
 }
 
-.grid-container-right {
+
+
+.container-left {
+  height: 100%;
+  width: 100%;
   display: flex;
-  height:100%;
-  width: 70%;
 
+  overflow: hidden;
+  margin: 0;
+  background-color: red;
 }
-.grid-container-left {
-  height:100%;
-  width: 30%;
 
-
-}
 
 .container-bottom {
   height: 40%;

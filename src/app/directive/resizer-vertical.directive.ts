@@ -18,20 +18,26 @@ export class ResizerVerticalDirective implements OnInit, AfterViewInit, OnDestro
 
 
   @Input() leftElement: HTMLElement | undefined;
-  @Input() parentElement: HTMLElement| undefined;
-  @Input() rightElement: HTMLElement| undefined;
-  @Input() minLeft: number | null =null;
-  @Input() minRight: number | null = null;
+  @Input() parentElement: HTMLElement | undefined;
+  @Input() rightElement: HTMLElement | undefined;
+  @Input() minLeft: number | undefined = undefined;
+  @Input() firstLeft: number | undefined = undefined;
+  @Input() minRight: number | undefined = undefined;
   @Output() changeSize = new EventEmitter();
 
-  right: number=0;
+  right: number = 0;
 
   ngOnInit() {
     this.renderer.setStyle(this.el.nativeElement, 'background-color', 'transparent');
   }
 
   ngAfterViewInit(): void {
-    this.resizerVertical(0);
+    if(this.firstLeft){
+      this.firstResizerVertical(this.firstLeft!);
+    } else{
+      this.resizerVertical(0);
+    }
+   
   }
 
   ngOnDestroy(): void { }
@@ -42,7 +48,7 @@ export class ResizerVerticalDirective implements OnInit, AfterViewInit, OnDestro
   @HostListener('touchmove', ['$event'])
 
 
-  onMouseMove(event:any) {
+  onMouseMove(event: any):void {
     if (!this.grabber) {
       return;
     }
@@ -66,7 +72,7 @@ export class ResizerVerticalDirective implements OnInit, AfterViewInit, OnDestro
   }
 
   @HostListener('document:mouseup', ['$event'])
-  onMouseUp(event: MouseEvent) {
+  onMouseUp(event: MouseEvent) :void{
     this.grabber = false;
 
     this.renderer.setStyle(document.body, 'cursor', 'default');
@@ -74,21 +80,35 @@ export class ResizerVerticalDirective implements OnInit, AfterViewInit, OnDestro
     this.renderer.setStyle(this.el.nativeElement, 'background-color', 'transparent');
   }
 
-  resizerVertical(offsetX: number) {
+  resizerVertical(offsetX: number):void {
 
 
     const leftRect = MObject.getElementPixelSize(this.leftElement!);
     const parentRect = MObject.getElementPixelSize(this.parentElement!);
     const boderRect = MObject.getElementPixelSize(this.el.nativeElement);
 
-    this.right += offsetX ;
+    this.right += offsetX;
 
     let tmpLeftWidth = this.right - leftRect.left;
 
-    if (this.minLeft) {
-      if (tmpLeftWidth < this.minLeft) { tmpLeftWidth = this.minLeft; }
-    }
+    this.resize(tmpLeftWidth,parentRect,leftRect,boderRect);
 
+  }
+
+  firstResizerVertical(offsetX: number) :void{
+
+    const leftRect = MObject.getElementPixelSize(this.leftElement!);
+    const parentRect = MObject.getElementPixelSize(this.parentElement!);
+    const boderRect = MObject.getElementPixelSize(this.el.nativeElement);
+
+    this.right = offsetX + leftRect.left;
+
+    let tmpLeftWidth = this.right - leftRect.left;
+
+    this.resize(tmpLeftWidth,parentRect,leftRect,boderRect);
+  }
+
+  private resize(tmpLeftWidth: number,   parentRect: DOMRect, leftRect: DOMRect , boderRect: DOMRect):void{
     const tmpWidth = parentRect.width - boderRect.width;
     let tmpRightWidth = tmpWidth - tmpLeftWidth;
     if (this.minRight) {
@@ -110,10 +130,9 @@ export class ResizerVerticalDirective implements OnInit, AfterViewInit, OnDestro
 
   }
 
-
   @HostListener('document:mousedown', ['$event'])
   @HostListener('touchstart', ['$event'])
-  onMouseDown(event:any) {
+  onMouseDown(event: any) {
 
 
 
