@@ -19,15 +19,15 @@ export class Color {
         if (r.length >= 4) { this.b = parseInt(r.substr(4, 2), 16); }
       } else if (r.indexOf('rgb') === 0) {
         const res = RGB_COLOR_REGEX.exec(r);
-        this.r = parseInt(res[1], 10);
-        this.g = parseInt(res[2], 10);
-        this.b = parseInt(res[3], 10);
-        this.a = res[5] ? parseFloat(res[5]) : 1;
+        this.r = parseInt(res![1], 10);
+        this.g = parseInt(res![2], 10);
+        this.b = parseInt(res![3], 10);
+        this.a = res![5] ? parseFloat(res![5]) : 1;
       }
     } else {
-      this.r = r;
-      this.g = g;
-      this.b = b;
+      this.r = r!;
+      this.g = g!;
+      this.b = b!;
       this.a = a || 1;
     }
   }

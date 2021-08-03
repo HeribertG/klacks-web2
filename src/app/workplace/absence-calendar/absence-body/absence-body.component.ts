@@ -12,4 +12,7 @@ export class AbsenceBodyComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  moveGrid(directionX: number, directionY: number): void {
+    
+  }
 }

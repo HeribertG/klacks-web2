@@ -15178,11 +15178,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Heribert\\Desktop\\klacks-web\\klacks-web\\klacks-web-api\\klacks-web-api\\klacks-web-api.csproj",
+      "projectUniqueName": "C:\\Users\\Heribert\\OneDrive\\Desktop\\klacks-web\\klacks-web\\klacks-web-api\\klacks-web-api\\klacks-web-api.csproj",
       "projectName": "klacks-web-api",
-      "projectPath": "C:\\Users\\Heribert\\Desktop\\klacks-web\\klacks-web\\klacks-web-api\\klacks-web-api\\klacks-web-api.csproj",
+      "projectPath": "C:\\Users\\Heribert\\OneDrive\\Desktop\\klacks-web\\klacks-web\\klacks-web-api\\klacks-web-api\\klacks-web-api.csproj",
       "packagesPath": "C:\\Users\\Heribert\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Heribert\\Desktop\\klacks-web\\klacks-web\\klacks-web-api\\klacks-web-api\\obj\\",
+      "outputPath": "C:\\Users\\Heribert\\OneDrive\\Desktop\\klacks-web\\klacks-web\\klacks-web-api\\klacks-web-api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Heribert\\AppData\\Roaming\\NuGet\\NuGet.Config",

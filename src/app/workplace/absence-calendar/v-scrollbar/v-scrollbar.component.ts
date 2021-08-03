@@ -1,15 +1,316 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, Inject, Input, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { MDraw } from 'src/app/helpers/draw-helper';
+import { Gradient3DBorderStyleEnum } from 'src/app/helpers/enums/draw.enum';
+import { AbsenceBodyComponent } from '../absence-body/absence-body.component';
+import { ScrollCalendar } from '../absenceClasses/scroll-calendar';
 
 @Component({
-  selector: 'app-v-scrollbar',
+  selector: 'app-cal-v-scrollbar',
   templateUrl: './v-scrollbar.component.html',
   styleUrls: ['./v-scrollbar.component.scss']
 })
-export class VScrollbarComponent implements OnInit {
+export class CalVScrollbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  constructor() { }
+  public maximumRow: number = 0;
 
-  ngOnInit(): void {
+  private ctx: CanvasRenderingContext2D | undefined;
+  private canvas!: HTMLCanvasElement | undefined;
+  // tslint:disable-next-line:variable-name
+  private _scrollValue = 0;
+  private thumbLength = 0;
+  private tickSize = 0;
+  private MouseEnterThumb = false;
+  private MousePointThumb = false;
+  private MouseYToThumbY = 0;
+  private MouseOverThumb = false;
+  private imgThumb: ImageData | undefined;
+  private imgSelectedThumb: ImageData | undefined;
+  public isDirty = false;
+  private requestID: number | undefined;
+  private moveAnimationValue = 0;
+
+  @Input() absenceBody: AbsenceBodyComponent | undefined;
+  @Input() ScrollCalendar: ScrollCalendar | undefined;
+
+  constructor(
+    private zone: NgZone,
+  ) { }
+
+  /* #region ng */
+
+  ngOnInit() {
+    this.canvas = document.getElementById('cal-vScrollbar') as HTMLCanvasElement;
+    this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
   }
 
+  ngAfterViewInit() {
+    this.scrollTop = 0;
+    this.refresh();
+  }
+
+  ngOnDestroy(): void {
+    this.ctx = undefined;
+    this.canvas = undefined;
+    this.imgThumb = undefined;
+    this.imgSelectedThumb = undefined;
+    this.ScrollCalendar = undefined;
+  }
+
+  /* #endregion ng */
+
+  init() {
+    this.scrollTop = 0;
+    this.refresh();
+  }
+
+  // tslint:disable-next-line:variable-name
+  private set scrollTop(_value: number) {
+    if (this.isDirty) {
+      return;
+    }
+
+    if (_value === undefined || Number.isNaN(_value)) {
+      _value = 0;
+    }
+
+    if (this._scrollValue !== _value) {
+
+      this._scrollValue = _value;
+
+      let res: number = Math.ceil(this._scrollValue / this.tickSize);
+      if (res === undefined || Number.isNaN(res)) {
+        res = 0;
+      }
+
+      const diff: number = res - this.ScrollCalendar!.vScrollValue;
+
+      this.isDirty = true;
+      if (diff !== 0) {
+        this.absenceBody!.moveGrid(0, diff);
+      }
+
+      this.isDirty = false;
+
+    }
+  }
+  private get scrollTop(): number {
+    let res: number = Math.ceil(this.ScrollCalendar!.vScrollValue * this.tickSize);
+    if (res === undefined || Number.isNaN(res)) {
+      res = 0;
+    }
+    return res;
+  }
+
+  // tslint:disable-next-line:variable-name
+  set value(_value: number) {
+    if (_value === undefined || Number.isNaN(_value)) {
+      _value = 0;
+    }
+
+    let res: number = Math.ceil(this.ScrollCalendar!.vScrollValue * this.tickSize);
+    if (res === undefined || Number.isNaN(res)) {
+      res = 0;
+    }
+
+    this._scrollValue = res;
+
+    this.reDraw();
+  }
+  get value(): number {
+    return this.ScrollCalendar!.vScrollValue;
+  }
+
+  refresh() {
+    this.calcMetrics();
+    this.reDraw();
+  }
+
+  private reDraw() {
+    if (!this.ScrollCalendar) {
+      return;
+    }
+    if (this.thumbLength === Infinity) {
+      return;
+    }
+    if (this.tickSize === Infinity) {
+      return;
+    }
+
+    if (this.canvas && this.ctx && this.imgSelectedThumb && this.imgThumb) {
+      this.canvas.width = this.canvas.clientWidth;
+      this.canvas.height = this.canvas.clientHeight;
+
+      this.ctx.save();
+
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+      if (this.MouseOverThumb) {
+        this.ctx.putImageData(this.imgSelectedThumb, 3, this.scrollTop);
+      } else {
+        this.ctx.putImageData(this.imgThumb, 3, this.scrollTop);
+      }
+      this.ctx.restore();
+    }
+
+  }
+
+  private createThumb(): void {
+    if (this.thumbLength === -Infinity) {
+      return;
+    }
+    if (this.thumbLength === Infinity) {
+      return;
+    }
+
+    this.imgThumb = undefined;
+    this.imgSelectedThumb = undefined;
+
+    const canvas = document.createElement('canvas') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+
+    canvas.width = this.canvas!.clientWidth - 6;
+    canvas.height = this.thumbLength;
+
+    ctx.fillStyle = '#A9A9A9';
+
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    this.imgThumb = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+    MDraw.drawBorder(
+      ctx,
+      0,
+      0,
+      canvas.width,
+      canvas.height,
+      ctx.fillStyle,
+      3,
+      Gradient3DBorderStyleEnum.Raised
+    );
+
+    this.imgSelectedThumb = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  }
+
+  private calcMetrics(): void {
+    if (!this.ScrollCalendar) {
+      return;
+    }
+
+    const h: number = this.canvas!.clientHeight;
+    let moveZoneLength = h / this.ScrollCalendar!.rowPercent;
+
+    this.thumbLength = this.canvas!.clientHeight - moveZoneLength;
+
+
+    if (this.thumbLength < 10) {
+      this.thumbLength = 10;
+      moveZoneLength -= 10;
+    }
+
+    this.tickSize = moveZoneLength / this.ScrollCalendar!.maxRows;
+    this.createThumb();
+  }
+  /* #region Events */
+
+  @HostListener('click', ['$event']) onClick(event: MouseEvent): void { }
+
+  @HostListener('mousedown', ['$event']) onMouseDown(event: MouseEvent): void {
+    this.MouseEnterThumb = this.isMouseOverThumb(event);
+    this.MouseOverThumb = this.MouseEnterThumb;
+
+    if (this.MouseEnterThumb) {
+
+    } else {
+      if (event.clientY < this.scrollTop + this.canvas!.offsetTop) {
+        this.moveAnimationValue = -1;
+      } else {
+        this.moveAnimationValue = 1;
+      }
+      this.moveAnimation();
+    }
+  }
+
+  @HostListener('mouseup', ['$event']) onMouseUp(event: MouseEvent): void {
+    this.MouseEnterThumb = false;
+    this.MouseYToThumbY = 0;
+    this.canvas!.onpointermove = null;
+    this.stopMoveAnimation();
+  }
+
+  @HostListener('pointerdown', ['$event']) onPointerDown(
+    event: PointerEvent
+  ): void {
+
+    if (this.isMouseOverThumb(event) && event.buttons === 1) {
+      this.MousePointThumb = true;
+      this.MouseYToThumbY = event.clientY - this.scrollTop;
+      this.canvas!.setPointerCapture(event.pointerId);
+    }
+  }
+  @HostListener('pointerup', ['$event']) onPointerUp(
+    event: PointerEvent
+  ): void {
+    this.MousePointThumb = false;
+    this.canvas!.releasePointerCapture(event.pointerId);
+  }
+  @HostListener('pointermove', ['$event']) onPointerMove(
+    event: PointerEvent
+  ): void {
+    const y = event.clientY - this.MouseYToThumbY;
+    this.zone.run(() => {
+      if (this.MousePointThumb) {
+        this.scrollTop = y;
+      }
+    });
+  }
+
+  @HostListener('mousemove', ['$event']) onMouseMove(event: MouseEvent): void {
+    this.MouseOverThumb = this.isMouseOverThumb(event);
+
+    this.refresh();
+  }
+
+  @HostListener('mouseleave', ['$event']) onMouseLeave(
+    event: MouseEvent
+  ): void {
+    this.MouseOverThumb = false;
+  }
+
+  @HostListener('mouseenter', ['$event']) onMouseEnter(
+    event: MouseEvent
+  ): void {
+    this.MouseOverThumb = this.isMouseOverThumb(event);
+    this.refresh();
+  }
+
+  @HostListener('mouseover', ['$event']) onMouseOver(event: MouseEvent): void { }
+
+  /* #endregion events */
+
+  isMouseOverThumb(event: MouseEvent): boolean {
+    const y: number = event.clientY - this.canvas!.offsetTop;
+
+    if (y >= this.scrollTop && y <= this.scrollTop + this.thumbLength) {
+      return true;
+    }
+
+    return false;
+  }
+
+  moveAnimation() {
+
+    if (this.moveAnimationValue < 0) {
+      this.absenceBody!.moveGrid(0, -5);
+    } else if (this.moveAnimationValue > 0) {
+      this.absenceBody!.moveGrid(0, 5);
+    }
+
+    this.requestID = window.requestAnimationFrame(x => {
+      this.moveAnimation();
+    });
+  }
+  stopMoveAnimation(): void {
+    this.moveAnimationValue = 0;
+    window.cancelAnimationFrame(this.requestID!);
+  }
 }
