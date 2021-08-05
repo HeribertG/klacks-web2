@@ -8,6 +8,7 @@ import { ResizerVerticalDirective } from 'src/app/directive/resizer-vertical.dir
 import { ResizerHorizontalDirective } from 'src/app/directive/resizer-horizontal.directive';
 import { AbsenceBodyContainerComponent } from './absence-body-container/absence-body-container.component';
 import { AbsenceBodyComponent } from './absence-body/absence-body.component';
+import { ResizeObserverDirective } from 'src/app/directive/resize-observer.directive';
 
 
 
@@ -19,6 +20,7 @@ import { AbsenceBodyComponent } from './absence-body/absence-body.component';
     AbsenceContainerComponent,
     ResizerVerticalDirective,
     ResizerHorizontalDirective,
+    ResizeObserverDirective,
     AbsenceBodyContainerComponent,
     AbsenceBodyComponent,
  
@@ -33,6 +35,7 @@ import { AbsenceBodyComponent } from './absence-body/absence-body.component';
     AbsenceContainerComponent,
     ResizerVerticalDirective,
     ResizerHorizontalDirective,
+    ResizeObserverDirective,
     AbsenceBodyContainerComponent,
     AbsenceBodyComponent,
   ]

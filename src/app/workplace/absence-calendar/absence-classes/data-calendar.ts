@@ -1,4 +1,5 @@
-import { WeekDay } from "@angular/common";
+import { CalendarSetting } from "./calendar-setting";
+
 
 
 
@@ -6,6 +7,7 @@ export class CalendarData {
 
   weekday = new Array(7);
   monthsName = new Array(12);
+  calendarSetting: CalendarSetting | undefined;
 
 
   private rowsNumber = 100;
@@ -17,8 +19,9 @@ export class CalendarData {
   backGroundColorHolyday = '#e6ffe6';
   backGroundColorOfficiallyHolyday = '#ffffe6';
 
-  constructor() {
-   
+  constructor(calendarSetting: CalendarSetting) {
+
+    this.calendarSetting = calendarSetting;
     const tmpDate = new Date(Date.now());
     const d = new Date(tmpDate.getFullYear(), 1, 1);
     const d2 = new Date(tmpDate.getFullYear(), 12, 31);
@@ -33,24 +36,25 @@ export class CalendarData {
     this.weekday[5] = 'Fr';
     this.weekday[6] = 'Sa';
 
-    this.monthsName[0] = 'Jan';
-    this.monthsName[1] = 'Feb';
-    this.monthsName[2] = 'Mär';
-    this.monthsName[3] = 'Apr';
+    this.monthsName[0] = 'Januar';
+    this.monthsName[1] = 'Februar';
+    this.monthsName[2] = 'März';
+    this.monthsName[3] = 'April';
     this.monthsName[4] = 'Mai';
-    this.monthsName[5] = 'Jun';
-    this.monthsName[6] = 'Jul';
-    this.monthsName[7] = 'Aug';
-    this.monthsName[8] = 'Sep';
-    this.monthsName[9] = 'Okt';
-    this.monthsName[10] = 'Nov';
-    this.monthsName[1] = 'Dec';
+    this.monthsName[5] = 'Juni';
+    this.monthsName[6] = 'Juli';
+    this.monthsName[7] = 'August';
+    this.monthsName[8] = 'September';
+    this.monthsName[9] = 'Oktober';
+    this.monthsName[10] = 'November';
+    this.monthsName[11] = 'Dezember';
 
   }
 
   destroy(): void {
     this.monthsName = [];
     this.weekday = [];
+    this.calendarSetting = undefined;
 
   }
 
@@ -61,8 +65,8 @@ export class CalendarData {
   }
 
 
- 
-  
+
+
   get rows(): number {
     return this.rowsNumber;
   }
@@ -71,6 +75,6 @@ export class CalendarData {
     return this.colsNumber;
   }
 
-  
+
 
 }

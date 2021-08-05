@@ -23,7 +23,7 @@ export class ResizerHorizontalDirective implements OnInit, AfterViewInit, OnDest
   @Input() minTop: number | undefined = undefined;
   @Input() minBottom: number | undefined = undefined;
   @Input() firstTop: number | undefined = undefined;
-  @Output() rightChange = new EventEmitter<number>();
+  @Output() sizeChange = new EventEmitter();
 
   bottom: number = 0;
   ngOnInit() {
@@ -171,7 +171,7 @@ export class ResizerHorizontalDirective implements OnInit, AfterViewInit, OnDest
   }
 
   onDataChange() {
-    this.rightChange.emit(this.bottom);
+    this.sizeChange.emit();
   }
 
 }

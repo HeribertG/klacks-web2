@@ -42,14 +42,15 @@ export function addMonths(date: Date, value: number): Date {
   d.setMonth(d.getMonth() + value);
   d.setDate(Math.min(n, getDaysInMonth(d.getFullYear(), d.getMonth())));
   return d;
+  
+}
 
-  function isLeapYear(year:number):boolean {
-    return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0));
-  }
+export function isLeapYear(year:number):boolean {
+  return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0));
+}
 
-  function getDaysInMonth(year:number, month:number):number {
-    return [31, (isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
-  }
+export function getDaysInMonth(year:number, month:number):number {
+  return [31, (isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
 }
 
 export function isNumeric(val: any): boolean {

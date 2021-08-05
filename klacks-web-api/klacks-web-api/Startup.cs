@@ -74,8 +74,10 @@ namespace klacks_web_api
       services.AddScoped<ISettingsRepository, SettingsRepository>();
       services.AddScoped<ILoadFileRepository, LoadFileRepository>();
       services.AddScoped<IOptionsRepository, OptionsRepository>();
+      services.AddScoped<ICalendarRepository, CalendarRepository>();
+    
 
-      var connectionString = Configuration.GetConnectionString("Default"); 
+   var connectionString = Configuration.GetConnectionString("Default"); 
 
       services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString ?? throw new InvalidOperationException()));
 

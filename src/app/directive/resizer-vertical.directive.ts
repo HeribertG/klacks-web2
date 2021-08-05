@@ -23,7 +23,7 @@ export class ResizerVerticalDirective implements OnInit, AfterViewInit, OnDestro
   @Input() minLeft: number | undefined = undefined;
   @Input() firstLeft: number | undefined = undefined;
   @Input() minRight: number | undefined = undefined;
-  @Output() changeSize = new EventEmitter();
+  @Output() sizeChange = new EventEmitter();
 
   right: number = 0;
 
@@ -165,7 +165,7 @@ export class ResizerVerticalDirective implements OnInit, AfterViewInit, OnDestro
   }
 
   private dataChange() {
-    this.changeSize.emit();
+    this.sizeChange.emit();
   }
 
 

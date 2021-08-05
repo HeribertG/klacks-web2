@@ -12,7 +12,7 @@ import {
 import { MDraw } from 'src/app/helpers/draw-helper';
 import { Gradient3DBorderStyleEnum } from 'src/app/helpers/enums/draw.enum';
 import { AbsenceBodyComponent } from '../absence-body/absence-body.component';
-import { ScrollCalendar } from '../absenceClasses/scroll-calendar';
+import { ScrollCalendar } from '../absence-classes/scroll-calendar';
 
 
 @Component({
@@ -23,8 +23,7 @@ import { ScrollCalendar } from '../absenceClasses/scroll-calendar';
 export class CalHScrollbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
-  public maximumRow: number = 0;
-
+ 
   private ctx: CanvasRenderingContext2D | undefined;
   private canvas!: HTMLCanvasElement | undefined;
   // tslint:disable-next-line:variable-name
@@ -42,7 +41,7 @@ export class CalHScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
   private moveAnimationValue = 0;
 
   @Input() absenceBody: AbsenceBodyComponent | undefined;
-  @Input() ScrollCalendar: ScrollCalendar | undefined;
+  @Input() scrollCalendar: ScrollCalendar | undefined;
 
   constructor(
     private zone: NgZone,
@@ -65,7 +64,7 @@ export class CalHScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
     this.canvas = undefined;
     this.imgThumb = undefined;
     this.imgSelectedThumb = undefined;
-    this.ScrollCalendar = undefined;
+    this.scrollCalendar = undefined;
   }
   /* #endregion ng */
 
@@ -92,15 +91,15 @@ export class CalHScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
         res = 0;
       }
 
-      const diff: number = res - this.ScrollCalendar!.hScrollValue;
+      const diff: number = res - this.scrollCalendar!.hScrollValue;
 
       this.isDirty = true;
-      this.absenceBody!.moveGrid(diff, 0);
+      this.absenceBody!.moveCalendar(diff, 0);
       this.isDirty = false;
     }
   }
   private get scrollLeft(): number {
-    let res: number = Math.ceil(this.ScrollCalendar!.hScrollValue * this.tickSize);
+    let res: number = Math.ceil(this.scrollCalendar!.hScrollValue * this.tickSize);
     if (res === undefined || Number.isNaN(res)) {
       res = 0;
     }
@@ -123,7 +122,7 @@ export class CalHScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
     this.reDraw();
   }
   get value(): number {
-    return this.ScrollCalendar!.hScrollValue;
+    return this.scrollCalendar!.hScrollValue;
   }
 
   refresh() {
@@ -132,7 +131,7 @@ export class CalHScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   private reDraw() {
-    if (!this.ScrollCalendar) {
+    if (!this.scrollCalendar) {
       return;
     }
     if (this.thumbLength === Infinity) {
@@ -198,13 +197,13 @@ export class CalHScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   private calcMetrics(): void {
-    if (!this.ScrollCalendar) {
+    if (!this.scrollCalendar) {
       return;
     }
     if (this.canvas) {
 
       const w: number = this.canvas.clientWidth;
-      let moveZoneLength = w / this.ScrollCalendar!.colPercent;
+      let moveZoneLength = w / this.scrollCalendar!.colPercent;
 
       this.thumbLength = this.canvas.clientWidth - moveZoneLength;
 
@@ -213,7 +212,7 @@ export class CalHScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
         moveZoneLength -= 10;
       }
 
-      this.tickSize = moveZoneLength / this.ScrollCalendar!.maxCols;
+      this.tickSize = moveZoneLength / this.scrollCalendar!.maxCols;
       this.createThumb();
     }
   }
@@ -311,9 +310,9 @@ export class CalHScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
 
   moveAnimation() {
     if (this.moveAnimationValue < 0) {
-      this.absenceBody!.moveGrid(-5, 0);
+      this.absenceBody!.moveCalendar(-5, 0);
     } else if (this.moveAnimationValue > 0) {
-      this.absenceBody!.moveGrid(5, 0);
+      this.absenceBody!.moveCalendar(5, 0);
     } else {
       this.stopMoveAnimation();
     }

@@ -1,6 +1,7 @@
 import { Color } from './color';
 import { Gradient3DBorderStyleEnum } from './enums/draw.enum';
 import { TextAlignmentEnum, BaselineAlignmentEnum } from './enums/cell-settings.enum';
+import { Rectangle } from './geometry';
 
 export abstract class MDraw {
 
@@ -228,7 +229,7 @@ export abstract class MDraw {
   }
 
   public static createHiDPICanvas(ctx: CanvasRenderingContext2D) {
-    const ratio = this.pixelRatio();
+    const ratio =  this.pixelRatio();
 
     ctx.transform(ratio, 0, 0, ratio, 0, 0);
     ctx.canvas.setAttribute('width', (ctx.canvas.width * ratio).toString());
@@ -292,5 +293,30 @@ export abstract class MDraw {
     context!.imageSmoothingEnabled = false;       /* standard */
 
   }
+
+  public static fillRectangle(ctx: CanvasRenderingContext2D,
+    backGroundColor: string,
+    rec: Rectangle):void {
+      ctx.save();
+      ctx.clearRect(rec.left, rec.top, rec.width, rec.height);
+      ctx.fillStyle = backGroundColor;
+      ctx.fillRect(rec.left, rec.top, rec.width, rec.height);
+      ctx.restore();
+  }
+
+  public static drawBaseBorder(ctx: CanvasRenderingContext2D,
+    borderColor: string,
+    lineWidth:number,
+    rec: Rectangle):void { 
+
+    ctx.strokeStyle = borderColor;
+    ctx.lineWidth = lineWidth;
+    ctx.strokeRect(
+          rec.left, 
+          rec.top,
+          rec.width + lineWidth,
+          rec.height + lineWidth,
+    );
+}
 }
 

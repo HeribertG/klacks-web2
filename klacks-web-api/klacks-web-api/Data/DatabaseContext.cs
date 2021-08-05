@@ -1,3 +1,4 @@
+using klacks_web_api.Models;
 using klacks_web_api.Models.Authentfication;
 using klacks_web_api.Models.Corporation;
 using klacks_web_api.Models.Employee;
@@ -37,6 +38,8 @@ namespace klacks_web_api.Data
     public DbSet<Image.Image> Image { get; set; }
     public DbSet<EmployeeStatus> EmployeeStatus { get; set; }
     public DbSet<CivilStatus> CivilStatus { get; set; }
+    public DbSet<HolydayRule> HolydayRule { get; set; }
+    
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
      optionsBuilder.UseSnakeCaseNamingConvention();
@@ -58,6 +61,7 @@ namespace klacks_web_api.Data
       modelBuilder.Entity<Communication>().HasIndex(p => new { p.Value, p.IsDeleted });
       modelBuilder.Entity<Staff>().HasIndex(p => new { p.ValidFrom, p.ValidUntil, p.IsDeleted });
       modelBuilder.Entity<Image.Image>().HasIndex(p => new { p.IsDeleted });
+   
 
 
       modelBuilder.Entity<Address>()

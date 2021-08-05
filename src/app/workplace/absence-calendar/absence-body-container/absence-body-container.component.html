@@ -1,15 +1,15 @@
 <div class="grid-container" >
     <div class="grid-body">
   
-      <app-absence-body class="box grid-body-width"  > </app-absence-body>
+      <app-absence-body #absenceBody  class="box grid-body-width" [calendarData]="calendarData"  [scrollCalendar]="scrollCalendar" [vScrollbar]="vScrollbar" [hScrollbar]="hScrollbar" > </app-absence-body>
   
   
   
-      <div  #vScrollbar class="vScrollArea grid-body-width"></div>
+      <app-cal-v-scrollbar  #vScrollbar class="vScrollArea grid-body-width"   [scrollCalendar]="scrollCalendar"  [absenceBody]="absenceBody"></app-cal-v-scrollbar>
   
   
     </div>
   
-    <app-cal-h-scrollbar class="hScrollArea"  #hScrollbar></app-cal-h-scrollbar>
+    <app-cal-h-scrollbar class="hScrollArea" [absenceBody]="absenceBody" [scrollCalendar]="scrollCalendar"   #hScrollbar></app-cal-h-scrollbar>
   
   </div>

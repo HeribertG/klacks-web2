@@ -2,7 +2,7 @@ import { AfterViewInit, Component, HostListener, Inject, Input, NgZone, OnDestro
 import { MDraw } from 'src/app/helpers/draw-helper';
 import { Gradient3DBorderStyleEnum } from 'src/app/helpers/enums/draw.enum';
 import { AbsenceBodyComponent } from '../absence-body/absence-body.component';
-import { ScrollCalendar } from '../absenceClasses/scroll-calendar';
+import { ScrollCalendar } from '../absence-classes/scroll-calendar';
 
 @Component({
   selector: 'app-cal-v-scrollbar',
@@ -30,7 +30,7 @@ export class CalVScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
   private moveAnimationValue = 0;
 
   @Input() absenceBody: AbsenceBodyComponent | undefined;
-  @Input() ScrollCalendar: ScrollCalendar | undefined;
+  @Input() scrollCalendar: ScrollCalendar | undefined;
 
   constructor(
     private zone: NgZone,
@@ -53,7 +53,7 @@ export class CalVScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
     this.canvas = undefined;
     this.imgThumb = undefined;
     this.imgSelectedThumb = undefined;
-    this.ScrollCalendar = undefined;
+    this.scrollCalendar = undefined;
   }
 
   /* #endregion ng */
@@ -82,11 +82,11 @@ export class CalVScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
         res = 0;
       }
 
-      const diff: number = res - this.ScrollCalendar!.vScrollValue;
+      const diff: number = res - this.scrollCalendar!.vScrollValue;
 
       this.isDirty = true;
       if (diff !== 0) {
-        this.absenceBody!.moveGrid(0, diff);
+        this.absenceBody!.moveCalendar(0, diff);
       }
 
       this.isDirty = false;
@@ -94,7 +94,7 @@ export class CalVScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
   private get scrollTop(): number {
-    let res: number = Math.ceil(this.ScrollCalendar!.vScrollValue * this.tickSize);
+    let res: number = Math.ceil(this.scrollCalendar!.vScrollValue * this.tickSize);
     if (res === undefined || Number.isNaN(res)) {
       res = 0;
     }
@@ -107,7 +107,7 @@ export class CalVScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
       _value = 0;
     }
 
-    let res: number = Math.ceil(this.ScrollCalendar!.vScrollValue * this.tickSize);
+    let res: number = Math.ceil(this.scrollCalendar!.vScrollValue * this.tickSize);
     if (res === undefined || Number.isNaN(res)) {
       res = 0;
     }
@@ -117,7 +117,7 @@ export class CalVScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
     this.reDraw();
   }
   get value(): number {
-    return this.ScrollCalendar!.vScrollValue;
+    return this.scrollCalendar!.vScrollValue;
   }
 
   refresh() {
@@ -126,7 +126,7 @@ export class CalVScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   private reDraw() {
-    if (!this.ScrollCalendar) {
+    if (!this.scrollCalendar) {
       return;
     }
     if (this.thumbLength === Infinity) {
@@ -192,12 +192,12 @@ export class CalVScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   private calcMetrics(): void {
-    if (!this.ScrollCalendar) {
+    if (!this.scrollCalendar) {
       return;
     }
 
     const h: number = this.canvas!.clientHeight;
-    let moveZoneLength = h / this.ScrollCalendar!.rowPercent;
+    let moveZoneLength = h / this.scrollCalendar!.rowPercent;
 
     this.thumbLength = this.canvas!.clientHeight - moveZoneLength;
 
@@ -207,7 +207,7 @@ export class CalVScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
       moveZoneLength -= 10;
     }
 
-    this.tickSize = moveZoneLength / this.ScrollCalendar!.maxRows;
+    this.tickSize = moveZoneLength / this.scrollCalendar!.maxRows;
     this.createThumb();
   }
   /* #region Events */
@@ -300,9 +300,9 @@ export class CalVScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
   moveAnimation() {
 
     if (this.moveAnimationValue < 0) {
-      this.absenceBody!.moveGrid(0, -5);
+      this.absenceBody!.moveCalendar(0, -5);
     } else if (this.moveAnimationValue > 0) {
-      this.absenceBody!.moveGrid(0, 5);
+      this.absenceBody!.moveCalendar(0, 5);
     }
 
     this.requestID = window.requestAnimationFrame(x => {

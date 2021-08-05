@@ -125,7 +125,7 @@ export interface ClientRect {
 }
 
 
-export function getScreenCordinates(obj) {
+export function getScreenCordinates(obj:any) {
   const p = { x: Number, y: Number };
   p.x = obj.offsetLeft;
   p.y = obj.offsetTop;
