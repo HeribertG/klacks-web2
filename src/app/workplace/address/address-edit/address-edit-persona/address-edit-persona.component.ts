@@ -405,7 +405,7 @@ export class AddressEditPersonaComponent implements OnInit, AfterViewInit, DoChe
 
   }
   async onZipFocusout() {
-   //  await this.dataManagementEmployeeService.writeCity();
+     await this.dataManagementEmployeeService.writeCity();
   }
 
 

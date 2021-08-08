@@ -169,6 +169,30 @@ namespace klacks_web_api.Repository
 
     }
 
+    async Task<IEnumerable<Employee>> IEmployeeRepository.FindEmployeeList(string name, string firstname)
+    {
+      var lst = new List<Employee>();
+
+      //name + firstname
+      if (!string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(firstname))
+      {
+        lst = await context.Employee.Where(x => x.Name.ToLower().Contains(name.ToLower().Trim()) && x.FirstName.ToLower().Contains(firstname.ToLower().Trim())).ToListAsync();
+      }
+     
+      //firstname
+      else if (!string.IsNullOrWhiteSpace(firstname))
+      {
+        lst = await context.Employee.Where(x =>  x.FirstName.ToLower().Contains(firstname.ToLower().Trim())).ToListAsync();
+      }
+      //name
+      else if (string.IsNullOrWhiteSpace(name))
+      {
+        lst = await context.Employee.Where(x => x.Name.ToLower().Contains(name.ToLower().Trim())).ToListAsync();
+      }
+     
+      return lst;
+    }
+
     private int[] CreateGenderList(bool? male, bool? female)
     {
       var tmp = new List<int>();
@@ -598,5 +622,6 @@ namespace klacks_web_api.Repository
 
       return tmp;
     }
+
   }
 }

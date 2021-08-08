@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, Input, NgZone, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { CalendarHeaderDayRank } from 'src/app/core/calendar-class';
 import { MDraw } from 'src/app/helpers/draw-helper';
 import { BaselineAlignmentEnum, TextAlignmentEnum } from 'src/app/helpers/enums/cell-settings.enum';
 import { Gradient3DBorderStyleEnum } from 'src/app/helpers/enums/draw.enum';
@@ -37,6 +38,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
   private tooltip: HTMLDivElement | undefined;
 
   private holidayList: HolidayDate[] | undefined;
+  
 
   isFocused = true;
   isBusy = false;
@@ -50,7 +52,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    
+
     this.resizeWindow = this.renderer.listen('window', 'resize', (event: any) => {
       this.resize(event);
     });
@@ -63,7 +65,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     this.renderCanvas! = document.createElement('canvas') as HTMLCanvasElement;
     this.headerCanvas! = document.createElement('canvas') as HTMLCanvasElement;
     this.rowCanvas! = document.createElement('canvas') as HTMLCanvasElement;
-   
+
     this.ctx! = this.canvas!.getContext('2d') as CanvasRenderingContext2D;
     MDraw.createHiDPICanvas(this.ctx!);
     MDraw.setAntiAliasing(this.ctx!);
@@ -93,21 +95,23 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
     this.tooltip = document.getElementById('tooltip') as HTMLDivElement;
-   
+
 
   }
 
   ngAfterViewInit(): void {
-    
-    
-    this.setMetrics();
 
+
+   
     this.scrollCalendar!.maxCols = isLeapYear(this.calendarData!.calendarSetting!.currentYear) ? 366 : 365;
     this.scrollCalendar!.maxRows = 200;
-    
+
     this.canvas!.height = this.canvas!.clientHeight;
     this.canvas!.width = this.canvas!.clientWidth;
+
+    this.setMetrics();
     this.createRuler();
+
   }
 
   ngOnDestroy(): void {
@@ -142,8 +146,6 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
   onResize(): void {
     this.setMetrics();
     this.refreshCalendar();
-   
-    
   }
 
   private setMetrics(): void {
@@ -166,17 +168,15 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     this.canvas!.height = this.canvas!.clientHeight;
     this.canvas!.width = this.canvas!.clientWidth;
 
-
     const visibleRow = this.visibleRow();
-    const visibleCol = this.visibleCol();
+
     const height = visibleRow * this.calendarData!.calendarSetting!.cellHeight;
-   
-    if ( this.renderCanvas!.height < height) {
+
+    if (this.renderCanvas!.height < height) {
       // this.onGrowGrid();
-      this.moveHorizontal();
+      this.renderCalendar();
     } else {
-      //  this.renderGrid();
-      this.moveHorizontal();
+      this.renderCalendar();
     }
   }
 
@@ -208,18 +208,26 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.firstVisibleRow() + this.visibleRow();
   }
 
-
+  private getWith(): number {
+    const year = isLeapYear(this.calendarData!.calendarSetting!.currentYear) ? 366 : 365;
+    return this.calendarData!.calendarSetting!.cellWidth * year + 1;
+  }
   private createRuler() {
-    // size Bitmap fpr Ruler
+
+
+    const rankList = new Array<CalendarHeaderDayRank>();
+
     this.calendarData!.calendarSetting!.reset();
     const firstDay = new Date(this.calendarData!.calendarSetting!.currentYear, 0, 1);
     const year = isLeapYear(this.calendarData!.calendarSetting!.currentYear) ? 366 : 365;
 
-    this.rowCanvas!.height = this.calendarData!.calendarSetting!.cellHeight;
-    this.headerCanvas!.height = this.calendarData!.calendarSetting!.cellHeaderHeight;
+    const cellHeight =  this.calendarData!.calendarSetting!.cellHeight;
+    this.rowCanvas!.height = cellHeight;
+    const headerHeight =  this.calendarData!.calendarSetting!.cellHeaderHeight;
+    this.headerCanvas!.height = headerHeight;
 
-    this.rowCanvas!.width = this.calendarData!.calendarSetting!.cellWidth * year + 1;
-    this.headerCanvas!.width = this.calendarData!.calendarSetting!.cellWidth * year + 1;
+    this.rowCanvas!.width = this.getWith();
+    this.headerCanvas!.width = this.getWith();
     const rec = new Rectangle(0, 0, this.rowCanvas!.width, this.rowCanvas!.height);
     MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.backGroundColor, rec);
 
@@ -239,22 +247,42 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
       for (let i = 0; i < year; i++) {
         const currDate = addDays(firstDay, i + 1);
         const d = i * this.calendarData!.calendarSetting!.cellWidth;
-        const rec2 = new Rectangle(d, 0, d + this.calendarData!.calendarSetting!.cellWidth, this.calendarData!.calendarSetting!.cellHeaderHeight);
-        switch(currDate.getDay()){
-           case 0:
-            MDraw.fillRectangle(this.backgroundRowCtx!,  this.calendarData!.calendarSetting!.saturdayColor, rec2);
-           break;
-           case 6:
-            MDraw.fillRectangle(this.backgroundRowCtx!,  this.calendarData!.calendarSetting!.sundayColor, rec2);
+        const rec2 = new Rectangle( Math.floor(d), 0,  Math.floor(d + this.calendarData!.calendarSetting!.cellWidth), this.calendarData!.calendarSetting!.cellHeaderHeight);
+        switch (currDate.getDay()) {
+          case 0:
+            MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.sundayColor, rec2);
+
+            MDraw.drawBaseBorder(
+              this.backgroundRowCtx!,
+              this.calendarData!.calendarSetting!.borderColor,
+              0.5, rec2);
+
+            const rec3 = new Rectangle(d - 20, 0, 20, this.calendarData!.calendarSetting!.cellHeaderHeight);
+
+            // MDraw.fillRectangle(this.backgroundRowCtx!,  this.calendarData!.calendarSetting!.saturdayColor, rec3);
+
+
+            break;
+          case 6:
+            MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.saturdayColor, rec2);
+
+            MDraw.drawBaseBorder(
+              this.backgroundRowCtx!,
+              this.calendarData!.calendarSetting!.borderColor,
+              0.5, rec2);
+
+            // const rec4 = new Rectangle(d-10, 0, 10, this.calendarData!.calendarSetting!.cellHeaderHeight);
+            // MDraw.fillRectangle(this.backgroundRowCtx!,  this.calendarData!.calendarSetting!.saturdayColor, rec4);
+            break;
+          default:
+            MDraw.drawBaseBorder(
+              this.backgroundRowCtx!,
+              this.calendarData!.calendarSetting!.borderColor,
+              0.5, rec2);
         }
-       
-        MDraw.drawBaseBorder(
-          this.backgroundRowCtx!,
-          this.calendarData!.calendarSetting!.borderColor,
-          0.5, rec2);
       }
     }
-  
+
 
     this.headerCtx!.drawImage(this.rowCanvas!, 0, 0);
     this.headerCtx!.drawImage(this.rowCanvas!, 0, this.rowCanvas!.height);
@@ -268,7 +296,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
       const l2 = actualDays * this.calendarData!.calendarSetting!.cellWidth;
       const rec3 = new Rectangle(l, 0, l + l2, this.rowCanvas!.height);
       lastDays += actualDays;
-      MDraw.fillRectangle(this.headerCtx!, '#BDBDBD', rec3);
+      MDraw.fillRectangle(this.headerCtx!, this.calendarData!.calendarSetting!.controlBackGroundColor, rec3);
 
       MDraw.drawText(
         this.headerCtx!,
@@ -282,17 +310,27 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
         TextAlignmentEnum.Center,
         BaselineAlignmentEnum.Center);
 
-      MDraw.drawBorder(this.headerCtx!, rec3.left, rec3.top, rec3.width, rec3.height, (i % 2 === 0 ? this.calendarData!.calendarSetting!.evenMonthColor : this.calendarData!.calendarSetting!.oddMonthColor), 2, Gradient3DBorderStyleEnum.Raised)
+      MDraw.drawBorder(this.headerCtx!, rec3.left, rec3.top, rec3.width, rec3.height,  this.calendarData!.calendarSetting!.controlBackGroundColor, 2, Gradient3DBorderStyleEnum.Raised)
 
       this.ctx!.drawImage(this.headerCanvas!, 0, 0);
     }
   }
 
-  renderCalendar():void{
+  renderCalendar(): void {
+    const visibleRow = this.visibleRow();
 
+    this.renderCanvas!.height = this.canvas!.clientHeight;
+    this.renderCanvas!.width = this.getWith();
+    const height = this.calendarData!.calendarSetting!.cellHeight
+
+    for (let i = 0; i < visibleRow + 1; i++) {
+      this.renderCanvasCtx!.drawImage(this.rowCanvas!, 0, Math.floor(i * height) );
+    }
+
+    this.moveHorizontal();
   }
 
-  
+
   moveCalendar(directionX: number, directionY: number): void {
     const dirX = directionX;
     const dirY = directionY;
@@ -351,6 +389,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
       this.ctx!.canvas!.height
     );
     this.ctx!.drawImage(this.headerCanvas!, dx, 0);
+    this.ctx!.drawImage(this.renderCanvas!, dx, this.calendarData!.calendarSetting!.cellHeaderHeight);
   }
 }
 

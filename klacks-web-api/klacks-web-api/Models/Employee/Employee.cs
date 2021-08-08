@@ -1,5 +1,6 @@
 using klacks_web_api.Data;
 using klacks_web_api.Enums;
+using klacks_web_api.Models.Calendar;
 using klacks_web_api.Models.Corporation;
 using klacks_web_api.Models.Options;
 using System;
@@ -17,6 +18,7 @@ namespace klacks_web_api.Models.Employee
       Addresses = new Collection<Address>();
       Communications = new Collection<Communication>();
       Annotations = new Collection<Annotation>();
+      Absences = new Collection<Absence>();
     }
 
     [Key]
@@ -54,5 +56,6 @@ namespace klacks_web_api.Models.Employee
     public ICollection<Address> Addresses { get; set; }
     public ICollection<Communication> Communications { get; set; }
     public ICollection<Annotation> Annotations { get; set; }
+    public ICollection<Absence> Absences { get; set; }
   }
 }

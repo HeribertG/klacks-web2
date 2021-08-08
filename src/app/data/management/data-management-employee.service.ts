@@ -25,12 +25,14 @@ import { DataCountryStateService } from '../data-country-state.service';
 import {
   DateToString,
   formatPhoneNumber,
+  isNumeric,
   transformDateToNgbDateStruct,
 
 } from 'src/app/helpers/format-helper';
 import { ToastService } from 'src/app/toast/toast.service';
 import {AddressTypeEnum, CommunicationTypeDefaultIndexEnum, GenderEnum, InitFinished} from 'src/app/helpers/enums/client-enum';
 import { Router } from '@angular/router';
+import { MessageLibrary } from 'src/app/helpers/string-constants';
 
 
 
@@ -48,12 +50,11 @@ export class DataManagementEmployeeService {
   currentFilterDummy= new FilterEmployee();
   temporaryFilterDummy= new FilterEmployee();
   LastChangeFilter: FilterEmployee = new FilterEmployee();
-  listWrapper: ITruncatedEmployee|null =null;
-  lastChangeListWrapper: ITruncatedEmployee|null =null;
-  editEmployee: IEmployee|null =null;
-  editEmployeeDummy: IEmployee|null =null;
+  listWrapper: ITruncatedEmployee|undefined ;
+  lastChangeListWrapper: ITruncatedEmployee|undefined;
+  editEmployee: IEmployee|undefined ;
+  editEmployeeDummy: IEmployee|undefined;
   checkedArray: CheckBoxValue[] = new Array<CheckBoxValue>();
-  // tslint:disable-next-line: no-inferrable-types
   headerCheckBoxValue: boolean = false;
   maxItems = 0;
   firstItem = 0;
@@ -105,8 +106,8 @@ export class DataManagementEmployeeService {
   findEmployeePage = 0;
   findEmployeeMaxVisiblePage = 5;
   findEmployeeMaxPages = 1;
-  backupFindEmployee: IEmployee|null =null;
-  backupFindEmployeeDummy: IEmployee|null =null;
+  backupFindEmployee: IEmployee|undefined;
+  backupFindEmployeeDummy: IEmployee|undefined;
   backupFindEmployeeList = [];
 
   constructor(
@@ -115,6 +116,7 @@ export class DataManagementEmployeeService {
     private dataCountryStateService: DataCountryStateService,
     private router: Router,
   ) { }
+
 
   /* #region   init */
 
@@ -298,9 +300,9 @@ export class DataManagementEmployeeService {
     this.checkedArray.push(value);
   }
 
-  findCheckBoxValue(key: string): CheckBoxValue|null {
-    if (!this.checkedArray) { return null; }
-    if (key === '') { return null; }
+  findCheckBoxValue(key: string): CheckBoxValue|undefined {
+    if (!this.checkedArray) { return undefined; }
+    if (key === '') { return undefined; }
 
     return this.checkedArray.find(x => x.id === key) as CheckBoxValue;
   }
@@ -312,16 +314,16 @@ export class DataManagementEmployeeService {
 
   checkBoxIndeterminate() {
 
-    if (this.headerCheckBoxValue === undefined) { this.headerCheckBoxValue = false; }
-    if (this.headerCheckBoxValue === null) { this.headerCheckBoxValue = false; }
+    if (!this.headerCheckBoxValue) { this.headerCheckBoxValue = false; }
+    if (!this.headerCheckBoxValue) { this.headerCheckBoxValue = false; }
 
     if (this.headerCheckBoxValue === true) {
       const tmp = this.checkedArray.find(x => x.Checked === false);
-      if (!(tmp === undefined || tmp === null)) { return true; }
+      if (!tmp) { return true; }
     }
     if (this.headerCheckBoxValue === false) {
       const tmp = this.checkedArray.find(x => x.Checked === true);
-      if (!(tmp === undefined || tmp === null)) { return true; }
+      if (!tmp) { return true; }
     }
 
 
@@ -528,6 +530,41 @@ export class DataManagementEmployeeService {
     this.editEmployee!.communications[index].isDeleted = true;
 
     this.setCommunication();
+  }
+
+  async writeCity() {
+
+    this.lastContries = [];
+
+    const adress = this.editEmployee!.addresses[this.currentAddressIndex];
+    if (isNumeric(adress.zip)) {
+      this.dataCountryStateService.SearchCity(adress.zip).then((res) => {
+        if (res.length === 1) {
+          adress.city = res[0].city!;
+          adress.state = res[0].state!;
+          adress.country = 'CH';
+        } else if (res.length > 1) {
+          adress.city = '';
+          this.lastContries = res;
+          adress.state = res[0].state!;
+          adress.country = 'CH';
+        }
+
+      }).catch(() => {
+        this.showInfo(MessageLibrary.ZIP_NOT_VALID, 'ZIP_NOT_VALID');
+      });
+    } else {
+      let leftCharacters = adress.zip.substring(0, 2);
+      leftCharacters = leftCharacters.replace('-', ' ');
+
+
+      const find = this.countries.findIndex(x => x.abbreviation === leftCharacters.toUpperCase().trim());
+
+      if (find !== -1) {
+        adress.country = leftCharacters.toUpperCase().trim();
+      }
+
+    }
   }
 
   private setDateStruc() {
@@ -886,8 +923,8 @@ export class DataManagementEmployeeService {
 
   private resetFindlistbackup() {
 
-    this.backupFindEmployee = null;
-    this.backupFindEmployeeDummy = null;
+    this.backupFindEmployee = undefined;
+    this.backupFindEmployeeDummy = undefined;
     this.backupFindEmployeeList = [];
   }
 

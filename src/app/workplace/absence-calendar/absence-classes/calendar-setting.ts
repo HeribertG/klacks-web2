@@ -14,8 +14,8 @@ export class CalendarSetting {
  
   
   private _zoom = 1;
-  private _cellHeight = 20;
-  private _headerHeight = 30;
+  private _cellHeight = 30;
+  private _headerHeight = 45;
   private _cellWidth = 5;
   private _mainTextHeight = 23;
   private _currentYear = new Date().getFullYear();
@@ -91,7 +91,7 @@ export class CalendarSetting {
     this.cellHeight = Math.round(this._cellHeight * this.zoom);
     this.cellWidth = Math.round(this._cellWidth * this.zoom);
     this.mainTextHeight = Math.round(this._mainTextHeight * this.zoom);
-    this.cellHeaderHeight = Math.round(30 * this.zoom);
+    this.cellHeaderHeight = Math.round(this._headerHeight * this.zoom);
     const fontsize = Math.round((this.mainFontSize * this.zoom) * 10) / 10;
 
     

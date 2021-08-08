@@ -93,6 +93,12 @@ namespace klacks_web_api.Controllers
       return mapper.Map<Employee, EmployeeResource>(employee);
     }
 
-    
+    [HttpGet("FindEmployee/{name}/{firstName}")]
+    public async  Task<ActionResult<IEnumerable<EmployeeResource>>> FindEmployee( string name = null, string firstName = null)
+    {
+      var employee = await repository.FindEmployeeList( name, firstName);
+      return mapper.Map<List<Employee>, List<EmployeeResource>>((List<Employee>)employee); 
+    }
+
   }
 }

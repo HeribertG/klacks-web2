@@ -1,0 +1,25 @@
+@import '../../../../assets/standard-styles/colors.scss';
+
+.box-calendar {
+  height: 100%;
+  width: 100%;
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+
+  -ms-interpolation-mode: nearest-neighbor;
+
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  user-zoom: fixed;
+  background-color: $gridBackgroundColor;
+}

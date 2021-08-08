@@ -1,6 +1,7 @@
 using klacks_web_api.Models.Employee;
 using klacks_web_api.Resources.Filter;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace klacks_web_api.Interface
@@ -14,6 +15,7 @@ namespace klacks_web_api.Interface
     void RemoveEmployee(Employee employee);
     Task<Employee> DeleteEmployee(Guid id);
     bool EmployeeExists(Guid id);
+    Task<IEnumerable<Employee>> FindEmployeeList(string name = null, string firstname = null);
 
   }
 }

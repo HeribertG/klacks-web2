@@ -32,6 +32,7 @@ import localeDECH from '@angular/common/locales/de-CH';
 
 
 
+
 registerLocaleData(localeDECH);
 
 @NgModule({
@@ -45,8 +46,6 @@ registerLocaleData(localeDECH);
     HomeComponent,
     LoginComponent,
     ErrorComponent,
-   
- 
     
   ],
   imports: [
