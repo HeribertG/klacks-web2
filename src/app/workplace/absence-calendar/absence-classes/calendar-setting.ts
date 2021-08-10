@@ -1,18 +1,24 @@
 
+import { EventEmitter, Injectable, Output } from "@angular/core";
 import { DataManagementHolydayService } from "src/app/data/management/data-management-holyday.service";
 import { MDraw } from "src/app/helpers/draw-helper";
 import { ClipboardModeEnum } from "src/app/helpers/enums/grid-settings.enum";
-import {  HolidaysList } from "src/app/template/classes/holyday-list";
+import { HolidaysList } from "src/app/template/classes/holyday-list";
 
+
+@Injectable({
+  providedIn: 'any'
+})
 export class CalendarSetting {
-  
-  constructor(private dataManagementHolydayService:DataManagementHolydayService) {
+  @Output() zoomChangingEvent = new EventEmitter();
+  @Output() holidayListIsreadEvent = new EventEmitter();
+  constructor(private dataManagementHolydayService: DataManagementHolydayService) {
   }
 
-  isEditabled =true;
+  isEditabled = true;
   holidaysList: HolidaysList | undefined;
- 
-  
+
+
   private _zoom = 1;
   private _cellHeight = 30;
   private _headerHeight = 45;
@@ -23,21 +29,21 @@ export class CalendarSetting {
 
   cellPadding = 3;
 
-  evenMonthColor='#FFFFFF';
-  oddMonthColor ='#F7F8E0';
-  saturdayColor ='#A9F5BC';
-  sundayColor ='#F4FA58';
-  holydayColor ='#FFFF00';
+  evenMonthColor = '#FFFFFF';
+  oddMonthColor = '#F7F8E0';
+  saturdayColor = '#A9F5BC';
+  sundayColor = '#F4FA58';
+  holydayColor = '#FFFF00';
 
   increaseBorder = (0.5);
-  cellHeight = this._cellHeight * this.zoom;
+  cellHeight = this._cellHeight
   cellWidth = this._cellWidth * this.zoom;
-  mainTextHeight = this._mainTextHeight * this.zoom;
-  cellHeaderHeight =  this._headerHeight * this.zoom;
-  font = 'normal ' + this.mainFontSize * this.zoom + 'px Arial';
-  
+  mainTextHeight = this._mainTextHeight
+  cellHeaderHeight = this._headerHeight
+  font = 'normal ' + this.mainFontSize + 'px Arial';
 
- 
+
+
 
   backGroundColor = '#FFFFFF';
   borderColor = '#999999';
@@ -63,11 +69,17 @@ export class CalendarSetting {
   set currentYear(value: number) {
     this._currentYear = value;
     this.readList();
-  
+
   }
 
-  private async readList(){
-    this.holidaysList =await this.dataManagementHolydayService.createHolydayList(this.currentYear);
+  
+  private async readList() {
+      this.dataManagementHolydayService.createHolydayList(this.currentYear).then((x)=>{
+      this.holidaysList =x;
+      this.holidayListIsreadEvent.emit();
+    });
+
+
   }
 
   /* #region zoom affected sizes */
@@ -78,6 +90,7 @@ export class CalendarSetting {
   set zoom(value: number) {
     this._zoom = value;
     this.reset();
+    this.zoomChangingEvent.emit();
   }
 
   get htmlZoom(): number {
@@ -85,17 +98,9 @@ export class CalendarSetting {
   }
 
 
-  
-  reset() {
-    this.increaseBorder = (0.5);
-    this.cellHeight = Math.round(this._cellHeight * this.zoom);
-    this.cellWidth = Math.round(this._cellWidth * this.zoom);
-    this.mainTextHeight = Math.round(this._mainTextHeight * this.zoom);
-    this.cellHeaderHeight = Math.round(this._headerHeight * this.zoom);
-    const fontsize = Math.round((this.mainFontSize * this.zoom) * 10) / 10;
 
-    
-   
+  reset() {
+    this.cellWidth = Math.round(this._cellWidth * this.zoom);
 
   }
 

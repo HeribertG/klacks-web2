@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, } from '@angular/core';
 import { DataManagementHolydayService } from 'src/app/data/management/data-management-holyday.service';
 import { CalendarSetting } from '../absence-classes/calendar-setting';
 import { CalendarData } from '../absence-classes/data-calendar';
 import { ScrollCalendar } from '../absence-classes/scroll-calendar';
+import { Options } from '@angular-slider/ngx-slider';
 
 @Component({
   selector: 'app-absence-container',
@@ -11,9 +12,21 @@ import { ScrollCalendar } from '../absence-classes/scroll-calendar';
 })
 export class AbsenceContainerComponent implements OnInit, AfterViewInit, OnDestroy {
  
+  value: number = 100;
+  options: Options = {
+    floor: 50,
+    ceil: 300,
+    showSelectionBarEnd:false,
+    showSelectionBar:false
+    
+
+  };
+
   private calendarSetting: CalendarSetting | undefined;
   public calendarData: CalendarData | undefined;
   public scrollCalendar: ScrollCalendar | undefined = new ScrollCalendar();
+
+
   
   constructor(private dataManagementHolydayService: DataManagementHolydayService) {
     this.calendarSetting = new CalendarSetting(dataManagementHolydayService);
@@ -32,5 +45,8 @@ export class AbsenceContainerComponent implements OnInit, AfterViewInit, OnDestr
   ngOnDestroy() {
   }
 
- 
+  onChange(){
+    console.log(this.value);
+    this.calendarSetting!.zoom =this.value/100;
+  }
 }

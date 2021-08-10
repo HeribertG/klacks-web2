@@ -1,8 +1,14 @@
 <div class="schedule-container" #containerElement>
+  <div class="calendar-toolbar">
+<div class="custom-slider">
+  <ngx-slider [(value)]="value" (valueChange)="onChange()" [options]="options"></ngx-slider>
 
+</div>
+  </div>
   <div class="container-top" #topElement>
 
     <div  #leftElement>
+      
       <app-absence-row-header [calendarData]="calendarData"  [scrollCalendar]="scrollCalendar"  class=" container-left"></app-absence-row-header>
     </div>
 

@@ -46,7 +46,7 @@ namespace klacks_web_api.Data
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-      // optionsBuilder.LogTo(Console.WriteLine,Microsoft.Extensions.Logging.LogLevel.Information);
+      optionsBuilder.LogTo(Console.WriteLine,Microsoft.Extensions.Logging.LogLevel.Information);
       optionsBuilder.UseSnakeCaseNamingConvention();
     }
 

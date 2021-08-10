@@ -3,7 +3,7 @@ import { CalendarHeaderDayRank } from 'src/app/core/calendar-class';
 import { MDraw } from 'src/app/helpers/draw-helper';
 import { BaselineAlignmentEnum, TextAlignmentEnum } from 'src/app/helpers/enums/cell-settings.enum';
 import { Gradient3DBorderStyleEnum } from 'src/app/helpers/enums/draw.enum';
-import { addDays, getDaysInMonth, isLeapYear } from 'src/app/helpers/format-helper';
+import { addDays, EqualDate, getDaysInMonth, isLeapYear } from 'src/app/helpers/format-helper';
 import { Rectangle } from 'src/app/helpers/geometry';
 import { HolidayDate } from 'src/app/template/classes/holyday-list';
 import { CalendarData } from '../absence-classes/data-calendar';
@@ -38,7 +38,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
   private tooltip: HTMLDivElement | undefined;
 
   private holidayList: HolidayDate[] | undefined;
-  
+
 
   isFocused = true;
   isBusy = false;
@@ -100,9 +100,19 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+    const that = this;
+    this.calendarData!.calendarSetting!.zoomChangingEvent.subscribe(() => {
+      this.setMetrics();
+      this.createRuler();
+      this.renderCalendar();
+    });
+    this.calendarData!.calendarSetting!.holidayListIsreadEvent.subscribe(() => {
+      this.holidayList = this.calendarData!.calendarSetting!.holidaysList!.holidayList;
+      this.createRuler();
+      this.renderCalendar();
+    });
 
 
-   
     this.scrollCalendar!.maxCols = isLeapYear(this.calendarData!.calendarSetting!.currentYear) ? 366 : 365;
     this.scrollCalendar!.maxRows = 200;
 
@@ -128,6 +138,9 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
+
+
+  /* #region   resize+visibility */
   private resize = (event: any): void => {
 
     this.setMetrics();
@@ -148,6 +161,12 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     this.refreshCalendar();
   }
 
+
+  /* #endregion   resize+visibility */
+
+
+  /* #region   metrics */
+
   private setMetrics(): void {
     this.calendarData!.calendarSetting!.reset();
 
@@ -161,23 +180,6 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
       visibleRows,
       this.calendarData!.rows
     );
-  }
-
-  refreshCalendar(): void {
-
-    this.canvas!.height = this.canvas!.clientHeight;
-    this.canvas!.width = this.canvas!.clientWidth;
-
-    const visibleRow = this.visibleRow();
-
-    const height = visibleRow * this.calendarData!.calendarSetting!.cellHeight;
-
-    if (this.renderCanvas!.height < height) {
-      // this.onGrowGrid();
-      this.renderCalendar();
-    } else {
-      this.renderCalendar();
-    }
   }
 
   visibleCol(): number {
@@ -212,109 +214,10 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     const year = isLeapYear(this.calendarData!.calendarSetting!.currentYear) ? 366 : 365;
     return this.calendarData!.calendarSetting!.cellWidth * year + 1;
   }
-  private createRuler() {
 
+  /* #endregion   metrics */
 
-    const rankList = new Array<CalendarHeaderDayRank>();
-
-    this.calendarData!.calendarSetting!.reset();
-    const firstDay = new Date(this.calendarData!.calendarSetting!.currentYear, 0, 1);
-    const year = isLeapYear(this.calendarData!.calendarSetting!.currentYear) ? 366 : 365;
-
-    const cellHeight =  this.calendarData!.calendarSetting!.cellHeight;
-    this.rowCanvas!.height = cellHeight;
-    const headerHeight =  this.calendarData!.calendarSetting!.cellHeaderHeight;
-    this.headerCanvas!.height = headerHeight;
-
-    this.rowCanvas!.width = this.getWith();
-    this.headerCanvas!.width = this.getWith();
-    const rec = new Rectangle(0, 0, this.rowCanvas!.width, this.rowCanvas!.height);
-    MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.backGroundColor, rec);
-
-    let lastDays = 0;
-    // durchläuft alle Monate im Jahr
-    for (let i = 0; i < 11; i++) {
-      const actualDays = getDaysInMonth(this.calendarData!.calendarSetting!.currentYear, i)
-
-      const l = lastDays * this.calendarData!.calendarSetting!.cellWidth;
-      const l2 = actualDays * this.calendarData!.calendarSetting!.cellWidth;
-
-      const rec1 = new Rectangle(l, 0, l + l2, this.rowCanvas!.height);
-      lastDays += actualDays;
-
-      MDraw.fillRectangle(this.backgroundRowCtx!, (i % 2 === 0 ? this.calendarData!.calendarSetting!.evenMonthColor : this.calendarData!.calendarSetting!.oddMonthColor), rec1);
-
-      for (let i = 0; i < year; i++) {
-        const currDate = addDays(firstDay, i + 1);
-        const d = i * this.calendarData!.calendarSetting!.cellWidth;
-        const rec2 = new Rectangle( Math.floor(d), 0,  Math.floor(d + this.calendarData!.calendarSetting!.cellWidth), this.calendarData!.calendarSetting!.cellHeaderHeight);
-        switch (currDate.getDay()) {
-          case 0:
-            MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.sundayColor, rec2);
-
-            MDraw.drawBaseBorder(
-              this.backgroundRowCtx!,
-              this.calendarData!.calendarSetting!.borderColor,
-              0.5, rec2);
-
-            const rec3 = new Rectangle(d - 20, 0, 20, this.calendarData!.calendarSetting!.cellHeaderHeight);
-
-            // MDraw.fillRectangle(this.backgroundRowCtx!,  this.calendarData!.calendarSetting!.saturdayColor, rec3);
-
-
-            break;
-          case 6:
-            MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.saturdayColor, rec2);
-
-            MDraw.drawBaseBorder(
-              this.backgroundRowCtx!,
-              this.calendarData!.calendarSetting!.borderColor,
-              0.5, rec2);
-
-            // const rec4 = new Rectangle(d-10, 0, 10, this.calendarData!.calendarSetting!.cellHeaderHeight);
-            // MDraw.fillRectangle(this.backgroundRowCtx!,  this.calendarData!.calendarSetting!.saturdayColor, rec4);
-            break;
-          default:
-            MDraw.drawBaseBorder(
-              this.backgroundRowCtx!,
-              this.calendarData!.calendarSetting!.borderColor,
-              0.5, rec2);
-        }
-      }
-    }
-
-
-    this.headerCtx!.drawImage(this.rowCanvas!, 0, 0);
-    this.headerCtx!.drawImage(this.rowCanvas!, 0, this.rowCanvas!.height);
-
-    lastDays = 0;
-    for (let i = 0; i < 12; i++) {
-
-      const actualDays = getDaysInMonth(this.calendarData!.calendarSetting!.currentYear, i)
-
-      const l = lastDays * this.calendarData!.calendarSetting!.cellWidth;
-      const l2 = actualDays * this.calendarData!.calendarSetting!.cellWidth;
-      const rec3 = new Rectangle(l, 0, l + l2, this.rowCanvas!.height);
-      lastDays += actualDays;
-      MDraw.fillRectangle(this.headerCtx!, this.calendarData!.calendarSetting!.controlBackGroundColor, rec3);
-
-      MDraw.drawText(
-        this.headerCtx!,
-        this.calendarData!.monthsName[i],
-        rec3.left,
-        rec3.top,
-        rec3.width,
-        rec3.height, this.calendarData!.calendarSetting!.font,
-        12,
-        this.calendarData!.calendarSetting!.foreGroundColor,
-        TextAlignmentEnum.Center,
-        BaselineAlignmentEnum.Center);
-
-      MDraw.drawBorder(this.headerCtx!, rec3.left, rec3.top, rec3.width, rec3.height,  this.calendarData!.calendarSetting!.controlBackGroundColor, 2, Gradient3DBorderStyleEnum.Raised)
-
-      this.ctx!.drawImage(this.headerCanvas!, 0, 0);
-    }
-  }
+  /* #region   render */
 
   renderCalendar(): void {
     const visibleRow = this.visibleRow();
@@ -324,7 +227,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     const height = this.calendarData!.calendarSetting!.cellHeight
 
     for (let i = 0; i < visibleRow + 1; i++) {
-      this.renderCanvasCtx!.drawImage(this.rowCanvas!, 0, Math.floor(i * height) );
+      this.renderCanvasCtx!.drawImage(this.rowCanvas!, 0, Math.floor(i * height));
     }
 
     this.moveHorizontal();
@@ -391,6 +294,158 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ctx!.drawImage(this.headerCanvas!, dx, 0);
     this.ctx!.drawImage(this.renderCanvas!, dx, this.calendarData!.calendarSetting!.cellHeaderHeight);
   }
+
+  /* #endregion   render */
+
+  /* #region   draw */
+
+  refreshCalendar(): void {
+
+    this.canvas!.height = this.canvas!.clientHeight;
+    this.canvas!.width = this.canvas!.clientWidth;
+
+    const visibleRow = this.visibleRow();
+
+    const height = visibleRow * this.calendarData!.calendarSetting!.cellHeight;
+
+    if (this.renderCanvas!.height < height) {
+      // this.onGrowGrid();
+      this.renderCalendar();
+    } else {
+      this.renderCalendar();
+    }
+  }
+
+
+
+
+  /* #endregion   draw */
+
+  /* #region   create */
+
+  private createRuler() {
+
+
+    //this.calendarData!.calendarSetting!.
+    this.calendarData!.calendarSetting!.reset();
+    const firstDay = new Date(this.calendarData!.calendarSetting!.currentYear, 0, 1);
+    const year = isLeapYear(this.calendarData!.calendarSetting!.currentYear) ? 366 : 365;
+
+    const cellHeight = this.calendarData!.calendarSetting!.cellHeight;
+    this.rowCanvas!.height = cellHeight;
+    const headerHeight = this.calendarData!.calendarSetting!.cellHeaderHeight;
+    this.headerCanvas!.height = headerHeight;
+
+    this.rowCanvas!.width = this.getWith();
+    this.headerCanvas!.width = this.getWith();
+    const rec = new Rectangle(0, 0, this.rowCanvas!.width, this.rowCanvas!.height);
+    MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.backGroundColor, rec);
+
+    let lastDays = 0;
+    // durchläuft alle Monate im Jahr
+    for (let i = 0; i < 12; i++) {
+      const actualDays = getDaysInMonth(this.calendarData!.calendarSetting!.currentYear, i)
+
+      const l = lastDays * this.calendarData!.calendarSetting!.cellWidth;
+      const l2 = actualDays * this.calendarData!.calendarSetting!.cellWidth;
+
+      const rec1 = new Rectangle(l, 0, l + l2, this.rowCanvas!.height);
+      lastDays += actualDays;
+
+      MDraw.fillRectangle(this.backgroundRowCtx!, (i % 2 === 0 ? this.calendarData!.calendarSetting!.evenMonthColor : this.calendarData!.calendarSetting!.oddMonthColor), rec1);
+
+      for (let i = 0; i < year; i++) {
+        const currDate = addDays(firstDay, i + 1);
+        const d = i * this.calendarData!.calendarSetting!.cellWidth;
+        const rec2 = new Rectangle(Math.floor(d), 0, Math.floor(d + this.calendarData!.calendarSetting!.cellWidth), this.calendarData!.calendarSetting!.cellHeaderHeight);
+
+        let isHoliday = false;
+        if (this.holidayList && this.holidayList!.length > 0) {
+          const result = this.holidayList!.find(x => (EqualDate(x.currentDate,currDate)===0));
+
+          if(result && result!.officially){
+            isHoliday = true;
+            MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.holydayColor, rec2);
+
+            MDraw.drawBaseBorder(
+              this.backgroundRowCtx!,
+              this.calendarData!.calendarSetting!.borderColor,
+              this.calendarData!.calendarSetting!.increaseBorder, rec2);
+          }
+
+        }
+
+
+        if (!isHoliday) {
+          switch (currDate.getDay()) {
+            case 0:
+              MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.sundayColor, rec2);
+
+              MDraw.drawBaseBorder(
+                this.backgroundRowCtx!,
+                this.calendarData!.calendarSetting!.borderColor,
+                this.calendarData!.calendarSetting!.increaseBorder, rec2);
+
+              const rec3 = new Rectangle(d - 20, 0, 20, this.calendarData!.calendarSetting!.cellHeaderHeight);
+
+              // MDraw.fillRectangle(this.backgroundRowCtx!,  this.calendarData!.calendarSetting!.saturdayColor, rec3);
+
+
+              break;
+            case 6:
+              MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.saturdayColor, rec2);
+
+              MDraw.drawBaseBorder(
+                this.backgroundRowCtx!,
+                this.calendarData!.calendarSetting!.borderColor,
+                this.calendarData!.calendarSetting!.increaseBorder, rec2);
+
+              // const rec4 = new Rectangle(d-10, 0, 10, this.calendarData!.calendarSetting!.cellHeaderHeight);
+              // MDraw.fillRectangle(this.backgroundRowCtx!,  this.calendarData!.calendarSetting!.saturdayColor, rec4);
+              break;
+            default:
+              MDraw.drawBaseBorder(
+                this.backgroundRowCtx!,
+                this.calendarData!.calendarSetting!.borderColor,
+                0.5, rec2);
+          }
+        }
+      }
+    }
+
+
+    this.headerCtx!.drawImage(this.rowCanvas!, 0, 0);
+    this.headerCtx!.drawImage(this.rowCanvas!, 0, this.rowCanvas!.height);
+
+    lastDays = 0;
+    for (let i = 0; i < 12; i++) {
+
+      const actualDays = getDaysInMonth(this.calendarData!.calendarSetting!.currentYear, i)
+
+      const l = lastDays * this.calendarData!.calendarSetting!.cellWidth;
+      const l2 = actualDays * this.calendarData!.calendarSetting!.cellWidth;
+      const rec3 = new Rectangle(l, 0, l + l2, this.rowCanvas!.height);
+      lastDays += actualDays;
+      MDraw.fillRectangle(this.headerCtx!, this.calendarData!.calendarSetting!.controlBackGroundColor, rec3);
+
+      MDraw.drawText(
+        this.headerCtx!,
+        this.calendarData!.monthsName[i],
+        rec3.left,
+        rec3.top,
+        rec3.width,
+        rec3.height, this.calendarData!.calendarSetting!.font,
+        12,
+        this.calendarData!.calendarSetting!.foreGroundColor,
+        TextAlignmentEnum.Center,
+        BaselineAlignmentEnum.Center);
+
+      MDraw.drawBorder(this.headerCtx!, rec3.left, rec3.top, rec3.width, rec3.height, this.calendarData!.calendarSetting!.controlBackGroundColor, 2, Gradient3DBorderStyleEnum.Raised)
+
+      this.ctx!.drawImage(this.headerCanvas!, 0, 0);
+    }
+  }
+  /* #region   create */
 }
 
 

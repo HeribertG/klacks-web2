@@ -1,8 +1,9 @@
 @import '../../../../assets/standard-styles/colors.scss';
-
+@import '../../../../assets/standard-styles/slider.scss';
 
 .schedule-container {
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   padding: 0px;
   height: 100%;
@@ -23,7 +24,7 @@
   background-color: $splitBackgroundColor;
 }
 
-.resizer-horizontale{
+.resizer-horizontale {
   width: 100%;
   cursor: n-resize;
   height: 5px;
@@ -34,7 +35,7 @@
   width: 100%;
   height: 60%;
   display: flex;
-  flex-flow: row ;
+  flex-flow: row;
   overflow: hidden;
   margin: 0;
 
@@ -42,13 +43,37 @@
 }
 
 
+  .custom-slider {
+    width: 400px;
+    height: 50px !important;
+    font-size: 10px;
+
+  }
+
+
+
+.calendar-toolbar {
+  height: 60px;
+  width: 100%;
+  display: flex;
+  background-color: yellow;
+}
 
 .container-left {
   height: 100%;
   width: 100%;
-  
+
 }
 
+.ngx-slider .ngx-slider-pointer {
+  cursor: pointer;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  background-color: red;
+  z-index: 3;
+  border-radius: 10px;
+}
 
 .container-bottom {
   height: 40%;
@@ -70,4 +95,3 @@
   margin: 0;
   background-color: rgb(214, 95, 4);
 }
-

@@ -10,7 +10,8 @@ import { AbsenceBodyContainerComponent } from './absence-body-container/absence-
 import { AbsenceBodyComponent } from './absence-body/absence-body.component';
 import { ResizeObserverDirective } from 'src/app/directive/resize-observer.directive';
 import { AbsenceRowHeaderComponent } from './absence-row-header/absence-row-header.component';
-
+import { TemplateModule } from 'src/app/template/template.module';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 
 @NgModule({
@@ -28,7 +29,10 @@ import { AbsenceRowHeaderComponent } from './absence-row-header/absence-row-head
  
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    TemplateModule,
+    NgxSliderModule
+
   ],
   exports: [
     AbsenceCalendarHomeComponent,

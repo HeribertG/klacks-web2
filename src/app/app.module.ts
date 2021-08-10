@@ -59,6 +59,7 @@ registerLocaleData(localeDECH);
     SpinnerModule,
     ToastModule,
  
+ 
   ],
   providers: [
     DataManagementSwitchboardService,
