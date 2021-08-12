@@ -1,6 +1,8 @@
 using AutoMapper;
 using klacks_web_api.Interface;
 using klacks_web_api.Models;
+using klacks_web_api.Models.Employee;
+using klacks_web_api.Resources;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -32,7 +34,7 @@ namespace klacks_web_api.Controllers
       return await repository.GetHolydayRuleList();
     }
 
-   
+
     [HttpGet("HolydayRule/{id}")]
     public async Task<ActionResult<HolydayRule>> GetHolydayRuleAsync(Guid id)
     {
@@ -50,11 +52,11 @@ namespace klacks_web_api.Controllers
       return holydayRule1;
     }
 
-   
+
     [HttpPut("HolydayRule")]
     public async Task<ActionResult<HolydayRule>> PutHolydayRule([FromBody] HolydayRule holydayRule)
     {
-      var holydayRule1 =  repository.PutHolydayRule(holydayRule);
+      var holydayRule1 = repository.PutHolydayRule(holydayRule);
 
       if (holydayRule1 == null)
       {
@@ -66,13 +68,22 @@ namespace klacks_web_api.Controllers
       return holydayRule1;
     }
 
-   
+
     [HttpDelete("HolydayRule/{id}")]
     public async Task DeleteAsync(Guid id)
     {
       var address = repository.DeleteHolydayRule(id);
 
       await unitOfWork.CompleteAsync();
+    }
+
+    [HttpGet("GetCalendarList")]
+    public async Task<ActionResult<List<CalendarResource>>> GetCalendarList()
+    {
+      var employee = await repository.GetCalendarList();
+      var result = mapper.Map<List<Employee>, List<CalendarResource>>(employee);
+
+      return Ok(result);
     }
   }
 }

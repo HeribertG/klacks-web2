@@ -1,9 +1,14 @@
+import { EventEmitter, Injectable, Output } from "@angular/core";
+import { DataManagementCalendarService } from "src/app/data/management/data-management-calendar.service";
 import { CalendarSetting } from "./calendar-setting";
 
 
 
-
+@Injectable({
+  providedIn: 'any'
+})
 export class CalendarData {
+  @Output() isResetEvent = new EventEmitter();
 
   weekday = new Array(7);
   monthsName = new Array(12);
@@ -19,8 +24,12 @@ export class CalendarData {
   backGroundColorHolyday = '#e6ffe6';
   backGroundColorOfficiallyHolyday = '#ffffe6';
 
-  constructor(calendarSetting: CalendarSetting) {
+  constructor(
+    calendarSetting: CalendarSetting,
+    private dataManagementCalendarService: DataManagementCalendarService
+  ) {
 
+    this.dataManagementCalendarService.readList();
     this.calendarSetting = calendarSetting;
     const tmpDate = new Date(Date.now());
     const d = new Date(tmpDate.getFullYear(), 1, 1);
@@ -49,6 +58,11 @@ export class CalendarData {
     this.monthsName[10] = 'November';
     this.monthsName[11] = 'Dezember';
 
+
+    this.dataManagementCalendarService.isReset.subscribe(() => {
+      this.resetRowsNumber(this.dataManagementCalendarService.calendar.length);
+      this.isResetEvent.emit();
+    });
   }
 
   destroy(): void {
@@ -75,6 +89,10 @@ export class CalendarData {
     return this.colsNumber;
   }
 
-
+  readname(index: number): string {
+    const data = this.dataManagementCalendarService.calendar[index];
+    if (data) { return data.firstName + ' ' + data.name; }
+    return '';
+  }
 
 }

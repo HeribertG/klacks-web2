@@ -100,7 +100,10 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    const that = this;
+
+    this.scrollCalendar!.maxCols = isLeapYear(this.calendarData!.calendarSetting!.currentYear) ? 366 : 365;
+    this.scrollCalendar!.maxRows = 200;
+
     this.calendarData!.calendarSetting!.zoomChangingEvent.subscribe(() => {
       this.setMetrics();
       this.createRuler();
@@ -112,9 +115,16 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
       this.renderCalendar();
     });
 
+    this.calendarData!.isResetEvent.subscribe(() => {
+      if(this.calendarData!){
+        this.scrollCalendar!.maxRows = this.calendarData!.rows;
+        this.vScrollbar!.maximumRow = this.calendarData!.rows;
+        this.scrollCalendar!.setMetrics(this.visibleCol(),  this.scrollCalendar!.maxCols ,this.visibleRow(), this.scrollCalendar!.maxRows );
+        this.renderCalendar();
+      }
+    });
 
-    this.scrollCalendar!.maxCols = isLeapYear(this.calendarData!.calendarSetting!.currentYear) ? 366 : 365;
-    this.scrollCalendar!.maxRows = 200;
+
 
     this.canvas!.height = this.canvas!.clientHeight;
     this.canvas!.width = this.canvas!.clientWidth;
@@ -163,7 +173,6 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   /* #endregion   resize+visibility */
-
 
   /* #region   metrics */
 
@@ -227,7 +236,11 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     const height = this.calendarData!.calendarSetting!.cellHeight
 
     for (let i = 0; i < visibleRow + 1; i++) {
-      this.renderCanvasCtx!.drawImage(this.rowCanvas!, 0, Math.floor(i * height));
+      const ii = i + this.scrollCalendar!.vScrollValue!;
+      if (ii < this.scrollCalendar!.maxRows) {
+        this.renderCanvasCtx!.drawImage(this.rowCanvas!, 0, Math.floor(i * height));
+      }
+
     }
 
     this.moveHorizontal();
@@ -361,9 +374,9 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
 
         let isHoliday = false;
         if (this.holidayList && this.holidayList!.length > 0) {
-          const result = this.holidayList!.find(x => (EqualDate(x.currentDate,currDate)===0));
+          const result = this.holidayList!.find(x => (EqualDate(x.currentDate, currDate) === 0));
 
-          if(result && result!.officially){
+          if (result && result!.officially) {
             isHoliday = true;
             MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.holydayColor, rec2);
 
@@ -445,7 +458,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
       this.ctx!.drawImage(this.headerCanvas!, 0, 0);
     }
   }
-  /* #region   create */
+  /* #endregion   create */
 }
 
 

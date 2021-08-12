@@ -4,6 +4,7 @@ import { CalendarSetting } from '../absence-classes/calendar-setting';
 import { CalendarData } from '../absence-classes/data-calendar';
 import { ScrollCalendar } from '../absence-classes/scroll-calendar';
 import { Options } from '@angular-slider/ngx-slider';
+import { DataManagementCalendarService } from 'src/app/data/management/data-management-calendar.service';
 
 @Component({
   selector: 'app-absence-container',
@@ -28,9 +29,11 @@ export class AbsenceContainerComponent implements OnInit, AfterViewInit, OnDestr
 
 
   
-  constructor(private dataManagementHolydayService: DataManagementHolydayService) {
+  constructor(
+    private dataManagementHolydayService: DataManagementHolydayService,
+    private dataManagementCalendarService: DataManagementCalendarService) {
     this.calendarSetting = new CalendarSetting(dataManagementHolydayService);
-    this.calendarData = new CalendarData(this.calendarSetting!);
+    this.calendarData = new CalendarData(this.calendarSetting!, this.dataManagementCalendarService);
   }
 
   ngOnInit(): void {
@@ -46,7 +49,6 @@ export class AbsenceContainerComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   onChange(){
-    console.log(this.value);
     this.calendarSetting!.zoom =this.value/100;
   }
 }

@@ -1,5 +1,12 @@
-export class ScrollCalendar {
+import { EventEmitter, Injectable, Output } from "@angular/core";
 
+
+@Injectable({
+  providedIn: 'any'
+})
+export class ScrollCalendar {
+  @Output() isMoveHorizontalEvent = new EventEmitter<number>();
+  @Output() isMoveVericalEvent = new EventEmitter<number>();
     constructor() { }
   
     public maxCols = 0;
@@ -41,6 +48,8 @@ export class ScrollCalendar {
         if (oldValue !== undefined) {
           this.difference(oldValue, false);
         } else { this._lastDifferenceY = 0; }
+
+     
       }
     }
   
@@ -128,6 +137,11 @@ export class ScrollCalendar {
   
     }
   
-  
+  isMoveHorzintal(value:number): void{
+    this.isMoveVericalEvent.emit(value);
+  }
+  isMoveVerical(value:number): void{
+    this.isMoveVericalEvent.emit(value);
+  }
   }
   

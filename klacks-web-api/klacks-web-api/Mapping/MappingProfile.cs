@@ -2,6 +2,7 @@
 
 using AutoMapper;
 using klacks_web_api.Models.Authentfication;
+using klacks_web_api.Models.Calendar;
 using klacks_web_api.Models.Corporation;
 using klacks_web_api.Models.Employee;
 using klacks_web_api.Models.Options;
@@ -32,6 +33,12 @@ namespace klacks_web_api.Mapping
 
       CreateMap<Employee, EmployeeResource>();
       CreateMap<EmployeeResource, Employee>();
+      CreateMap<Employee, CalendarResource>();
+
+
+      CreateMap<Absence, AbsenceResource>();
+      CreateMap<AbsenceResource, Absence>();
+      
 
       CreateMap<Countries, CountriesResource>();
       CreateMap<CountriesResource, Countries>();

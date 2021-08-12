@@ -87,6 +87,7 @@ export class CalVScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
       this.isDirty = true;
       if (diff !== 0) {
         this.absenceBody!.moveCalendar(0, diff);
+        this.scrollCalendar!.isMoveVerical(diff);
       }
 
       this.isDirty = false;
@@ -301,8 +302,12 @@ export class CalVScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
 
     if (this.moveAnimationValue < 0) {
       this.absenceBody!.moveCalendar(0, -5);
+      this.scrollCalendar!.isMoveVerical(-5);
+
     } else if (this.moveAnimationValue > 0) {
       this.absenceBody!.moveCalendar(0, 5);
+      this.scrollCalendar!.isMoveVerical(5);
+
     }
 
     this.requestID = window.requestAnimationFrame(x => {

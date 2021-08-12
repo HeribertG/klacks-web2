@@ -1,6 +1,7 @@
 
 
 using klacks_web_api.Models;
+using klacks_web_api.Models.Employee;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,5 +17,7 @@ namespace klacks_web_api.Interface
     void RemoveHolydayRule(HolydayRule holydayRule);
     Task<HolydayRule> DeleteHolydayRule(Guid id);
     bool HolydayRuleExists(Guid id);
+
+    Task<List<Employee>> GetCalendarList();
   }
 }
