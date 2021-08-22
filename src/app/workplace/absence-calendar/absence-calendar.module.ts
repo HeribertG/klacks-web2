@@ -12,6 +12,8 @@ import { ResizeObserverDirective } from 'src/app/directive/resize-observer.direc
 import { AbsenceRowHeaderComponent } from './absence-row-header/absence-row-header.component';
 import { TemplateModule } from 'src/app/template/template.module';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { AbsenceCalendarDirective } from './directives/absence-calendar.directive';
+
 
 
 @NgModule({
@@ -26,6 +28,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     AbsenceBodyContainerComponent,
     AbsenceBodyComponent,
     AbsenceRowHeaderComponent,
+    AbsenceCalendarDirective,
  
   ],
   imports: [

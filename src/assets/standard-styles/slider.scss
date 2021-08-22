@@ -18,6 +18,14 @@
     border-top-right-radius: 3px;
   }
 
+  .custom-slider .ngx-slider .ngx-slider-bubble  {
+    font-size: 12px;
+    font-weight:normal!important;
+  }
+  .custom-slider .ngx-slider .ngx-slider-limit {
+    font-size: 12px;
+    font-weight:normal!important;
+  }
   .custom-slider .ngx-slider .ngx-slider-pointer:after {
     display: none;
   }

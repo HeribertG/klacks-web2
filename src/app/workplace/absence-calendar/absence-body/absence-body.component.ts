@@ -224,8 +224,23 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.calendarData!.calendarSetting!.cellWidth * year + 1;
   }
 
-  /* #endregion   metrics */
+  get clientLeft(): number {
+    return 0;
+  }
 
+  get clientTop(): number {
+    return this.calendarData!.calendarSetting!.cellHeaderHeight;
+  }
+
+  get clientHeight(): number {
+    return this.canvas!.clientHeight;
+  }
+
+  get clientWidth(): number {
+    return this.canvas!.clientWidth;
+  }
+  /* #endregion   metrics */
+  
   /* #region   render */
 
   renderCalendar(): void {
@@ -294,6 +309,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
         this.isBusy = false;
       }
     });
+    
   }
 
   moveHorizontal(): void {
@@ -459,6 +475,24 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
   /* #endregion   create */
+
+  /* #region position and selection */
+
+  
+  setShiftKey(): void {
+    if (!this.isShift) {
+      this.isShift = true;
+     // this.AnchorKeyPosition = this.position;
+    }
+  }
+
+  unSetShiftKey(): void {
+
+    this.isShift = false;
+   // this.AnchorKeyPosition = undefined;
+  }
+
+/* #endregion position and selection */
 }
 
 

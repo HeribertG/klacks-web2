@@ -155,40 +155,66 @@ export class AbsenceRowHeaderComponent implements OnInit, AfterViewInit, OnDestr
     
     this.renderCanvas!.height = this.canvas!.clientHeight;
     this.renderCanvas!.width = this.canvas!.clientWidth;
-    const height = this.calendarData!.calendarSetting!.cellHeight
+    
 
     this.renderCanvasCtx!.clearRect(0, 0, this.renderCanvas!.width, this.renderCanvas!.height);
 
     for (let i = 0; i < this.scrollCalendar!.visibleRows + 3; i++) {
       const ii = i + this.scrollCalendar!.vScrollValue!;
   
-      if (ii < this.scrollCalendar!.maxRows) {
-        const top =Math.floor(i * height);
-        const rec = new Rectangle(0,top , this.renderCanvas!.width, top+ (height-1));
+      this.drawName(ii,i);
+      // if (ii < this.scrollCalendar!.maxRows) {
+      //   const top =Math.floor(i * height);
+      //   const rec = new Rectangle(0,top , this.renderCanvas!.width, top+ (height-1));
 
-        MDraw.fillRectangle(this.renderCanvasCtx!, this.calendarData!.calendarSetting!.controlBackGroundColor, rec);
-       MDraw.drawBorder(this.renderCanvasCtx!, rec.left, rec.top, rec.width, rec.height, this.calendarData!.calendarSetting!.controlBackGroundColor, 2, Gradient3DBorderStyleEnum.Raised)
-        //this.drawSimpleBorder(this.renderCanvasCtx!, rec);
+      //   MDraw.fillRectangle(this.renderCanvasCtx!, this.calendarData!.calendarSetting!.controlBackGroundColor, rec);
+      //  // MDraw.drawBorder(this.renderCanvasCtx!, rec.left, rec.top, rec.width, rec.height, this.calendarData!.calendarSetting!.controlBackGroundColor, 2, Gradient3DBorderStyleEnum.Raised)
+      //   this.drawSimpleBorder(this.renderCanvasCtx!, rec);
 
-        MDraw.drawText(
-          this.renderCanvasCtx!,
-          this.calendarData!.readname(ii),
-          rec.left,
-          rec.top,
-          rec.width,
-          rec.height-2, 
-          this.calendarData!.calendarSetting!.font,
-          this.calendarData!.calendarSetting!.mainFontSize,
-          this.calendarData!.calendarSetting!.foreGroundColor,
-          TextAlignmentEnum.Left,
-          BaselineAlignmentEnum.Center);
-      }
+      //   MDraw.drawText(
+      //     this.renderCanvasCtx!,
+      //     this.calendarData!.readname(ii),
+      //     rec.left,
+      //     rec.top,
+      //     rec.width,
+      //     rec.height-2, 
+      //     this.calendarData!.calendarSetting!.font,
+      //     this.calendarData!.calendarSetting!.mainFontSize,
+      //     this.calendarData!.calendarSetting!.foreGroundColor,
+      //     TextAlignmentEnum.Left,
+      //     BaselineAlignmentEnum.Center);
+      // }
 
     }
 
 
   }
 
+  private drawName(index:number, dy :number):void{
+
+    const height = this.calendarData!.calendarSetting!.cellHeight
+    if (index < this.scrollCalendar!.maxRows) {
+      const top =Math.floor(dy * height);
+      const rec = new Rectangle(0,top , this.renderCanvas!.width, top+ (height-1));
+
+      MDraw.fillRectangle(this.renderCanvasCtx!, this.calendarData!.calendarSetting!.controlBackGroundColor, rec);
+     // MDraw.drawBorder(this.renderCanvasCtx!, rec.left, rec.top, rec.width, rec.height, this.calendarData!.calendarSetting!.controlBackGroundColor, 2, Gradient3DBorderStyleEnum.Raised)
+      this.drawSimpleBorder(this.renderCanvasCtx!, rec);
+
+      MDraw.drawText(
+        this.renderCanvasCtx!,
+        this.calendarData!.readname(index),
+        rec.left,
+        rec.top,
+        rec.width,
+        rec.height-2, 
+        this.calendarData!.calendarSetting!.font,
+        this.calendarData!.calendarSetting!.mainFontSize,
+        this.calendarData!.calendarSetting!.foreGroundColor,
+        TextAlignmentEnum.Left,
+        BaselineAlignmentEnum.Center);
+    }
+  }
   drawCalendar() {
     this.ctx!.drawImage(this.headerCanvas!, 0, 0);
     this.ctx!.drawImage(this.renderCanvas!, 0, this.calendarData!.calendarSetting!.cellHeaderHeight);
@@ -303,7 +329,7 @@ export class AbsenceRowHeaderComponent implements OnInit, AfterViewInit, OnDestr
       }
 
       for (let row = firstRow; row < lastRow; row++) {
-
+        this.drawName(visibleRow,firstRow);
 
       }
     }

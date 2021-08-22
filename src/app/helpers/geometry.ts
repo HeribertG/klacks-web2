@@ -1,5 +1,3 @@
-import { hasLifecycleHook } from "@angular/compiler/src/lifecycle_reflector";
-
 export class Rectangle {
   left = 0;
   right = 0;
@@ -67,7 +65,7 @@ export class Rectangle {
     return this.width === 0 && this.height === 0;
   }
 
-  setRect(x: number, y: number, w: number, h: number) {
+  setRect(x: number, y: number, w: number, h: number): this {
     this.left = x;
     this.top = y;
     this.right = x + w;
@@ -76,7 +74,7 @@ export class Rectangle {
     return this;
   }
 
-  clone() {
+  clone(): Rectangle {
     return new Rectangle().setRect(
       this.left,
       this.top,
@@ -101,18 +99,35 @@ export class Rectangle {
 
   }
 
-  isIntersectRect(r1: Rectangle, r2: Rectangle) {
+  isIntersectRect(r1: Rectangle, r2: Rectangle): boolean {
     return !(r2.left > r1.right ||
       r2.right < r1.left ||
       r2.top > r1.bottom ||
       r2.bottom < r1.top);
   }
 
-  toString() {
+  toString(): string {
     return (
       '[' + this.x + ',' + this.y + ',' + this.width + ',' + this.height + ']'
     );
   }
+
+  pointInRect(x: number, y: number): boolean {
+    let isHorizontal = false;
+    let isVertical = false;
+
+    if (this.left <= x && this.right >= x) {
+      isHorizontal = true;
+    }
+    if (this.top <= y && this.bottom >= y) {
+      isVertical = true;
+    }
+
+    if (isHorizontal && isVertical) { return true; }
+
+    return false;
+  }
+
 }
 
 export interface ClientRect {
@@ -125,7 +140,7 @@ export interface ClientRect {
 }
 
 
-export function getScreenCordinates(obj:any) {
+export function getScreenCordinates(obj:any): any {
   const p = { x: Number, y: Number };
   p.x = obj.offsetLeft;
   p.y = obj.offsetTop;
