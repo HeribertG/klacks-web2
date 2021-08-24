@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Input, NgZone, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { CalendarHeaderDayRank } from 'src/app/core/calendar-class';
+import { TruncatedFilter } from 'src/app/core/employee-class';
 import { MDraw } from 'src/app/helpers/draw-helper';
 import { BaselineAlignmentEnum, TextAlignmentEnum } from 'src/app/helpers/enums/cell-settings.enum';
 import { Gradient3DBorderStyleEnum } from 'src/app/helpers/enums/draw.enum';
@@ -45,11 +46,15 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
   isShift = false;
   isCtrl = false;
 
+  private _selectedRow = -1;
+
 
   constructor(
     private zone: NgZone,
     private renderer: Renderer2,
   ) { }
+
+  /* #region ng */
 
   ngOnInit(): void {
 
@@ -148,7 +153,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-
+  /* #endregion ng */
 
   /* #region   resize+visibility */
   private resize = (event: any): void => {
@@ -243,6 +248,73 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   /* #endregion   metrics */
 
+  /* #region   select */
+
+  onSelectByMouse(x: number, y: number) {
+    const dy = y - this.calendarData!.calendarSetting!.cellHeaderHeight;
+    const height = this.calendarData!.calendarSetting!.cellHeight;
+    if (dy >= 0) {
+      const tmpRow = Math.floor(dy / height);
+      this.selectedRow = tmpRow + this.firstVisibleRow();
+    }
+  }
+
+  set selectedRow(value: number) {
+
+    if(value === this._selectedRow){return;}
+
+    this.unDrawSelectionRow();
+    if (value < 0) {
+      this._selectedRow = 0;
+    } else if (value > this.calendarData!.rows) {
+      this._selectedRow = this.calendarData!.rows;
+    } else {
+      this._selectedRow = value;
+    }
+    this.drawSelectionRow();
+  }
+
+  get selectedRow() {
+    return this._selectedRow;
+  }
+
+  drawSelectionRow(): void {
+    if (this.selectedRow > -1) {
+      if (this.isSelectedRowVisible()) {
+        this.ctx!.save();
+        this.ctx!.globalAlpha = 0.2;
+        this.ctx!.fillStyle = this.calendarData!.calendarSetting!.focusBorderColor;
+        const dy = this.selectedRow - this.scrollCalendar!.vScrollValue
+        const height = this.calendarData!.calendarSetting!.cellHeight
+        const top = Math.floor(dy * height) + this.calendarData!.calendarSetting!.cellHeaderHeight;
+
+        this.ctx!.fillRect(0, top, this.canvas!.width, height);
+
+        this.ctx!.restore();
+
+        this.calendarData!.selectRow=this.selectedRow;
+      }
+    }
+  }
+
+
+  unDrawSelectionRow(): void {
+    if (this.selectedRow > -1) {
+      if (this.isSelectedRowVisible())
+        this.drawRowIntern(this.selectedRow);
+    }
+  }
+
+  private isSelectedRowVisible(): boolean {
+    if (this.selectedRow >= this.firstVisibleRow() && this.selectedRow < (this.firstVisibleRow() + this.visibleRow())) {
+      return true;
+    }
+
+    return false;
+  }
+  /* #endregion   select */
+
+
   /* #region   render */
 
   renderCalendar(): void {
@@ -323,6 +395,8 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     );
     this.ctx!.drawImage(this.headerCanvas!, dx, 0);
     this.ctx!.drawImage(this.renderCanvas!, dx, this.calendarData!.calendarSetting!.cellHeaderHeight);
+
+    this.drawSelectionRow();
   }
 
   private moveIt(directionY: number): void {
@@ -390,16 +464,33 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     const height = this.calendarData!.calendarSetting!.cellHeight
     const top = Math.floor(dy * height);
     const rec = new Rectangle(0, top, this.renderCanvas!.width, top + height);
+
+    this.drawRowSub(this.renderCanvasCtx!, index, rec);
+
+  }
+
+  private drawRowIntern(index: number): void {
+
+    const dy = index - this.scrollCalendar!.vScrollValue
+    const height = this.calendarData!.calendarSetting!.cellHeight
+    const top = Math.floor(dy * height) + this.calendarData!.calendarSetting!.cellHeaderHeight;
+    const rec = new Rectangle(0, top, this.canvas!.width, top + height);
+
+    this.drawRowSub(this.ctx!, index, rec);
+
+  }
+
+  private drawRowSub(ctx: CanvasRenderingContext2D, index: number, rec: Rectangle): void {
+
+
     const maxRows = this.scrollCalendar!.maxRows;
 
     if (index < maxRows) {
-      this.renderCanvasCtx!.drawImage(this.rowCanvas!, 0, top);
+      ctx.drawImage(this.rowCanvas!, 0, rec.y);
     } else {
-      MDraw.fillRectangle(this.renderCanvasCtx!, this.calendarData!.calendarSetting!.backGroundColor, rec);
+      MDraw.fillRectangle(ctx, this.calendarData!.calendarSetting!.backGroundColor, rec);
     }
   }
-
-
 
   /* #endregion   render */
 

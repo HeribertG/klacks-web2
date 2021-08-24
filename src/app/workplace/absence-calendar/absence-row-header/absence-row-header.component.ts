@@ -27,11 +27,14 @@ export class AbsenceRowHeaderComponent implements OnInit, AfterViewInit, OnDestr
   private backgroundRowCtx: CanvasRenderingContext2D | undefined;
   private headerCanvas: HTMLCanvasElement | undefined;
   private isBusy = false;
-
+  private _selectedRow = -1;
+  
   constructor(
     private zone: NgZone,
     private renderer: Renderer2,
   ) { }
+
+   /* #region ng */
 
   ngOnInit(): void {
 
@@ -91,6 +94,10 @@ export class AbsenceRowHeaderComponent implements OnInit, AfterViewInit, OnDestr
       this.moveGrid(x);
     });
 
+    this.calendarData!.isSelectRowEvent.subscribe((x:number) => {
+     this.selectedRow =x;
+    });
+
   }
 
   ngOnDestroy(): void {
@@ -105,6 +112,10 @@ export class AbsenceRowHeaderComponent implements OnInit, AfterViewInit, OnDestr
 
 
   }
+
+   /* #endregion ng */
+
+   /* #region   resize+visibility */
   onResize(): void {
     this.canvas!.height = this.canvas!.clientHeight;
     this.canvas!.width = this.canvas!.clientWidth;
@@ -121,6 +132,82 @@ export class AbsenceRowHeaderComponent implements OnInit, AfterViewInit, OnDestr
     // this.moveHorizontal();
 
   }
+
+/* #endregion   resize+visibility */
+
+  /* #region   select */
+
+  set selectedRow(value: number) {
+
+    if(value === this._selectedRow){return;}
+    
+    this.unDrawSelectionRow();
+    if (value < 0) {
+      this._selectedRow = 0;
+    } else if (value > this.calendarData!.rows) {
+      this._selectedRow = this.calendarData!.rows;
+    } else {
+      this._selectedRow = value;
+    }
+    this.drawSelectionRow();
+  }
+
+  get selectedRow() {
+    return this._selectedRow;
+  }
+
+  drawSelectionRow(): void {
+    if (this.selectedRow > -1) {
+      if (this.isSelectedRowVisible()) {
+        this.ctx!.save();
+        this.ctx!.globalAlpha = 0.2;
+        this.ctx!.fillStyle = this.calendarData!.calendarSetting!.focusBorderColor;
+        const dy = this.selectedRow - this.scrollCalendar!.vScrollValue
+        const height = this.calendarData!.calendarSetting!.cellHeight
+        const top = Math.floor(dy * height) + this.calendarData!.calendarSetting!.cellHeaderHeight;
+
+        this.ctx!.fillRect(0, top, this.canvas!.width, height);
+
+        this.ctx!.restore();
+      }
+    }
+  }
+
+  unDrawSelectionRow(): void {
+    if (this.selectedRow > -1) {
+      if (this.isSelectedRowVisible())
+      this.ctx!.drawImage(this.renderCanvas!, 0, this.calendarData!.calendarSetting!.cellHeaderHeight);
+
+    }
+  }
+
+  private isSelectedRowVisible(): boolean {
+    if (this.selectedRow >= this.firstVisibleRow() && this.selectedRow < (this.firstVisibleRow() + this.visibleRow())) {
+      return true;
+    }
+    return false;
+  }
+
+  /* #endregion   select */
+
+ /* #region   metrics */
+  
+  visibleRow(): number {
+    return Math.ceil(
+      this.canvas!.clientHeight / this.calendarData!.calendarSetting!.cellHeight
+    );
+  }
+
+  firstVisibleRow(): number {
+    return this.scrollCalendar!.vScrollValue;
+  }
+
+  lastVisibleRow(): number {
+    return this.firstVisibleRow() + this.visibleRow();
+  }
+
+   /* #endregion   metrics */
+
   private createRuler() {
 
 
@@ -199,6 +286,8 @@ export class AbsenceRowHeaderComponent implements OnInit, AfterViewInit, OnDestr
   drawCalendar() {
     this.ctx!.drawImage(this.headerCanvas!, 0, 0);
     this.ctx!.drawImage(this.renderCanvas!, 0, this.calendarData!.calendarSetting!.cellHeaderHeight);
+
+    this.drawSelectionRow();
   }
 
 

@@ -9,6 +9,7 @@ import { CalendarSetting } from "./calendar-setting";
 })
 export class CalendarData {
   @Output() isResetEvent = new EventEmitter();
+  @Output() isSelectRowEvent = new EventEmitter<number>();
 
   weekday = new Array(7);
   monthsName = new Array(12);
@@ -95,4 +96,8 @@ export class CalendarData {
     return '';
   }
 
+
+  set selectRow(value: number) {
+    this.isSelectRowEvent.emit(value);
+  }
 }

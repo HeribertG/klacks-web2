@@ -58,6 +58,10 @@ export class AbsenceCalendarDirective {
 
   @HostListener('click', ['$event']) onMouseClick(event: MouseEvent): void {
    // this.gridBody.simpleContextMenu!.removeMenu();
+   if(event.buttons===0){
+    this.gridBody.onSelectByMouse(event.offsetX,event.offsetY);
+   }
+  
   }
   @HostListener('dblclick', ['$event']) onMouseDoubleClick(event: MouseEvent): void {
    //  this.gridBody.simpleContextMenu!.removeMenu();
