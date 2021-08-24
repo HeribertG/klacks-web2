@@ -42,6 +42,7 @@ export class AbsenceCalendarDirective {
 
     this.gridBody.moveCalendar(moveX, moveY);
     this.gridBody.scrollCalendar!.isMoveVerical(moveY);
+    this.gridBody.scrollCalendar!.isMoveHorzintal(moveX);
     
   }
 

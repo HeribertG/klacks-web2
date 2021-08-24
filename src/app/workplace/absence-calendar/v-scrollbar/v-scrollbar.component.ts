@@ -46,6 +46,10 @@ export class CalVScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
   ngAfterViewInit() {
     this.scrollTop = 0;
     this.refresh();
+
+    this.scrollCalendar!.isMoveVericalEvent.subscribe(()=>{
+      this.refresh();
+    });
   }
 
   ngOnDestroy(): void {

@@ -1,21 +1,24 @@
 @import '../../../../assets/standard-styles/standard-home-page.scss';
+@import '../../../../assets/standard-styles/colors.scss';
 
 $header_height: 65px;
 $footer_height: var(--footer_height);
 $aside_width: 0px;
 $nav_width: 100px;
 
-.container-dashboard{
- background-color: green;
- height:  calc(100vh - (#{$header_height} + #{$footer_height}));
- max-width: calc(1445px - (#{$nav_width}));
-width: calc(100vw - (#{$nav_width}));
+.container-dashboard {
+  background-color: var(--backgroundColorWorkplace);
+  height: calc(100vh - (#{$header_height} + #{$footer_height}));
+  max-width: calc(1445px - (#{$nav_width}));
+  width: calc(100vw - (#{$nav_width}));
 
-padding: 10px;
+  padding: 1px;
+  border: 1px solid var(--cardBorderColor);
+
 }
 
-.main-container{
-    background-color: red;
-    width: 100%;
-    height: 100%;
+.main-container {
+  background-color: var(--backgroundColorWorkplace);
+  width: 100%;
+  height: 100%;
 }

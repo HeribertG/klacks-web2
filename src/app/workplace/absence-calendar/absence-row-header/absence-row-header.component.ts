@@ -87,7 +87,7 @@ export class AbsenceRowHeaderComponent implements OnInit, AfterViewInit, OnDestr
       this.drawCalendar();
     });
 
-    this.scrollCalendar!.isMoveVericalEvent.subscribe((x:number) => {
+    this.scrollCalendar!.isMoveVericalEvent.subscribe((x: number) => {
       this.moveGrid(x);
     });
 
@@ -152,53 +152,31 @@ export class AbsenceRowHeaderComponent implements OnInit, AfterViewInit, OnDestr
 
   renderCalendar(): void {
 
-    
+
     this.renderCanvas!.height = this.canvas!.clientHeight;
     this.renderCanvas!.width = this.canvas!.clientWidth;
-    
+
 
     this.renderCanvasCtx!.clearRect(0, 0, this.renderCanvas!.width, this.renderCanvas!.height);
 
-    for (let i = 0; i < this.scrollCalendar!.visibleRows + 3; i++) {
-      const ii = i + this.scrollCalendar!.vScrollValue!;
-  
-      this.drawName(ii,i);
-      // if (ii < this.scrollCalendar!.maxRows) {
-      //   const top =Math.floor(i * height);
-      //   const rec = new Rectangle(0,top , this.renderCanvas!.width, top+ (height-1));
-
-      //   MDraw.fillRectangle(this.renderCanvasCtx!, this.calendarData!.calendarSetting!.controlBackGroundColor, rec);
-      //  // MDraw.drawBorder(this.renderCanvasCtx!, rec.left, rec.top, rec.width, rec.height, this.calendarData!.calendarSetting!.controlBackGroundColor, 2, Gradient3DBorderStyleEnum.Raised)
-      //   this.drawSimpleBorder(this.renderCanvasCtx!, rec);
-
-      //   MDraw.drawText(
-      //     this.renderCanvasCtx!,
-      //     this.calendarData!.readname(ii),
-      //     rec.left,
-      //     rec.top,
-      //     rec.width,
-      //     rec.height-2, 
-      //     this.calendarData!.calendarSetting!.font,
-      //     this.calendarData!.calendarSetting!.mainFontSize,
-      //     this.calendarData!.calendarSetting!.foreGroundColor,
-      //     TextAlignmentEnum.Left,
-      //     BaselineAlignmentEnum.Center);
-      // }
-
+    for (let i = 0; i < this.scrollCalendar!.visibleRows + 1; i++) {
+      this.drawName(i + this.scrollCalendar!.vScrollValue!);
     }
 
 
   }
 
-  private drawName(index:number, dy :number):void{
+  private drawName(index: number): void {
 
+    const dy = index - this.scrollCalendar!.vScrollValue
     const height = this.calendarData!.calendarSetting!.cellHeight
+    const top = Math.floor(dy * height);
+    const rec = new Rectangle(0, top, this.renderCanvas!.width, top + height);
+
     if (index < this.scrollCalendar!.maxRows) {
-      const top =Math.floor(dy * height);
-      const rec = new Rectangle(0,top , this.renderCanvas!.width, top+ (height-1));
 
       MDraw.fillRectangle(this.renderCanvasCtx!, this.calendarData!.calendarSetting!.controlBackGroundColor, rec);
-     // MDraw.drawBorder(this.renderCanvasCtx!, rec.left, rec.top, rec.width, rec.height, this.calendarData!.calendarSetting!.controlBackGroundColor, 2, Gradient3DBorderStyleEnum.Raised)
+      // MDraw.drawBorder(this.renderCanvasCtx!, rec.left, rec.top, rec.width, rec.height, this.calendarData!.calendarSetting!.controlBackGroundColor, 2, Gradient3DBorderStyleEnum.Raised)
       this.drawSimpleBorder(this.renderCanvasCtx!, rec);
 
       MDraw.drawText(
@@ -207,14 +185,17 @@ export class AbsenceRowHeaderComponent implements OnInit, AfterViewInit, OnDestr
         rec.left,
         rec.top,
         rec.width,
-        rec.height-2, 
+        rec.height - 2,
         this.calendarData!.calendarSetting!.font,
         this.calendarData!.calendarSetting!.mainFontSize,
         this.calendarData!.calendarSetting!.foreGroundColor,
         TextAlignmentEnum.Left,
         BaselineAlignmentEnum.Center);
+    } else {
+      MDraw.fillRectangle(this.renderCanvasCtx!, this.calendarData!.calendarSetting!.backGroundColor, rec);
     }
   }
+
   drawCalendar() {
     this.ctx!.drawImage(this.headerCanvas!, 0, 0);
     this.ctx!.drawImage(this.renderCanvas!, 0, this.calendarData!.calendarSetting!.cellHeaderHeight);
@@ -243,7 +224,6 @@ export class AbsenceRowHeaderComponent implements OnInit, AfterViewInit, OnDestr
     );
 
 
-
     this.zone.run(() => {
       try {
         this.isBusy = true;
@@ -256,7 +236,7 @@ export class AbsenceRowHeaderComponent implements OnInit, AfterViewInit, OnDestr
 
             if (dirY < visibleRow / 2) {
               this.moveIt(dirY);
-             
+
               return;
             } else {
               this.renderCalendar();
@@ -268,7 +248,7 @@ export class AbsenceRowHeaderComponent implements OnInit, AfterViewInit, OnDestr
 
             if (dirY * -1 < visibleRow / 2) {
               this.moveIt(dirY);
-             
+
               return;
             } else {
               this.renderCalendar();
@@ -311,6 +291,10 @@ export class AbsenceRowHeaderComponent implements OnInit, AfterViewInit, OnDestr
         this.renderCanvas!.width,
         this.renderCanvas!.height
       );
+
+
+
+
       this.renderCanvasCtx!.drawImage(
         tempCanvas,
         0,
@@ -321,15 +305,16 @@ export class AbsenceRowHeaderComponent implements OnInit, AfterViewInit, OnDestr
       let lastRow = 0;
 
       if (directionY > 0) {
-        firstRow = visibleRow + diff;
-        lastRow = visibleRow + diff * -1 + 1;
+        firstRow = visibleRow + this.scrollCalendar!.vScrollValue;
+        lastRow = firstRow + (diff * -1) + 1;
       } else {
-        firstRow = 0;
-        lastRow = diff + 1;
+        firstRow = this.scrollCalendar!.vScrollValue;
+        lastRow = firstRow + diff + 1;
       }
 
       for (let row = firstRow; row < lastRow; row++) {
-        this.drawName(visibleRow,firstRow);
+
+        this.drawName(row);
 
       }
     }

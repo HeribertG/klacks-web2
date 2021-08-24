@@ -12,7 +12,9 @@ import { HolidaysList } from "src/app/template/classes/holyday-list";
 export class CalendarSetting {
   @Output() zoomChangingEvent = new EventEmitter();
   @Output() holidayListIsreadEvent = new EventEmitter();
+
   constructor(private dataManagementHolydayService: DataManagementHolydayService) {
+
   }
 
   isEditabled = true;
@@ -45,7 +47,7 @@ export class CalendarSetting {
 
 
 
-  backGroundColor = '#FFFFFF';
+  backGroundColor = '#424949';
   borderColor = '#999999';
   mainFontColor = '#000000';
   subFontColor = '#404040';
@@ -72,16 +74,17 @@ export class CalendarSetting {
 
   }
 
-  
+
   private async readList() {
-      this.dataManagementHolydayService.createHolydayList(this.currentYear).then((x)=>{
-      this.holidaysList =x;
+    this.dataManagementHolydayService.createHolydayList(this.currentYear).then((x) => {
+      this.holidaysList = x;
       this.holidayListIsreadEvent.emit();
     });
 
 
   }
 
+  
   /* #region zoom affected sizes */
 
   get zoom(): number {

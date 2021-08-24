@@ -138,7 +138,7 @@ export class ScrollCalendar {
     }
   
   isMoveHorzintal(value:number): void{
-    this.isMoveVericalEvent.emit(value);
+    this.isMoveHorizontalEvent.emit(value);
   }
   isMoveVerical(value:number): void{
     this.isMoveVericalEvent.emit(value);

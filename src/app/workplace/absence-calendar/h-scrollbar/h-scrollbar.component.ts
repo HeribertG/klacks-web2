@@ -57,6 +57,10 @@ export class CalHScrollbarComponent implements OnInit, AfterViewInit, OnDestroy 
   ngAfterViewInit() {
     this.scrollLeft = 0;
     this.refresh();
+
+    this.scrollCalendar!.isMoveHorizontalEvent.subscribe(()=>{
+      this.refresh();
+    });
   }
 
   ngOnDestroy(): void {

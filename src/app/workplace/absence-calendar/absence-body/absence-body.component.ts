@@ -100,7 +100,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-
+    //  this.calendarData!.calendarSetting!.backGroundColor = this.readProperty('$gridBackgroundColor');
     this.scrollCalendar!.maxCols = isLeapYear(this.calendarData!.calendarSetting!.currentYear) ? 366 : 365;
     this.scrollCalendar!.maxRows = 200;
 
@@ -116,10 +116,10 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this.calendarData!.isResetEvent.subscribe(() => {
-      if(this.calendarData!){
+      if (this.calendarData!) {
         this.scrollCalendar!.maxRows = this.calendarData!.rows;
         this.vScrollbar!.maximumRow = this.calendarData!.rows;
-        this.scrollCalendar!.setMetrics(this.visibleCol(),  this.scrollCalendar!.maxCols ,this.visibleRow(), this.scrollCalendar!.maxRows );
+        this.scrollCalendar!.setMetrics(this.visibleCol(), this.scrollCalendar!.maxCols, this.visibleRow(), this.scrollCalendar!.maxRows);
         this.renderCalendar();
       }
     });
@@ -155,14 +155,14 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.setMetrics();
     this.refreshCalendar();
-    this.moveHorizontal();
+    this.drawCalendar();
 
   }
 
   private visibilityChange = (event: any): void => {
     this.setMetrics();
     this.refreshCalendar();
-    this.moveHorizontal();
+    this.drawCalendar();
 
   }
 
@@ -189,6 +189,8 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
       visibleRows,
       this.calendarData!.rows
     );
+    this.vScrollbar!.refresh();
+    this.hScrollbar!.refresh();
   }
 
   visibleCol(): number {
@@ -240,7 +242,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.canvas!.clientWidth;
   }
   /* #endregion   metrics */
-  
+
   /* #region   render */
 
   renderCalendar(): void {
@@ -252,21 +254,18 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
 
     for (let i = 0; i < visibleRow + 1; i++) {
       const ii = i + this.scrollCalendar!.vScrollValue!;
-      if (ii < this.scrollCalendar!.maxRows) {
-        this.renderCanvasCtx!.drawImage(this.rowCanvas!, 0, Math.floor(i * height));
-      }
-
+      this.drawRow(ii);
     }
 
-    this.moveHorizontal();
+    this.drawCalendar();
   }
 
 
   moveCalendar(directionX: number, directionY: number): void {
+    if (this.isBusy) { return; }
+
     const dirX = directionX;
     const dirY = directionY;
-
-    const visibleCol = this.visibleCol();
     const visibleRow = Math.ceil(
       this.canvas!.clientHeight / this.calendarData!.calendarSetting!.cellHeight
     );
@@ -279,7 +278,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
         this.isBusy = true;
         // horizontale Verschiebung
         if (dirX !== 0) {
-          this.moveHorizontal()
+          this.drawCalendar()
         }
         // vertikale Verschiebung
         if (dirY !== 0) {
@@ -288,20 +287,20 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
           if (dirY > 0) {
 
             if (dirY < visibleRow / 2) {
-              //this.moveIt(dirX, dirY);
+              this.moveIt(dirY);
               return;
             } else {
-              //this.drawGrid();
+              this.renderCalendar();
               return;
             }
           }
           // Nach Oben
           if (dirY < 0) {
             if (dirY * -1 < visibleRow / 2) {
-              //this.moveIt(dirX, dirY);
+              this.moveIt(dirY);
               return;
             } else {
-              //this.drawGrid();
+              this.renderCalendar();
             }
           }
         }
@@ -309,10 +308,12 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
         this.isBusy = false;
       }
     });
-    
+
+    this.drawCalendar();
+
   }
 
-  moveHorizontal(): void {
+  drawCalendar(): void {
     const dx = this.scrollCalendar!.hScrollValue * this.calendarData!.calendarSetting!.cellWidth * -1
     this.ctx!.clearRect(
       0,
@@ -323,6 +324,82 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ctx!.drawImage(this.headerCanvas!, dx, 0);
     this.ctx!.drawImage(this.renderCanvas!, dx, this.calendarData!.calendarSetting!.cellHeaderHeight);
   }
+
+  private moveIt(directionY: number): void {
+    const visibleRow = this.scrollCalendar!.visibleRows;
+
+
+
+    if (directionY !== 0) {
+
+      const diff = this.scrollCalendar!.lastDifferenceY;
+      if (diff === 0) {
+        return;
+      }
+
+      const tempCanvas: HTMLCanvasElement = document.createElement(
+        'canvas'
+      ) as HTMLCanvasElement;
+      tempCanvas.height = this.renderCanvas!.height;
+      tempCanvas.width = this.renderCanvas!.width;
+
+      const ctx = tempCanvas.getContext('2d');
+      ctx!.drawImage(this.renderCanvas!, 0, 0);
+
+
+      this.renderCanvasCtx!.clearRect(
+        0,
+        0,
+        this.renderCanvas!.width,
+        this.renderCanvas!.height
+      );
+
+
+
+
+      this.renderCanvasCtx!.drawImage(
+        tempCanvas,
+        0,
+        this.calendarData!.calendarSetting!.cellHeight * diff
+      );
+
+      let firstRow = 0;
+      let lastRow = 0;
+
+      if (directionY > 0) {
+        firstRow = visibleRow + this.scrollCalendar!.vScrollValue;
+        lastRow = firstRow + (diff * -1) + 1;
+      } else {
+        firstRow = this.scrollCalendar!.vScrollValue;
+        lastRow = firstRow + diff + 1;
+      }
+
+      for (let row = firstRow; row < lastRow; row++) {
+
+        this.drawRow(row);
+
+      }
+    }
+
+    this.drawCalendar();
+  }
+
+  private drawRow(index: number): void {
+
+    const dy = index - this.scrollCalendar!.vScrollValue
+    const height = this.calendarData!.calendarSetting!.cellHeight
+    const top = Math.floor(dy * height);
+    const rec = new Rectangle(0, top, this.renderCanvas!.width, top + height);
+    const maxRows = this.scrollCalendar!.maxRows;
+
+    if (index < maxRows) {
+      this.renderCanvasCtx!.drawImage(this.rowCanvas!, 0, top);
+    } else {
+      MDraw.fillRectangle(this.renderCanvasCtx!, this.calendarData!.calendarSetting!.backGroundColor, rec);
+    }
+  }
+
+
 
   /* #endregion   render */
 
@@ -478,21 +555,29 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /* #region position and selection */
 
-  
+
   setShiftKey(): void {
     if (!this.isShift) {
       this.isShift = true;
-     // this.AnchorKeyPosition = this.position;
+      // this.AnchorKeyPosition = this.position;
     }
   }
 
   unSetShiftKey(): void {
 
     this.isShift = false;
-   // this.AnchorKeyPosition = undefined;
+    // this.AnchorKeyPosition = undefined;
   }
 
-/* #endregion position and selection */
+  /* #endregion position and selection */
+
+  private readProperty(name: string): string {
+    let bodyStyles = window.getComputedStyle(document.body);
+    return bodyStyles.getPropertyValue(name);
+  }
+
+
 }
+
 
 
