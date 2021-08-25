@@ -5,6 +5,7 @@ import {
   NgZone,
 } from '@angular/core';
 import { Rectangle } from 'src/app/helpers/geometry';
+import { HolidayDate } from 'src/app/template/classes/holyday-list';
 import { AbsenceBodyComponent } from '../absence-body/absence-body.component';
 
 @Directive({
@@ -26,7 +27,7 @@ export class AbsenceCalendarDirective {
   @HostListener('mouseenter', ['$event']) onMouseEnter(event: MouseEvent) : void { }
 
   @HostListener('mouseleave', ['$event']) onMouseLeave(event: MouseEvent): void  {
-    //this.gridBody.destroyToolTip();
+    this.gridBody.destroyToolTip();
 
     const rect = new Rectangle(this.gridBody.clientLeft, this.gridBody.clientTop, this.gridBody.clientWidth, this.gridBody.clientHeight);
     if (!rect.pointInRect(event.clientX, event.clientY)) {
@@ -64,76 +65,34 @@ export class AbsenceCalendarDirective {
   
   }
   @HostListener('dblclick', ['$event']) onMouseDoubleClick(event: MouseEvent): void {
-   //  this.gridBody.simpleContextMenu!.removeMenu();
-
-    // if (!event.ctrlKey) {
-    //   if (this.gridBody.calendarData!.gridSetting!.isEditabled) {
-    //     const pos = this.gridBody.position;
-    //     if (pos) {
-    //       const mode = this.gridBody.calendarData!.cellMode(pos.row, pos.column);
-    //       if (mode == EditableModeEnum.Default || mode == EditableModeEnum.DoubleClick) {
-
-    //         if (this.gridBody.calendarData!.cellMode(pos.row, pos.column) != EditableModeEnum.None) {
-    //           if (this.gridBody.isActivCellVisible()) {
-    //             this.gridBody.createEditableCell();
-    //           }
-
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
+   
 
   }
 
   @HostListener('mouseup', ['$event']) onMouseUp(event: MouseEvent): void {
-    // this.isDrawing = false;
-
-    // this.stopEvent(event)
-
-    // if (this.hasCollection) {
-    //   const pos: Position = this.gridBody.calcCorrectCoordinate(event);
-    //   if (!this.gridBody.isPositionValid(pos)) {
-    //     return;
-    //   }
-
-    //   this.gridBody.createSelection(pos);
-    // }
-
-    // this.hasCollection = false;
+    
 
 
   }
 
   @HostListener('mousemove', ['$event']) onMouseMove(event: MouseEvent): void {
-    // if (event.buttons === 1 && this.isDrawing) {
-    //   const pos: Position = this.gridBody.calcCorrectCoordinate(event);
+   
+    if (event.buttons === 0) {
+      const col: number = this.gridBody.calcCorrectCoordinate(event).column;
 
-    //   this.scrollOnPoint(pos);
-    //   if (!this.gridBody.isPositionValid(pos)) {
-    //     return;
-    //   }
-
-    //   this.gridBody.drawSelectionDynamically(pos);
-
-    //   this.hasCollection = true;
-    // }
-
-    // if (event.buttons === 0) {
-    //   const col: number = this.gridBody.calcCorrectCoordinate(event).column;
-
-      // if (col < this.gridBody..gridBody.gridBody.calendarData!.columns && col >= 0) {
-      //   const holiday: holidayDate = this.gridBody..gridBody.gridBody.calendarData!.holidayInfo(col);
-      //   if (holiday !== undefined) {
-      //     const holidayName: string = holiday.currentName;
-      //     this.gridBody.showToolTip({ value: holidayName, event });
-      //     return;
-      //   }
-      // }
-     //  this.gridBody.hideToolTip();
+      if (col < this.gridBody.calendarData!.columns && col >= 0) {
+        const holiday = this.gridBody.holidayInfo(col);
+        if (holiday  && holiday.officially) {
+          const holidayName: string = holiday!.currentName;
+          console.log(holidayName, holiday.currentDate);
+          this.gridBody.showToolTip( holidayName, event );
+          return;
+        }
+      }
+      this.gridBody.hideToolTip();
       //  this.gridBody.simpleContextMenu!.removeMenu();
 
-   // }
+   }
   }
 
   // @HostListener('window:keydown', ['$event']) onKeyDown(event: KeyboardEvent): void {

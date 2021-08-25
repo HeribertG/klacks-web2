@@ -192,7 +192,7 @@ export class HomeComponent implements OnInit, CanComponentDeactivate {
         import('./../../workplace/absence-calendar/absence-calendar.module').then(m => m.AbsenceCalendarModule);
 
         this.isAbsenceCalendar = true;
-        this.isSavebarVisible = true;
+        this.isSavebarVisible = false;
         break;
 
       default:

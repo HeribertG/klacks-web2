@@ -5,6 +5,7 @@ export class CalendarHeaderDayRank {
     backColor:string ='';
     name:string ='';
     rect: Rectangle= new Rectangle(0,0,20,20)
+    
 }
 
 export interface IAbsence {
@@ -30,3 +31,5 @@ export interface ICalendar  {
     type: number | string;
     absences: Array<IAbsence>;
   }
+
+ 

@@ -218,7 +218,6 @@ klacks-web-api/klacks-web-api/obj/Debug/netcoreapp3.1/apphost.exe
 klacks-web-api/klacks-web-api/obj/Debug/netcoreapp3.1/klacks-web-api.dll
 klacks-web-api/klacks-web-api/obj/Debug/netcoreapp3.1/klacks-web-api.pdb
 klacks-web-api/.vs/klacks-web-api/v16/.suo
-klacks-web-api/.vs/klacks-web-api/v16/.suo
 klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/dotnet-aspnet-codegenerator-design.dll
 klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/Microsoft.CodeAnalysis.CSharp.Workspaces.dll
 klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/Microsoft.CodeAnalysis.Workspaces.dll
@@ -299,15 +298,10 @@ klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/zh-Hant/Microsoft.CodeAnal
 klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/zh-Hant/Microsoft.CodeAnalysis.resources.dll
 klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/zh-Hant/Microsoft.CodeAnalysis.Workspaces.resources.dll
 klacks-web-api/.vs/klacks-web-api/v16/.suo
-klacks-web-api/.vs/klacks-web-api/v16/.suo
-klacks-web-api/.vs/klacks-web-api/v16/.suo
 klacks-web-api/klacks-web-api/obj/project.nuget.cache
 klacks-web-api/klacks-web-api/obj/Debug/netcoreapp3.1/klacks-web-api.assets.cache
 klacks-web-api/klacks-web-api/obj/Debug/netcoreapp3.1/klacks-web-api.csproj.CoreCompileInputs.cache
 klacks-web-api/klacks-web-api/obj/Debug/netcoreapp3.1/klacks-web-api.csproj.FileListAbsolute.txt
-klacks-web-api/.vs/klacks-web-api/v16/.suo
-klacks-web-api/klacks-web-api/obj/project.nuget.cache
-klacks-web-api/klacks-web-api/obj/project.nuget.cache
 klacks-web-api/klacks-web-api/obj/Debug/netcoreapp3.1/klacks-web-api.assets.cache
 klacks-web-api/klacks-web-api/obj/Debug/netcoreapp3.1/klacks-web-api.csproj.CoreCompileInputs.cache
 klacks-web-api/klacks-web-api/obj/Debug/netcoreapp3.1/klacks-web-api.csproj.FileListAbsolute.txt
@@ -320,8 +314,6 @@ klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/EntityFramework.SqlServer.
 klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/System.CodeDom.dll
 klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/runtimes/unix/lib/netcoreapp2.1/System.Data.SqlClient.dll
 klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/runtimes/win/lib/netcoreapp2.1/System.Data.SqlClient.dll
-klacks-web-api/.vs/klacks-web-api/DesignTimeBuild/.dtbcache.v2
-klacks-web-api/.vs/klacks-web-api/DesignTimeBuild/.dtbcache.v2
 klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/runtimes/unix/lib/netcoreapp3.1/Microsoft.Data.SqlClient.dll
 klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/runtimes/win/lib/netcoreapp3.1/Microsoft.Data.SqlClient.dll
 klacks-web-api/klacks-web-api/bin/Debug/netcoreapp3.1/runtimes/win/lib/netstandard2.0/System.Runtime.Caching.dll
@@ -337,4 +329,5 @@ klacks-web-api/klacks-web-api/obj/Debug/netcoreapp3.1/klacks-web-api.csproj.Copy
 klacks-web-api/klacks-web-api/obj/Debug/netcoreapp3.1/klacks-web-api.genruntimeconfig.cache
 klacks-web-api/klacks-web-api/obj/Debug/netcoreapp3.1/klacks-web-api.RazorTargetAssemblyInfo.cache
 klacks-web-api/klacks-web-api/obj/Debug/netcoreapp3.1/staticwebassets/klacks-web-api.StaticWebAssets.Manifest.cache
+klacks-web-api/.vs/klacks-web-api/DesignTimeBuild/.dtbcache.v2
 klacks-web-api/.vs/klacks-web-api/DesignTimeBuild/.dtbcache.v2

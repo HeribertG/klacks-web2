@@ -100,4 +100,6 @@ export class CalendarData {
   set selectRow(value: number) {
     this.isSelectRowEvent.emit(value);
   }
+
+ 
 }

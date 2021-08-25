@@ -26,6 +26,7 @@ export class DataManagementHolydayService {
         h.subRule = holidayRule.subRule;
         h.officialHoliday = holidayRule.paid;
         h.description = holidayRule.description;
+        h.name = holidayRule.name;
 
         holidayList.add(h);
 

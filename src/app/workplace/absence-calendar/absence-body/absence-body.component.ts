@@ -6,6 +6,7 @@ import { BaselineAlignmentEnum, TextAlignmentEnum } from 'src/app/helpers/enums/
 import { Gradient3DBorderStyleEnum } from 'src/app/helpers/enums/draw.enum';
 import { addDays, EqualDate, getDaysInMonth, isLeapYear } from 'src/app/helpers/format-helper';
 import { Rectangle } from 'src/app/helpers/geometry';
+import { myPosition } from 'src/app/helpers/position';
 import { HolidayDate } from 'src/app/template/classes/holyday-list';
 import { CalendarData } from '../absence-classes/data-calendar';
 import { ScrollCalendar } from '../absence-classes/scroll-calendar';
@@ -37,7 +38,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
   private backgroundRowCtx: CanvasRenderingContext2D | undefined;
   private headerCanvas: HTMLCanvasElement | undefined;
   private tooltip: HTMLDivElement | undefined;
-
+  private startDate: Date = new Date;
   private holidayList: HolidayDate[] | undefined;
 
 
@@ -246,6 +247,14 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
   get clientWidth(): number {
     return this.canvas!.clientWidth;
   }
+
+  holidayInfo(column: number): HolidayDate | undefined {
+    const today = addDays(this.startDate, column);
+
+    return this.holidayList!.find(x => EqualDate(x.currentDate, today) === 0);
+
+  }
+
   /* #endregion   metrics */
 
   /* #region   select */
@@ -261,7 +270,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
 
   set selectedRow(value: number) {
 
-    if(value === this._selectedRow){return;}
+    if (value === this._selectedRow) { return; }
 
     this.unDrawSelectionRow();
     if (value < 0) {
@@ -292,7 +301,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.ctx!.restore();
 
-        this.calendarData!.selectRow=this.selectedRow;
+        this.calendarData!.selectRow = this.selectedRow;
       }
     }
   }
@@ -313,7 +322,6 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     return false;
   }
   /* #endregion   select */
-
 
   /* #region   render */
 
@@ -472,9 +480,10 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
   private drawRowIntern(index: number): void {
 
     const dy = index - this.scrollCalendar!.vScrollValue
+    const left = this.scrollCalendar!.hScrollValue * this.calendarData!.calendarSetting!.cellWidth * -1
     const height = this.calendarData!.calendarSetting!.cellHeight
     const top = Math.floor(dy * height) + this.calendarData!.calendarSetting!.cellHeaderHeight;
-    const rec = new Rectangle(0, top, this.canvas!.width, top + height);
+    const rec = new Rectangle(left, top, this.canvas!.width, top + height);
 
     this.drawRowSub(this.ctx!, index, rec);
 
@@ -486,7 +495,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     const maxRows = this.scrollCalendar!.maxRows;
 
     if (index < maxRows) {
-      ctx.drawImage(this.rowCanvas!, 0, rec.y);
+      ctx.drawImage(this.rowCanvas!, rec.x, rec.y);
     } else {
       MDraw.fillRectangle(ctx, this.calendarData!.calendarSetting!.backGroundColor, rec);
     }
@@ -522,10 +531,8 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private createRuler() {
 
-
-    //this.calendarData!.calendarSetting!.
     this.calendarData!.calendarSetting!.reset();
-    const firstDay = new Date(this.calendarData!.calendarSetting!.currentYear, 0, 1);
+    this.startDate = new Date(this.calendarData!.calendarSetting!.currentYear, 0, 1);
     const year = isLeapYear(this.calendarData!.calendarSetting!.currentYear) ? 366 : 365;
 
     const cellHeight = this.calendarData!.calendarSetting!.cellHeight;
@@ -537,6 +544,8 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     this.headerCanvas!.width = this.getWith();
     const rec = new Rectangle(0, 0, this.rowCanvas!.width, this.rowCanvas!.height);
     MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.backGroundColor, rec);
+
+    let headerDayRank = new Array<CalendarHeaderDayRank>();
 
     let lastDays = 0;
     // durchläuft alle Monate im Jahr
@@ -551,68 +560,80 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
 
       MDraw.fillRectangle(this.backgroundRowCtx!, (i % 2 === 0 ? this.calendarData!.calendarSetting!.evenMonthColor : this.calendarData!.calendarSetting!.oddMonthColor), rec1);
 
-      for (let i = 0; i < year; i++) {
-        const currDate = addDays(firstDay, i + 1);
-        const d = i * this.calendarData!.calendarSetting!.cellWidth;
-        const rec2 = new Rectangle(Math.floor(d), 0, Math.floor(d + this.calendarData!.calendarSetting!.cellWidth), this.calendarData!.calendarSetting!.cellHeaderHeight);
+    }
 
-        let isHoliday = false;
-        if (this.holidayList && this.holidayList!.length > 0) {
-          const result = this.holidayList!.find(x => (EqualDate(x.currentDate, currDate) === 0));
+    for (let i = 0; i < year; i++) {
 
-          if (result && result!.officially) {
-            isHoliday = true;
-            MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.holydayColor, rec2);
+
+      const currDate = addDays(this.startDate, i );
+      const d = i * this.calendarData!.calendarSetting!.cellWidth;
+      const rec2 = new Rectangle(Math.floor(d), 0, Math.floor(d + this.calendarData!.calendarSetting!.cellWidth), this.calendarData!.calendarSetting!.cellHeaderHeight);
+
+      let isHoliday = false;
+      if (this.holidayList && this.holidayList!.length > 0) {
+        const result = this.holidayList!.find(x => (EqualDate(x.currentDate, currDate) === 0));
+
+        if (result && result!.officially) {
+          isHoliday = true;
+          MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.holydayColor, rec2);
+
+          MDraw.drawBaseBorder(
+            this.backgroundRowCtx!,
+            this.calendarData!.calendarSetting!.borderColor,
+            this.calendarData!.calendarSetting!.increaseBorder, rec2);
+        }
+
+      }
+
+
+      if (!isHoliday) {
+        switch (currDate.getDay()) {
+          case 0:
+            MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.sundayColor, rec2);
 
             MDraw.drawBaseBorder(
               this.backgroundRowCtx!,
               this.calendarData!.calendarSetting!.borderColor,
               this.calendarData!.calendarSetting!.increaseBorder, rec2);
-          }
 
-        }
+            const c = new CalendarHeaderDayRank();
+            c.name = currDate.getDate().toString();
+            c.rect = new Rectangle(d, this.rowCanvas!.height, d + 20, this.rowCanvas!.height + (this.headerCanvas!.height - this.rowCanvas!.height));
+            c.backColor = this.calendarData!.calendarSetting!.sundayColor;
 
-
-        if (!isHoliday) {
-          switch (currDate.getDay()) {
-            case 0:
-              MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.sundayColor, rec2);
-
-              MDraw.drawBaseBorder(
-                this.backgroundRowCtx!,
-                this.calendarData!.calendarSetting!.borderColor,
-                this.calendarData!.calendarSetting!.increaseBorder, rec2);
-
-              const rec3 = new Rectangle(d - 20, 0, 20, this.calendarData!.calendarSetting!.cellHeaderHeight);
-
-              // MDraw.fillRectangle(this.backgroundRowCtx!,  this.calendarData!.calendarSetting!.saturdayColor, rec3);
+            headerDayRank.push(c)
 
 
-              break;
-            case 6:
-              MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.saturdayColor, rec2);
+            break;
+          case 6:
+            MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.saturdayColor, rec2);
 
-              MDraw.drawBaseBorder(
-                this.backgroundRowCtx!,
-                this.calendarData!.calendarSetting!.borderColor,
-                this.calendarData!.calendarSetting!.increaseBorder, rec2);
+            MDraw.drawBaseBorder(
+              this.backgroundRowCtx!,
+              this.calendarData!.calendarSetting!.borderColor,
+              this.calendarData!.calendarSetting!.increaseBorder, rec2);
 
-              // const rec4 = new Rectangle(d-10, 0, 10, this.calendarData!.calendarSetting!.cellHeaderHeight);
-              // MDraw.fillRectangle(this.backgroundRowCtx!,  this.calendarData!.calendarSetting!.saturdayColor, rec4);
-              break;
-            default:
-              MDraw.drawBaseBorder(
-                this.backgroundRowCtx!,
-                this.calendarData!.calendarSetting!.borderColor,
-                0.5, rec2);
-          }
+            const c1 = new CalendarHeaderDayRank();
+            c1.name = currDate.getDate().toString();
+            c1.rect = new Rectangle(rec2.right - 20, this.rowCanvas!.height, rec2.right, this.rowCanvas!.height + (this.headerCanvas!.height - this.rowCanvas!.height));
+            c1.backColor = this.calendarData!.calendarSetting!.saturdayColor;
+
+            headerDayRank.push(c1)
+
+
+            break;
+          default:
+            MDraw.drawBaseBorder(
+              this.backgroundRowCtx!,
+              this.calendarData!.calendarSetting!.borderColor,
+              0.5, rec2);
         }
       }
     }
 
-
     this.headerCtx!.drawImage(this.rowCanvas!, 0, 0);
     this.headerCtx!.drawImage(this.rowCanvas!, 0, this.rowCanvas!.height);
+
 
     lastDays = 0;
     for (let i = 0; i < 12; i++) {
@@ -631,8 +652,9 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
         rec3.left,
         rec3.top,
         rec3.width,
-        rec3.height, this.calendarData!.calendarSetting!.font,
-        12,
+        rec3.height, 
+        this.calendarData!.calendarSetting!.font,
+        this.calendarData!.calendarSetting!.mainFontSize,
         this.calendarData!.calendarSetting!.foreGroundColor,
         TextAlignmentEnum.Center,
         BaselineAlignmentEnum.Center);
@@ -641,11 +663,29 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.ctx!.drawImage(this.headerCanvas!, 0, 0);
     }
+
+    if (this.calendarData!.calendarSetting!.cellWidth * 2 >= 20) {
+      headerDayRank.forEach(x => {
+        MDraw.fillRectangle(this.headerCtx!, x.backColor, x.rect);
+        MDraw.drawText(
+          this.headerCtx!,
+         x.name,
+          x.rect.left,
+          x.rect.top,
+          x.rect.width,
+          x.rect.height, 
+          this.calendarData!.calendarSetting!.font,
+          this.calendarData!.calendarSetting!.mainFontSize,
+          this.calendarData!.calendarSetting!.foreGroundColor,
+          TextAlignmentEnum.Center,
+          BaselineAlignmentEnum.Center);
+      });
+    }
+
   }
   /* #endregion   create */
 
   /* #region position and selection */
-
 
   setShiftKey(): void {
     if (!this.isShift) {
@@ -660,7 +700,58 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.AnchorKeyPosition = undefined;
   }
 
+  calcCorrectCoordinate(event: MouseEvent) {
+    let row = -1;
+    let col = -1;
+    const rect = this.canvas!.getBoundingClientRect();
+    const x: number = event.clientX - rect.left;
+    const y: number = event.clientY - rect.top;
+
+    if (y >= this.calendarData!.calendarSetting!.cellHeaderHeight) {
+
+      row =
+        Math.floor(
+          (y - this.calendarData!.calendarSetting!.cellHeaderHeight) / this.calendarData!.calendarSetting!.cellHeight
+        ) + this.scrollCalendar!.vScrollValue;
+      col =
+        Math.floor(x / this.calendarData!.calendarSetting!.cellWidth) + this.scrollCalendar!.hScrollValue;
+    }
+
+    return new myPosition(row, col);
+  }
+
   /* #endregion position and selection */
+
+  /* #region ToolTips */
+  showToolTip(value: string, event: MouseEvent): void {
+    if (this.tooltip && this.tooltip!.innerHTML !== value) {
+      this.tooltip!.innerHTML = value;
+
+      this.tooltip!.style.display = 'block';
+      this.tooltip!.style.opacity = '1';
+      this.tooltip!.style.visibility = 'visible';
+    }
+
+    this.tooltip!.style.top = event.clientY + 'px';
+    this.tooltip!.style.left = event.clientX + 'px';
+  }
+
+  hideToolTip() {
+    this.destroyToolTip();
+  }
+
+
+
+  destroyToolTip() {
+    this.tooltip!.style.opacity = '0';
+    this.tooltip!.style.display = 'none';
+    this.tooltip!.innerHTML = '';
+    this.tooltip!.style.top = '-9000px';
+    this.tooltip!.style.left = '-9000px';
+    this.tooltip!.style.visibility = 'hidden';
+
+  }
+  /* #endregion ToolTips */
 
   private readProperty(name: string): string {
     let bodyStyles = window.getComputedStyle(document.body);
