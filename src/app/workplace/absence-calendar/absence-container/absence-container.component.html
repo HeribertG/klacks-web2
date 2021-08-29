@@ -1,30 +1,69 @@
 <div class="schedule-container" #containerElement>
   <div class="calendar-toolbar">
-<div class="custom-slider">
-  <ngx-slider [(value)]="value" (valueChange)="onChange()" [options]="options"></ngx-slider>
 
-</div>
+    <div class="absence-filter">
+      <div ngbDropdown (openChange)="onOpenChange($event)">
+        <button class="btn container-search-button   " id="dropdownForm-1" ngbDropdownToggle>
+          <app-icon-filter></app-icon-filter>
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownForm-1">
+
+          <div class="form-group">
+            <div class="checkbox-container-default">
+             
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+
+          <button ngbDropdownItem>Schliessen</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="absence-search">
+      <div class="input-group mb-3">
+        <input type="search" class="form-control" placeholder="Name oder ID Nummer eingeben" name="searchString"
+          id="search" (keyup)="onKeyupSearch($event)" (keydown.enter)="onClickSearch()">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary container-search-button" type="button"
+            (click)="onClickSearch()">Suche</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="absence-reason">
+      <app-absence-reason>
+
+      </app-absence-reason>
+    </div>
+    <div class="custom-slider">
+      <ngx-slider [(value)]="value" (valueChange)="onChange()" [options]="options"></ngx-slider>
+
+    </div>
   </div>
   <div class="container-top" #topElement>
 
-    <div  #leftElement>
-      
-      <app-absence-row-header [calendarData]="calendarData"  [scrollCalendar]="scrollCalendar"  class=" container-left"></app-absence-row-header>
+    <div #leftElement>
+
+      <app-absence-row-header [calendarData]="calendarData" [scrollCalendar]="scrollCalendar" class=" container-left">
+      </app-absence-row-header>
     </div>
 
-    <div appResizerVerticale class="resizer-vertical" [leftElement]="leftElement"  [parentElement]="containerElement"
-      [rightElement]="rightElement" [minLeft]="60" [minRight]="60" [firstLeft]="195" >
+    <div appResizerVerticale class="resizer-vertical" [leftElement]="leftElement" [parentElement]="containerElement"
+      [rightElement]="rightElement" [minLeft]="60" [minRight]="60" [firstLeft]="195">
     </div>
-    <div  #rightElement>
-      <app-absence-body-container  [calendarData]="calendarData"  [scrollCalendar]="scrollCalendar"   ></app-absence-body-container>
+    <div #rightElement>
+      <app-absence-body-container [calendarData]="calendarData" [scrollCalendar]="scrollCalendar">
+      </app-absence-body-container>
     </div>
 
 
   </div>
-  <div appResizerHorizontale #rh class="resizer-horizontale"  [topElement]="topElement" [parentElement]="containerElement"
-    [bottomElement]="bottomElement" [minTop]="80" [minBottom]="40" [firstTop]="622"></div>
+  <div appResizerHorizontale #rh class="resizer-horizontale" [topElement]="topElement"
+    [parentElement]="containerElement" [bottomElement]="bottomElement" [minTop]="80" [minBottom]="40" [firstTop]="622">
+  </div>
 
-  <div  #bottomElement>
+  <div #bottomElement>
     <div class="container-bottom-1">
 
     </div>

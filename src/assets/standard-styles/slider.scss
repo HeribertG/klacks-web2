@@ -1,3 +1,6 @@
+@import './colors.scss';
+
+
 // We need to use ::ng-deep to overcome view encapsulation
 ::ng-deep {
   .custom-slider .ngx-slider .ngx-slider-bar {
@@ -13,7 +16,7 @@
     height: 16px;
     top: auto; /* to remove the default positioning */
     bottom: 0;
-    background-color: #333;
+    background-color: var(--colorLabel);
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
   }
@@ -21,10 +24,12 @@
   .custom-slider .ngx-slider .ngx-slider-bubble  {
     font-size: 12px;
     font-weight:normal!important;
+    color: var(--colorLabel) !important;
   }
   .custom-slider .ngx-slider .ngx-slider-limit {
     font-size: 12px;
     font-weight:normal!important;
+    color: var(--colorLabel) !important;
   }
   .custom-slider .ngx-slider .ngx-slider-pointer:after {
     display: none;

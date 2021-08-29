@@ -126,6 +126,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
         this.scrollCalendar!.maxRows = this.calendarData!.rows;
         this.vScrollbar!.maximumRow = this.calendarData!.rows;
         this.scrollCalendar!.setMetrics(this.visibleCol(), this.scrollCalendar!.maxCols, this.visibleRow(), this.scrollCalendar!.maxRows);
+        this.calendarData.reset();
         this.renderCalendar();
       }
     });
@@ -548,7 +549,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     let headerDayRank = new Array<CalendarHeaderDayRank>();
 
     let lastDays = 0;
-    // durchläuft alle Monate im Jahr
+    // durchläuft alle Monate im Jahr und zeichnet die Hintergrundsfarbe pro Monat
     for (let i = 0; i < 12; i++) {
       const actualDays = getDaysInMonth(this.calendarData!.calendarSetting!.currentYear, i)
 
@@ -565,7 +566,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
     for (let i = 0; i < year; i++) {
 
 
-      const currDate = addDays(this.startDate, i );
+      const currDate = addDays(this.startDate, i);
       const d = i * this.calendarData!.calendarSetting!.cellWidth;
       const rec2 = new Rectangle(Math.floor(d), 0, Math.floor(d + this.calendarData!.calendarSetting!.cellWidth), this.calendarData!.calendarSetting!.cellHeaderHeight);
 
@@ -586,55 +587,80 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
 
-      if (!isHoliday) {
-        switch (currDate.getDay()) {
-          case 0:
+
+      switch (currDate.getDay()) {
+        case 0:
+          if (!isHoliday) {
             MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.sundayColor, rec2);
 
             MDraw.drawBaseBorder(
               this.backgroundRowCtx!,
               this.calendarData!.calendarSetting!.borderColor,
               this.calendarData!.calendarSetting!.increaseBorder, rec2);
-
-            const c = new CalendarHeaderDayRank();
-            c.name = currDate.getDate().toString();
-            c.rect = new Rectangle(d, this.rowCanvas!.height, d + 20, this.rowCanvas!.height + (this.headerCanvas!.height - this.rowCanvas!.height));
-            c.backColor = this.calendarData!.calendarSetting!.sundayColor;
-
-            headerDayRank.push(c)
+          }
 
 
-            break;
-          case 6:
+          const c = new CalendarHeaderDayRank();
+          c.name = currDate.getDate().toString();
+          c.rect = new Rectangle(d, this.rowCanvas!.height, d + 20, this.rowCanvas!.height + (this.headerCanvas!.height - this.rowCanvas!.height));
+          c.backColor = this.calendarData!.calendarSetting!.sundayColor;
+
+          headerDayRank.push(c)
+
+
+          break;
+        case 6:
+          if (!isHoliday) {
             MDraw.fillRectangle(this.backgroundRowCtx!, this.calendarData!.calendarSetting!.saturdayColor, rec2);
 
             MDraw.drawBaseBorder(
               this.backgroundRowCtx!,
               this.calendarData!.calendarSetting!.borderColor,
               this.calendarData!.calendarSetting!.increaseBorder, rec2);
+          }
 
-            const c1 = new CalendarHeaderDayRank();
-            c1.name = currDate.getDate().toString();
-            c1.rect = new Rectangle(rec2.right - 20, this.rowCanvas!.height, rec2.right, this.rowCanvas!.height + (this.headerCanvas!.height - this.rowCanvas!.height));
-            c1.backColor = this.calendarData!.calendarSetting!.saturdayColor;
+          const c1 = new CalendarHeaderDayRank();
+          c1.name = currDate.getDate().toString();
+          c1.rect = new Rectangle(rec2.right - 20, this.rowCanvas!.height, rec2.right, this.rowCanvas!.height + (this.headerCanvas!.height - this.rowCanvas!.height));
+          c1.backColor = this.calendarData!.calendarSetting!.saturdayColor;
 
-            headerDayRank.push(c1)
+          headerDayRank.push(c1)
 
 
-            break;
-          default:
-            MDraw.drawBaseBorder(
-              this.backgroundRowCtx!,
-              this.calendarData!.calendarSetting!.borderColor,
-              0.5, rec2);
-        }
+          break;
+        default:
+          MDraw.drawBaseBorder(
+            this.backgroundRowCtx!,
+            this.calendarData!.calendarSetting!.borderColor,
+            0.5, rec2);
       }
+
     }
 
-    this.headerCtx!.drawImage(this.rowCanvas!, 0, 0);
+
+    //this.headerCtx!.drawImage(this.rowCanvas!, 0, 0);
     this.headerCtx!.drawImage(this.rowCanvas!, 0, this.rowCanvas!.height);
 
+    //Zeichne Monatstage am Samstag und Sonntag
+    if (this.calendarData!.calendarSetting!.cellWidth * 2 >= 20) {
+      headerDayRank.forEach(x => {
+        MDraw.fillRectangle(this.headerCtx!, x.backColor, x.rect);
+        MDraw.drawText(
+          this.headerCtx!,
+          x.name,
+          x.rect.left,
+          x.rect.top,
+          x.rect.width,
+          x.rect.height,
+          this.calendarData!.calendarSetting!.firstSubFontFont,
+          this.calendarData!.calendarSetting!.firstSubFontSize,
+          this.calendarData!.calendarSetting!.foreGroundColor,
+          TextAlignmentEnum.Center,
+          BaselineAlignmentEnum.Center);
+      });
+    }
 
+    // Zeichne Monatsbalken mit Monatsnamen
     lastDays = 0;
     for (let i = 0; i < 12; i++) {
 
@@ -652,7 +678,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
         rec3.left,
         rec3.top,
         rec3.width,
-        rec3.height, 
+        rec3.height,
         this.calendarData!.calendarSetting!.font,
         this.calendarData!.calendarSetting!.mainFontSize,
         this.calendarData!.calendarSetting!.foreGroundColor,
@@ -664,23 +690,6 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
       this.ctx!.drawImage(this.headerCanvas!, 0, 0);
     }
 
-    if (this.calendarData!.calendarSetting!.cellWidth * 2 >= 20) {
-      headerDayRank.forEach(x => {
-        MDraw.fillRectangle(this.headerCtx!, x.backColor, x.rect);
-        MDraw.drawText(
-          this.headerCtx!,
-         x.name,
-          x.rect.left,
-          x.rect.top,
-          x.rect.width,
-          x.rect.height, 
-          this.calendarData!.calendarSetting!.font,
-          this.calendarData!.calendarSetting!.mainFontSize,
-          this.calendarData!.calendarSetting!.foreGroundColor,
-          TextAlignmentEnum.Center,
-          BaselineAlignmentEnum.Center);
-      });
-    }
 
   }
   /* #endregion   create */

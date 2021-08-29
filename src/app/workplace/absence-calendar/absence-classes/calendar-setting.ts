@@ -27,7 +27,8 @@ export class CalendarSetting {
   private _cellWidth = 5;
   private _mainTextHeight = 23;
   private _currentYear = new Date().getFullYear();
-  mainFontSize = 12;
+  mainFontSize = 13;
+  firstSubFontSize = 10;
 
   cellPadding = 3;
 
@@ -42,7 +43,8 @@ export class CalendarSetting {
   cellWidth = this._cellWidth * this.zoom;
   mainTextHeight = this._mainTextHeight
   cellHeaderHeight = this._headerHeight
-  font = 'normal ' + this.mainFontSize + 'px Arial';
+  font = 'normal ' + this.mainFontSize + 'px Poppins';
+  firstSubFontFont = 'normal ' + this.firstSubFontSize + 'px Poppins';
 
 
 

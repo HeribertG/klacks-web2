@@ -10,6 +10,7 @@ import { CalendarSetting } from "./calendar-setting";
 export class CalendarData {
   @Output() isResetEvent = new EventEmitter();
   @Output() isSelectRowEvent = new EventEmitter<number>();
+  @Output() isRereadEvent = new EventEmitter();
 
   weekday = new Array(7);
   monthsName = new Array(12);
@@ -30,7 +31,7 @@ export class CalendarData {
     private dataManagementCalendarService: DataManagementCalendarService
   ) {
 
-    this.dataManagementCalendarService.readList();
+    this.dataManagementCalendarService.init();
     this.calendarSetting = calendarSetting;
     const tmpDate = new Date(Date.now());
     const d = new Date(tmpDate.getFullYear(), 1, 1);
@@ -59,8 +60,14 @@ export class CalendarData {
     this.monthsName[10] = 'November';
     this.monthsName[11] = 'Dezember';
 
+    
 
-    this.dataManagementCalendarService.isReset.subscribe(() => {
+    this.dataManagementCalendarService.isInitEvent.subscribe(() => {
+      this.resetRowsNumber(this.dataManagementCalendarService.calendar.length);
+      this.isResetEvent.emit();
+    });
+
+    this.dataManagementCalendarService.isResetEvent.subscribe(() => {
       this.resetRowsNumber(this.dataManagementCalendarService.calendar.length);
       this.isResetEvent.emit();
     });
@@ -101,5 +108,7 @@ export class CalendarData {
     this.isSelectRowEvent.emit(value);
   }
 
- 
+  reset():void {
+    this.isRereadEvent.emit();
+  }
 }

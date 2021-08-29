@@ -25,5 +25,14 @@ namespace klacks_web_api.Interface
     void RemoveCivilStatus(CivilStatus civilStatus);
     Task<CivilStatus> DeleteCivilStatus(Guid id);
     bool CivilStatusExists(Guid id);
+
+
+    Task<List<AbsenceReason>> GetAbsenceReasonList();
+    Task<AbsenceReason> GetAbsenceReason(Guid id);
+    AbsenceReason AddAbsenceReason(AbsenceReason absenceReason);
+    AbsenceReason PutAbsenceReason(AbsenceReason absenceReason);
+    void RemoveAbsenceReason(AbsenceReason absenceReason);
+    Task<AbsenceReason> DeleteAbsenceReason(Guid id);
+    bool AbsenceReasonExists(Guid id);
   }
 }

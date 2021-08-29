@@ -24,7 +24,6 @@ export class DataSettingsVariousService {
     return this.httpClient.post<ISetting>(`${environment.baseUrl}Settings/AddSetting/`, value).pipe(retry(3));
   }
 
-
   readSettingList(): Observable<ISetting[]> {
     return  this.httpClient.get<ISetting[]>(`${environment.baseUrl}Settings/GetSettingsList`).pipe(retry(3));
   }

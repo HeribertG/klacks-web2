@@ -35,6 +35,7 @@ import { IconCalendarComponent } from './icon-calendar.component';
 import { IconBusinessBagComponent } from './icon-business-bag.component';
 import { IconBusinessManComponent } from './icon-business-man.component';
 import { IconSpreadSheetComponent } from './icon-spreadsheet.component';
+import { IconFilterComponent } from './icon-filter.component';
 
 
 
@@ -73,6 +74,7 @@ import { IconSpreadSheetComponent } from './icon-spreadsheet.component';
     IconBusinessBagComponent,
     IconBusinessManComponent,
     IconSpreadSheetComponent,
+    IconFilterComponent,
 
   ],
   exports: [
@@ -109,6 +111,7 @@ import { IconSpreadSheetComponent } from './icon-spreadsheet.component';
     IconBusinessBagComponent,
     IconBusinessManComponent,
     IconSpreadSheetComponent,
+    IconFilterComponent,
   ],
   imports: [
     CommonModule

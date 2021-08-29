@@ -13,6 +13,9 @@ import { AbsenceRowHeaderComponent } from './absence-row-header/absence-row-head
 import { TemplateModule } from 'src/app/template/template.module';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { AbsenceCalendarDirective } from './directives/absence-calendar.directive';
+import { AbsenceReasonComponent } from './absence-reason/absence-reason.component';
+import { IconsModule } from 'src/app/icons/icons.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -29,12 +32,15 @@ import { AbsenceCalendarDirective } from './directives/absence-calendar.directiv
     AbsenceBodyComponent,
     AbsenceRowHeaderComponent,
     AbsenceCalendarDirective,
+    AbsenceReasonComponent,
  
   ],
   imports: [
     CommonModule,
     TemplateModule,
-    NgxSliderModule
+    NgxSliderModule,
+    IconsModule,
+    NgbModule,
 
   ],
   exports: [

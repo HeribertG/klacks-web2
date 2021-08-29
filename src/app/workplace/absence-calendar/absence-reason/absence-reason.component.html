@@ -1,0 +1,8 @@
+<div class="absence-reason-container">
+<div *ngFor="let c of dataManagementCalendarService.absenceReasons" >
+    <div class="name-line">
+     <div class="name-icon"  [ngStyle]="{'background-color':onColor(c)}"></div><span>{{c.name}}</span>   
+    </div>
+
+</div>
+</div>

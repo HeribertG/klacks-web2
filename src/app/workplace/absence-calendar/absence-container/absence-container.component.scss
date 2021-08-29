@@ -1,5 +1,7 @@
 @import '../../../../assets/standard-styles/colors.scss';
 @import '../../../../assets/standard-styles/slider.scss';
+@import '../../../../assets/standard-styles/standard-controls.scss';
+@import '../../../../assets/standard-styles/navigation.scss';
 
 .schedule-container {
   display: flex;
@@ -38,25 +40,39 @@
   flex-flow: row;
   overflow: hidden;
   margin: 0;
-
+  border: 1px solid var(--cardBorderColor);
 
 }
 
 
-  .custom-slider {
-    width: 400px;
-    height: 50px !important;
-    font-size: 10px;
-
+.custom-slider {
+  width: 180px;
+  height: 50px !important;
   }
 
+.absence-search{
+  width: 400px;
+  padding: 5px;
+  background-color: var(--backgroundColorWindow);
+}
 
+.absence-filter{
+  width: 65px;
+  padding: 5px;
+  font-size: 12px;
+  background-color: var(--backgroundColorWindow);
+}
+
+.absence-reason{
+  width: calc( 100% - 660px);
+  margin-right: 5px;
+}
 
 .calendar-toolbar {
   height: 60px;
   width: 100%;
   display: flex;
-  background-color: yellow;
+  background-color: var(--backgroundColorWindow);
 }
 
 .container-left {
@@ -70,7 +86,6 @@
   width: 10px;
   height: 10px;
   top: -10px;
-  background-color: red;
   z-index: 3;
   border-radius: 10px;
 }
@@ -95,3 +110,31 @@
   margin: 0;
   background-color: rgb(214, 95, 4);
 }
+
+.container-search {
+  margin-top: 24px;
+  padding-left: 30px;
+  padding-right: 30px;
+  font-size: 12px;
+  font-weight: 500;
+  color:var(--colorLabel);
+  height: 22px;
+
+}
+
+.container-search-button {
+  font-weight: 600;
+  font-size: 12px;
+  background-color: $standartBlueColor;
+  color: $standartWhiteColor;
+ 
+
+}
+
+.icon {
+  cursor: pointer;
+  
+  width: 50px;
+  height: 50px;
+}
+

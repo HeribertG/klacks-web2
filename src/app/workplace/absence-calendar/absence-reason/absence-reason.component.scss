@@ -1,0 +1,30 @@
+@import '../../../../assets/standard-styles/colors.scss';
+
+.absence-reason-container {
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+  background-color: var(--backgroundColorWindow);
+  color: var(--colorLabel);
+  display: flex;
+  flex-flow: row wrap;
+  padding: 10px;
+  box-sizing: content-box;
+  overflow-x: auto;
+  overflow-y: auto;
+  font: normal 13px Poppins;
+
+}
+
+.name-line {
+  display: flex;
+  flex-flow: row;
+  margin-right: 15px;
+}
+
+.name-icon {
+  width: 17px;
+  height: 17px;
+  margin-right: 10px;
+  
+  
+}

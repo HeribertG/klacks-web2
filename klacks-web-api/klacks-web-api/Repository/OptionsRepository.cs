@@ -65,8 +65,6 @@ namespace SVA.API.Repository
 
     #endregion EmployeeStatus
 
-
-
     #region CivilStatus
 
     public async Task<List<CivilStatus>> GetCivilStatusList()
@@ -112,7 +110,56 @@ namespace SVA.API.Repository
       return context.CivilStatus.Any(e => e.Id == id);
     }
 
-    
+
+
     #endregion CivilStatus
+
+    #region AbsenceReason
+
+    public async Task<List<AbsenceReason>> GetAbsenceReasonList()
+    {
+      return await context.AbsenceReason.ToListAsync();
+    }
+
+    public async Task<AbsenceReason> GetAbsenceReason(Guid id)
+    {
+      return await context.AbsenceReason.FindAsync(id);
+    }
+
+    public AbsenceReason AddAbsenceReason(AbsenceReason absenceReason)
+    {
+      context.AbsenceReason.Add(absenceReason);
+
+      return absenceReason;
+    }
+
+    public AbsenceReason PutAbsenceReason(AbsenceReason absenceReason)
+    {
+      context.AbsenceReason.Update(absenceReason);
+
+      return absenceReason;
+    }
+
+    public void RemoveAbsenceReason(AbsenceReason absenceReason)
+    {
+      context.AbsenceReason.Remove(absenceReason);
+    }
+
+    public async Task<AbsenceReason> DeleteAbsenceReason(Guid id)
+    {
+      var absenceReason = await context.AbsenceReason.FindAsync(id);
+
+      context.AbsenceReason.Remove(absenceReason);
+
+      return absenceReason;
+    }
+
+    public bool AbsenceReasonExists(Guid id)
+    {
+      return context.AbsenceReason.Any(e => e.Id == id);
+    }
+
+
+    #endregion AbsenceReason
   }
 }

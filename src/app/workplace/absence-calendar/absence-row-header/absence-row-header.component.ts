@@ -98,6 +98,11 @@ export class AbsenceRowHeaderComponent implements OnInit, AfterViewInit, OnDestr
      this.selectedRow =x;
     });
 
+    this.calendarData!.isRereadEvent.subscribe(() => {
+      this.renderCalendar();
+      this.drawCalendar();
+     });
+ 
   }
 
   ngOnDestroy(): void {

@@ -1,10 +1,10 @@
+using klacks_web_api.Interface;
+using klacks_web_api.Models.Options;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using klacks_web_api.Interface;
-using System;
-using klacks_web_api.Models.Options;
-using Microsoft.EntityFrameworkCore;
 
 namespace klacks_web_api.Controllers
 {
@@ -184,5 +184,88 @@ namespace klacks_web_api.Controllers
 
     #endregion CivilStatus
 
+
+    #region AbsenceReason
+
+    [HttpGet("AbsenceReason")]
+    public async Task<ActionResult<IEnumerable<AbsenceReason>>> GetAbsenceReason()
+    {
+      return await repository.GetAbsenceReasonList();
+    }
+
+
+    [HttpGet("AbsenceReason/{id}")]
+    public async Task<ActionResult<AbsenceReason>> GetAbsenceReason(Guid id)
+    {
+      var absenceReason = await repository.GetAbsenceReason(id);
+
+      if (absenceReason == null)
+      {
+        return NotFound();
+      }
+
+      return absenceReason;
+    }
+
+
+    [HttpPut("AbsenceReason")]
+    public async Task<ActionResult<AbsenceReason>> PutAbsenceReason(AbsenceReason absenceReason)
+    {
+
+      repository.PutAbsenceReason(absenceReason);
+
+      try
+      {
+        await unitOfWork.CompleteAsync();
+      }
+      catch (DbUpdateConcurrencyException)
+      {
+        if (!repository.AbsenceReasonExists(absenceReason.Id))
+        {
+          return NotFound();
+        }
+        else
+        {
+          throw;
+        }
+      }
+
+      return absenceReason;
+    }
+
+
+    [HttpPost("AbsenceReason")]
+    public async Task<ActionResult<AbsenceReason>> PostAbsenceReason(AbsenceReason absenceReason)
+    {
+
+
+      absenceReason = repository.AddAbsenceReason(absenceReason);
+      await unitOfWork.CompleteAsync();
+
+      return absenceReason;
+    }
+
+
+    [HttpDelete("AbsenceReason/{id}")]
+    public async Task<ActionResult<AbsenceReason>> DeleteAbsenceReason(Guid id)
+    {
+      var absenceReason = await repository.DeleteAbsenceReason(id);
+      if (absenceReason == null)
+      {
+        return NotFound();
+      }
+      else
+      {
+        await unitOfWork.CompleteAsync();
+      }
+
+      return absenceReason;
+    }
+
+  
+
+
+
+    #endregion AbsenceReason
   }
 }

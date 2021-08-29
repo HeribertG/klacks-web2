@@ -51,4 +51,19 @@ export class AbsenceContainerComponent implements OnInit, AfterViewInit, OnDestr
   onChange(){
     this.calendarSetting!.zoom =this.value/100;
   }
+
+
+  onOpenChange(event: boolean) {
+    
+  }
+
+  onClickSearch(){
+
+  }
+
+  onKeyupSearch(event: any) {
+
+    if (event.srcElement && event.srcElement.value.toString() === '') { this.onClickSearch(); }
+
+  }
 }
