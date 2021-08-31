@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, Input, NgZone, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { CalendarHeaderDayRank } from 'src/app/core/calendar-class';
-import { TruncatedFilter } from 'src/app/core/employee-class';
 import { MDraw } from 'src/app/helpers/draw-helper';
 import { BaselineAlignmentEnum, TextAlignmentEnum } from 'src/app/helpers/enums/cell-settings.enum';
 import { Gradient3DBorderStyleEnum } from 'src/app/helpers/enums/draw.enum';
@@ -587,7 +586,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
 
-
+     const borderSize=  this.calendarData!.calendarSetting!.increaseBorder;
       switch (currDate.getDay()) {
         case 0:
           if (!isHoliday) {
@@ -602,7 +601,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
 
           const c = new CalendarHeaderDayRank();
           c.name = currDate.getDate().toString();
-          c.rect = new Rectangle(d, this.rowCanvas!.height, d + 20, this.rowCanvas!.height + (this.headerCanvas!.height - this.rowCanvas!.height));
+          c.rect = new Rectangle(d, this.rowCanvas!.height + borderSize , d + 20, this.rowCanvas!.height + (this.headerCanvas!.height - this.rowCanvas!.height));
           c.backColor = this.calendarData!.calendarSetting!.sundayColor;
 
           headerDayRank.push(c)
@@ -621,7 +620,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
 
           const c1 = new CalendarHeaderDayRank();
           c1.name = currDate.getDate().toString();
-          c1.rect = new Rectangle(rec2.right - 20, this.rowCanvas!.height, rec2.right, this.rowCanvas!.height + (this.headerCanvas!.height - this.rowCanvas!.height));
+          c1.rect = new Rectangle(rec2.right - 20, this.rowCanvas!.height  + borderSize , rec2.right, this.rowCanvas!.height + (this.headerCanvas!.height - this.rowCanvas!.height));
           c1.backColor = this.calendarData!.calendarSetting!.saturdayColor;
 
           headerDayRank.push(c1)

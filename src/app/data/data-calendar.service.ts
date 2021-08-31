@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { ICalendar } from '../core/calendar-class';
+import { ICalendar, ICalendarFilter } from '../core/calendar-class';
 @Injectable({
   providedIn: 'root'
 })
@@ -9,8 +9,8 @@ export class DataCalendarService {
 
   constructor(private httpClient: HttpClient) {}  
   
-  getCalendarList() {
-    return this.httpClient.get<ICalendar[]>(
-      `${environment.baseUrl}Calendars/GetCalendarList`).pipe();
+  readCalendarList(value:ICalendarFilter) {
+    return this.httpClient.post<ICalendar[]>(
+      `${environment.baseUrl}Calendars/CalendarList`,value).pipe();
   }
 }

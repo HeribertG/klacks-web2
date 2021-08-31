@@ -1,5 +1,6 @@
 import { Rectangle } from "../helpers/geometry";
 import { IStaff } from "./employee-class";
+import { BaseFilter, IBaseFilter } from "./general-class";
 
 export class CalendarHeaderDayRank {
     backColor: string = '';
@@ -58,3 +59,11 @@ export class AbsenceReason implements IAbsenceReason {
     isWork = false;
 }
 
+export interface ICalendarFilter extends IBaseFilter {
+  
+
+}
+export class CalendarFilter extends BaseFilter implements ICalendarFilter {
+     
+  }
+  

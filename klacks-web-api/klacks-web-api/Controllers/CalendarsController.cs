@@ -3,6 +3,7 @@ using klacks_web_api.Interface;
 using klacks_web_api.Models;
 using klacks_web_api.Models.Employee;
 using klacks_web_api.Resources;
+using klacks_web_api.Resources.Filter;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -77,8 +78,8 @@ namespace klacks_web_api.Controllers
       await unitOfWork.CompleteAsync();
     }
 
-    [HttpGet("GetCalendarList")]
-    public async Task<ActionResult<List<CalendarResource>>> GetCalendarList()
+    [HttpPost("CalendarList")]
+    public async Task<ActionResult<List<CalendarResource>>> CalendarList([FromBody] CalendarFilter calendarFilter)
     {
       var employee = await repository.GetCalendarList();
       var result = mapper.Map<List<Employee>, List<CalendarResource>>(employee);

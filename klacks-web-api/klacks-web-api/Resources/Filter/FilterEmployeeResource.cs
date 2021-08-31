@@ -9,17 +9,17 @@ namespace klacks_web_api.Resources.Filter
     public FilterEmployeeResource()
     {
       Countries = new Collection<CountriesResource>();
-    
+
     }
 
-    
+
     public bool ShowDeleteEntries { get; set; }
-    public bool IncludeAddress { get; set; } 
- 
+    public bool IncludeAddress { get; set; }
+
     public bool? SearchOnlyByName { get; set; } = null;
-   public bool? male { get; set; }
+    public bool? male { get; set; }
     public bool? female { get; set; }
-       public string searchString { get; set; }
+    public string searchString { get; set; }
 
     public bool? ktnAG { get; set; }
     public bool? ktnAI { get; set; }
@@ -60,10 +60,10 @@ namespace klacks_web_api.Resources.Filter
     public DateTime? ScopeFrom { get; set; }
     public DateTime? ScopeUntil { get; set; }
 
- 
- 
+
+
     public ICollection<CountriesResource> Countries { get; set; }
-    
+
 
 
   }

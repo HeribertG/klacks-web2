@@ -16,8 +16,8 @@ import { AbsenceCalendarDirective } from './directives/absence-calendar.directiv
 import { AbsenceReasonComponent } from './absence-reason/absence-reason.component';
 import { IconsModule } from 'src/app/icons/icons.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
-
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -37,10 +37,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     TemplateModule,
     NgxSliderModule,
     IconsModule,
     NgbModule,
+    DragDropModule,
 
   ],
   exports: [

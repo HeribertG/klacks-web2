@@ -12,19 +12,47 @@
   overflow-x: auto;
   overflow-y: auto;
   font: normal 13px Poppins;
+ 
 
+}
+
+.absence-reason-container:focus  {
+  background-color: Aqua;
 }
 
 .name-line {
   display: flex;
   flex-flow: row;
   margin-right: 15px;
+  background-color: var(--backgroundColorWindow);
+  
+}
+
+.name-line:hover {
+  background-color: rgba($color: #1e90ff, $alpha: 0.2) ;
 }
 
 .name-icon {
   width: 17px;
-  height: 17px;
+  height: 18px;
   margin-right: 10px;
   
   
+}
+
+// [draggable=true] {
+//   cursor: move;
+// }
+// [draggable=false] {
+//   cursor: not-allowed;
+// }
+
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
 }

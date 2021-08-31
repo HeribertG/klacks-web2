@@ -9,15 +9,48 @@ import { DataManagementCalendarService } from 'src/app/data/management/data-mana
   styleUrls: ['./absence-reason.component.scss']
 })
 export class AbsenceReasonComponent implements OnInit {
+  dragging: any;
+
 
   constructor(public dataManagementCalendarService: DataManagementCalendarService) { }
 
   ngOnInit(): void {
+
+
   }
 
-  onColor(value: IAbsenceReason) : string{
-    if( value && value.backgroundColor){  return value.backgroundColor;}
+  onColor(value: IAbsenceReason): string {
+    if (value && value.backgroundColor) { return value.backgroundColor; }
     return 'transparent'
-  
+
+  }
+
+
+  // dragStart(event: DragEvent, item: any):void {
+  //   event.dataTransfer!.setData('text', item.text);
+  //   event.dataTransfer!.effectAllowed = 'move';
+  //   this.dragging = item;
+  // };
+
+  // dragEnd(event: DragEvent, item: any) {
+  //   this.dragging = undefined;
+  // };
+
+  allowDrop(ev: any) {
+    ev.preventDefault();
+  }
+
+  drag(ev: any) {
+    ev.dataTransfer.setData("text", ev.target.id);
+  }
+
+  drop(ev: any) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+  }
+
+  onMouseMove(event: MouseEvent) {
+  document.getElementById('absence-reason-container')!.focus();
   }
 }

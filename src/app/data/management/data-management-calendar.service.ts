@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { IAbsenceReason, ICalendar } from 'src/app/core/calendar-class';
+import { CalendarFilter, IAbsenceReason, ICalendar } from 'src/app/core/calendar-class';
 import { ToastService } from 'src/app/toast/toast.service';
 import { DataAbsenceReasonService } from '../data-absence-reason.service';
 import { DataCalendarService } from '../data-calendar.service';
@@ -14,6 +14,7 @@ export class DataManagementCalendarService {
 
   calendar: ICalendar[] = [];
   absenceReasons: IAbsenceReason[] = [];
+  filter = new CalendarFilter();
 
   private isInit = false;
   private initCount = 0;
@@ -29,6 +30,8 @@ export class DataManagementCalendarService {
 
   init() {
     // if (this.isInit === false) {
+
+      this.filter.searchString ='';
       this.initCount = 0;
       
       this.absenceReasons = [];
@@ -38,7 +41,7 @@ export class DataManagementCalendarService {
       });
 
       this.calendar = [];
-      this.dataCalendarService.getCalendarList().subscribe((x) => {
+      this.dataCalendarService.readCalendarList(this.filter).subscribe((x) => {
         this.calendar = x;
         this.isInitFinished(1);
       });
@@ -61,7 +64,7 @@ export class DataManagementCalendarService {
   /* #region   list calendar */
   readList() {
     this.calendar = [];
-    this.dataCalendarService.getCalendarList().subscribe((x) => {
+    this.dataCalendarService.readCalendarList(this.filter).subscribe((x) => {
       this.calendar = x;
       this.isResetEvent.emit();
     }

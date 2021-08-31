@@ -54,7 +54,7 @@ export class AbsenceCalendarDirective {
     //   this.respondToRightMouseDown(event);
     // }
 
-    this.stopEvent(event)
+    // this.stopEvent(event)
   }
 
   @HostListener('click', ['$event']) onMouseClick(event: MouseEvent): void {

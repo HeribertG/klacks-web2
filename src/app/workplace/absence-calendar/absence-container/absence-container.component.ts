@@ -12,14 +12,16 @@ import { DataManagementCalendarService } from 'src/app/data/management/data-mana
   styleUrls: ['./absence-container.component.scss']
 })
 export class AbsenceContainerComponent implements OnInit, AfterViewInit, OnDestroy {
- 
+
+  searchString = '';
+
   value: number = 100;
   options: Options = {
     floor: 50,
     ceil: 300,
-    showSelectionBarEnd:false,
-    showSelectionBar:false
-    
+    showSelectionBarEnd: false,
+    showSelectionBar: false
+
 
   };
 
@@ -28,10 +30,10 @@ export class AbsenceContainerComponent implements OnInit, AfterViewInit, OnDestr
   public scrollCalendar: ScrollCalendar | undefined = new ScrollCalendar();
 
 
-  
+
   constructor(
     private dataManagementHolydayService: DataManagementHolydayService,
-    private dataManagementCalendarService: DataManagementCalendarService) {
+    public dataManagementCalendarService: DataManagementCalendarService) {
     this.calendarSetting = new CalendarSetting(dataManagementHolydayService);
     this.calendarData = new CalendarData(this.calendarSetting!, this.dataManagementCalendarService);
   }
@@ -44,20 +46,20 @@ export class AbsenceContainerComponent implements OnInit, AfterViewInit, OnDestr
 
   }
 
-  
+
   ngOnDestroy() {
   }
 
-  onChange(){
-    this.calendarSetting!.zoom =this.value/100;
+  onChange() {
+    this.calendarSetting!.zoom = this.value / 100;
   }
 
 
   onOpenChange(event: boolean) {
-    
+
   }
 
-  onClickSearch(){
+  onClickSearch() {
 
   }
 
@@ -66,4 +68,18 @@ export class AbsenceContainerComponent implements OnInit, AfterViewInit, OnDestr
     if (event.srcElement && event.srcElement.value.toString() === '') { this.onClickSearch(); }
 
   }
+
+  onMouseMove(event: MouseEvent) {
+    const x= document.getElementById('absence-reason-container');
+    x!.focus();
+  }
+
+  onClick(event: MouseEvent) {
+    setTimeout(()=> {
+      const x= document.getElementById('search');
+      x!.focus();
+    }, 100);
+     
+  }
+   
 }
