@@ -495,10 +495,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private drawRowSub(ctx: CanvasRenderingContext2D, index: number, rec: Rectangle): void {
 
-
-    const maxRows = this.scrollCalendar!.maxRows;
-
-    if (index < maxRows) {
+    if (index < this.calendarData!.rows) {
       ctx.drawImage(this.rowCanvas!, rec.x, rec.y);
     } else {
       MDraw.fillRectangle(ctx, this.calendarData!.calendarSetting!.backGroundColor, rec);

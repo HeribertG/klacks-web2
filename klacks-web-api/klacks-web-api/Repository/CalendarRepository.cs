@@ -64,7 +64,6 @@ namespace klacks_web_api.Repository
       var tmp = context.Employee
                 .Include(x => x.Absences)
                 .Include(x => x.Staff)
-                .Where(x=> !string.IsNullOrEmpty(x.Name))
                 .AsQueryable();
 
       tmp = FilterByDate(tmp);
