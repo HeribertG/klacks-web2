@@ -50,7 +50,5 @@ export class AbsenceReasonComponent implements OnInit {
     ev.target.appendChild(document.getElementById(data));
   }
 
-  onMouseMove(event: MouseEvent) {
-  document.getElementById('absence-reason-container')!.focus();
-  }
+
 }

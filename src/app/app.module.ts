@@ -58,7 +58,7 @@ registerLocaleData(localeDECH);
     TemplateModule,
     SpinnerModule,
     ToastModule,
- 
+   
  
   ],
   providers: [

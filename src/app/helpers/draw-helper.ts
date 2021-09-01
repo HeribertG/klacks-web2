@@ -308,7 +308,7 @@ export abstract class MDraw {
     borderColor: string,
     lineWidth:number,
     rec: Rectangle):void { 
-
+      ctx.save();
     ctx.strokeStyle = borderColor;
     ctx.lineWidth = lineWidth;
     ctx.strokeRect(
@@ -317,6 +317,7 @@ export abstract class MDraw {
           rec.width + lineWidth,
           rec.height + lineWidth,
     );
+    ctx.restore();
 }
 }
 

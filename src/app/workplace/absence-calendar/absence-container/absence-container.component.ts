@@ -69,16 +69,13 @@ export class AbsenceContainerComponent implements OnInit, AfterViewInit, OnDestr
 
   }
 
-  onMouseMove(event: MouseEvent) {
-    const x= document.getElementById('absence-reason-container');
-    x!.focus();
-  }
+
 
   onClick(event: MouseEvent) {
     setTimeout(()=> {
       const x= document.getElementById('search');
       x!.focus();
-    }, 100);
+    }, 20);
      
   }
    

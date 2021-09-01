@@ -33,10 +33,11 @@ export class CalendarSetting {
   cellPadding = 3;
 
   evenMonthColor = '#FFFFFF';
-  oddMonthColor = '#F7F8E0';
+  oddMonthColor = '#FDEBD0';
   saturdayColor = '#A9F5BC';
   sundayColor = '#F4FA58';
-  holydayColor = '#FFFF00';
+  holydayColorOfficially = '#85C1E9';
+  holydayColor = '#D4E6F1';
 
   increaseBorder = (0.5);
   cellHeight = this._cellHeight
@@ -51,6 +52,7 @@ export class CalendarSetting {
 
   backGroundColor = '#424949';
   borderColor = '#999999';
+  borderColorEndMonth = '#7F8C8D';
   mainFontColor = '#000000';
   subFontColor = '#404040';
 
@@ -80,6 +82,7 @@ export class CalendarSetting {
   private async readList() {
     this.dataManagementHolydayService.createHolydayList(this.currentYear).then((x) => {
       this.holidaysList = x;
+      this.holidaysList!.computeHolidays();
       this.holidayListIsreadEvent.emit();
     });
 

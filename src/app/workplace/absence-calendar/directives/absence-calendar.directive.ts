@@ -82,7 +82,7 @@ export class AbsenceCalendarDirective {
 
       if (col < this.gridBody.calendarData!.columns && col >= 0) {
         const holiday = this.gridBody.holidayInfo(col);
-        if (holiday  && holiday.officially) {
+        if (holiday) {
           const holidayName: string = holiday!.currentName;
           this.gridBody.showToolTip( holidayName, event );
           return;

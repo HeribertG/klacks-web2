@@ -32,7 +32,7 @@ export class HolidaysList {
 
   public computeHolidays() {
 
-    if (this.list.length === 0) return;
+
 
     let easterDate: Date;
     let i: number;
@@ -52,21 +52,23 @@ export class HolidaysList {
       c.officially = item.officialHoliday;
       c.formatDate = this.formatDate(c.currentDate);
 
-      if (!item.subRule) this.subRules(item.subRule, c);
+      if (item.subRule) { this.subRules(item.subRule, c); }
 
       this.holidayList.push(c);
     }
 
-    this.holidayList = this.holidayList.sort((a:HolidayDate, b:HolidayDate)=>{
-      
+    this.holidayList = this.holidayList.sort((a: HolidayDate, b: HolidayDate) => {
+
       if (a.currentDate > b.currentDate) return 1;
       if (a.currentDate < b.currentDate) return -1;
       return 0;
     });
-    
+
   }
 
   private subRules(rules: string, item: HolidayDate) {
+
+    if (!rules) { return; }
 
     let i: number;
     let rule: string[];
@@ -78,15 +80,15 @@ export class HolidaysList {
 
     for (i = 0; i < rule.length; i++) {
 
-      aWtg = item.currentDate.getDay() + 1;
-      zWtg = Math.ceil(this.weekDayName.indexOf(rule[i].substring(0, 2)) / 2) + 1;
+      aWtg = item.currentDate.getDay();
+      zWtg = Math.ceil(this.weekDayName.indexOf(rule[i].substring(0, 2)) / 2) ;
 
-      nbr = Number.parseInt(rule[i].substring(3, (rule[i].length - 3)));
-
+      nbr = Number.parseInt(rule[i].substring(2));
+      
       if (aWtg == zWtg && nbr > 0) {
-        if (rule[i].substring(2, 1) == "+")
+        if (rule[i].substring(2, 3) === "+")
           item.currentDate = new Date(item.currentDate.getFullYear(), item.currentDate.getMonth(), item.currentDate.getDate() + nbr);
-        else if (rule[i].substring(2, 1) == "-")
+        else if (rule[i].substring(2, 3) === "-")
           item.currentDate = new Date(item.currentDate.getFullYear(), item.currentDate.getMonth(), item.currentDate.getDate() - nbr);
       }
 
@@ -314,7 +316,7 @@ export class HolidaysList {
   }
 
   public CountMonthDays(CurrentMonth: number, CurrentYear: number): number {
-    let i=-1;
+    let i = -1;
     switch (CurrentMonth) {
       case 4:
         i = 30;

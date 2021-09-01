@@ -31,11 +31,11 @@ export class DataManagementHolydayService {
         holidayList.add(h);
 
         holidayList.CurrentYear = currenYaer;
-        holidayList.computeHolidays();
-        
-
-      });
+       
+              });
+      
       return holidayList;
     });
   }
+  
 }
