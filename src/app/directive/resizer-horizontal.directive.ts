@@ -146,21 +146,22 @@ export class ResizerHorizontalDirective implements OnInit, AfterViewInit, OnDest
     const targetElement = event.target as HTMLElement;
     if (targetElement === this.el.nativeElement as HTMLElement) {
 
-      this.setRight(event.clientX);
+      event.preventDefault();
+      this.setRight(event.clientY);
 
       this.grabber = true;
 
       this.renderer.setStyle(this.el.nativeElement, 'background-color', 'grey');
 
       if (event.touches) {
-        // console.log(event.touches[0]);
-        this.oldY = event.touches[0].clientX;
+        
+        this.oldY = event.touches[0].clientY;
       } else {
 
-        this.oldY = event.clientX;
+        this.oldY = event.clientY;
       }
 
-      //  console.log('onMouseDown', this.diff, this.bottom, this.oldY);
+      
     }
   }
 

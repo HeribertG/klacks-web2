@@ -28,6 +28,7 @@ export class ResizerVerticalDirective implements OnInit, AfterViewInit, OnDestro
   right: number = 0;
 
   ngOnInit() {
+
     this.renderer.setStyle(this.el.nativeElement, 'background-color', 'transparent');
   }
 
@@ -49,11 +50,13 @@ export class ResizerVerticalDirective implements OnInit, AfterViewInit, OnDestro
 
 
   onMouseMove(event: any):void {
+
+
     if (!this.grabber) {
       return;
     }
 
-
+   
     event.preventDefault();
 
     let clientX = 0;
@@ -63,7 +66,7 @@ export class ResizerVerticalDirective implements OnInit, AfterViewInit, OnDestro
 
       clientX = event.clientX;
     }
-    // console.log('onMouseMove', event, clientX, this.right, this.oldX);
+    
 
     this.resizerVertical(clientX - this.oldX);
     this.oldX = clientX;
@@ -136,11 +139,11 @@ export class ResizerVerticalDirective implements OnInit, AfterViewInit, OnDestro
 
 
 
-    event.preventDefault();
-
+    
     const targetElement = event.target as HTMLElement;
     if (targetElement === this.el.nativeElement as HTMLElement) {
-
+      
+      event.preventDefault();
       this.setRight(event.clientX);
 
       this.grabber = true;
