@@ -270,7 +270,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
   set selectedRow(value: number) {
 
     if (value === this._selectedRow) { return; }
-    
+
 
     this.unDrawSelectionRow();
     if (value < 0) {
@@ -315,7 +315,10 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private isSelectedRowVisible(): boolean {
-    if (this.selectedRow >= this.firstVisibleRow() && this.selectedRow < (this.firstVisibleRow() + this.visibleRow())) {
+    if (this.selectedRow >= this.firstVisibleRow() && 
+        this.selectedRow < (this.firstVisibleRow() + this.visibleRow()) && 
+        this.selectedRow < this.calendarData!.rows) {
+
       return true;
     }
 
@@ -566,7 +569,7 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
       MDraw.fillRectangle(this.backgroundRowCtx!, (i % 2 === 0 ? this.calendarData!.calendarSetting!.evenMonthColor : this.calendarData!.calendarSetting!.oddMonthColor), rec1);
 
       monthsRect.push(rec1);
-      
+
     }
 
     for (let i = 0; i < year; i++) {
@@ -580,9 +583,9 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.holidayList && this.holidayList!.length > 0) {
         const result = this.holidayList!.find(x => (EqualDate(x.currentDate, currDate) === 0));
 
-        if (result ) {
+        if (result) {
           isHoliday = true;
-          MDraw.fillRectangle(this.backgroundRowCtx!, result!.officially? this.calendarData!.calendarSetting!.holydayColorOfficially:this.calendarData!.calendarSetting!.holydayColor, rec2);
+          MDraw.fillRectangle(this.backgroundRowCtx!, result!.officially ? this.calendarData!.calendarSetting!.holydayColorOfficially : this.calendarData!.calendarSetting!.holydayColor, rec2);
 
           MDraw.drawBaseBorder(
             this.backgroundRowCtx!,
@@ -642,17 +645,17 @@ export class AbsenceBodyComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
     }
-    
+
     this.backgroundRowCtx!.save();
-    this.backgroundRowCtx!.lineWidth =1;
+    this.backgroundRowCtx!.lineWidth = 1;
     this.backgroundRowCtx!.strokeStyle = this.calendarData!.calendarSetting!.borderColorEndMonth;
-    monthsRect.forEach((x)=>{
-      
-      this.backgroundRowCtx!.moveTo(x.left,x.top);
-      this.backgroundRowCtx!.lineTo(x.left,x.bottom);
+    monthsRect.forEach((x) => {
+
+      this.backgroundRowCtx!.moveTo(x.left, x.top);
+      this.backgroundRowCtx!.lineTo(x.left, x.bottom);
       this.backgroundRowCtx!.stroke();
     });
-   this.backgroundRowCtx!.restore();
+    this.backgroundRowCtx!.restore();
 
     //this.headerCtx!.drawImage(this.rowCanvas!, 0, 0);
     this.headerCtx!.drawImage(this.rowCanvas!, 0, this.rowCanvas!.height);

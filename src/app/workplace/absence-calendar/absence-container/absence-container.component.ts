@@ -14,7 +14,8 @@ import { DataManagementCalendarService } from 'src/app/data/management/data-mana
 export class AbsenceContainerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   searchString = '';
-
+  tabId = 'macro';
+  
   value: number = 100;
   options: Options = {
     floor: 50,

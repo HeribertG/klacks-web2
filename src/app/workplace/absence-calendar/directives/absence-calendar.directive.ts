@@ -1,11 +1,11 @@
 
 import {
   Directive,
+  ElementRef,
   HostListener,
   NgZone,
 } from '@angular/core';
 import { Rectangle } from 'src/app/helpers/geometry';
-import { HolidayDate } from 'src/app/template/classes/holyday-list';
 import { AbsenceBodyComponent } from '../absence-body/absence-body.component';
 
 @Directive({
@@ -20,6 +20,7 @@ export class AbsenceCalendarDirective {
   private lastZoom = 0;
 
   constructor(
+    private el: ElementRef,
     private zone: NgZone,
     private gridBody: AbsenceBodyComponent,
   ) { }
@@ -27,6 +28,13 @@ export class AbsenceCalendarDirective {
   @HostListener('mouseenter', ['$event']) onMouseEnter(event: MouseEvent) : void { }
 
   @HostListener('mouseleave', ['$event']) onMouseLeave(event: MouseEvent): void  {
+    
+   
+    if (!this.isOwnElement(event)) {
+      return;
+    }
+      
+    
     this.gridBody.destroyToolTip();
 
     const rect = new Rectangle(this.gridBody.clientLeft, this.gridBody.clientTop, this.gridBody.clientWidth, this.gridBody.clientHeight);
@@ -38,6 +46,11 @@ export class AbsenceCalendarDirective {
 
   @HostListener('mousewheel', ['$event']) onMouseWheel(event: WheelEvent): void {
     //this.gridBody.simpleContextMenu!.clearMenus();
+
+    if (!this.isOwnElement(event)) {
+      return;
+    }
+
     const moveY: number = event.deltaY === 0 ? 0 : event.deltaY > 0 ? 1 : -1;
     const moveX: number = event.deltaX === 0 ? 0 : event.deltaX > 0 ? 1 : -1;
 
@@ -48,6 +61,11 @@ export class AbsenceCalendarDirective {
   }
 
   @HostListener('mousedown', ['$event']) onMouseDown(event: MouseEvent): void {
+
+    if (!this.isOwnElement(event)) {
+      return;
+    }
+
     // if (event.buttons === 1) {
     //   this.respondToLeftMouseDown(event);
     // } else if (event.buttons === 2) {
@@ -58,25 +76,39 @@ export class AbsenceCalendarDirective {
   }
 
   @HostListener('click', ['$event']) onMouseClick(event: MouseEvent): void {
+
+    if (!this.isOwnElement(event)) {
+      return;
+    }
+
    // this.gridBody.simpleContextMenu!.removeMenu();
    if(event.buttons===0){
     this.gridBody.onSelectByMouse(event.offsetX,event.offsetY);
    }
   
   }
+  
   @HostListener('dblclick', ['$event']) onMouseDoubleClick(event: MouseEvent): void {
-   
+    if (!this.isOwnElement(event)) {
+      return;
+    }
 
   }
 
   @HostListener('mouseup', ['$event']) onMouseUp(event: MouseEvent): void {
-    
+    if (!this.isOwnElement(event)) {
+      return;
+    }
 
 
   }
 
   @HostListener('mousemove', ['$event']) onMouseMove(event: MouseEvent): void {
    
+    if (!this.isOwnElement(event)) {
+      return;
+    }
+
     if (event.buttons === 0) {
       const col: number = this.gridBody.calcCorrectCoordinate(event).column;
 
@@ -503,13 +535,23 @@ export class AbsenceCalendarDirective {
   //   this.gridBody.simpleContextMenu!.showContextMenu(event);
   // }
 
+  
   private stopEvent(event: any): void {
+
     if (event.preventDefault)
       event.preventDefault();
     if (event.stopPropagation)
       event.stopPropagation();
     if (event.cancelBubble)
       event.cancelBubble = true;
+  }
+ 
+  private isOwnElement(event: any):boolean{
+    const targetElement = event.target as HTMLElement;
+    if (targetElement === this.el.nativeElement as HTMLElement) {
+      return true;
+    }
+    return false;
   }
 
 }
